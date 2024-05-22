@@ -1,0 +1,147 @@
+
+.songs_window{
+    nav{
+        position: fixed;
+        z-index: 5;
+        height: 90px;
+        width: calc(100% - 200px);
+        padding: 0 10px;
+        left: 200px;
+        color: var(--txt-color);
+        background-color: var(--bg-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 0 10px var(--translucent-black);
+        @media (max-width: 700px) {
+            width: calc(100% - 70px);
+            left: 70px;
+        }
+        .nowPlay{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            #now_playing456{
+                // todo: check z-index not working
+                position: relative;
+                font-size: 1.8em;
+            }
+            .search{
+                input{
+                    background-color: transparent;
+                    border: 1px solid var(--txt-color);
+                    padding: 3px;
+                    border-radius: 5px;
+                    height: 30px;
+                    color: var(--txt-color)
+                }
+            }
+        }
+        .nav{
+            div{
+                display: flex;
+                gap: 10px;
+                button{
+                    border: none;
+                    background-color: var(--btn-bg-color);
+                    color: var(--bg-color);
+                    border-radius: 5px;
+                    font-size: 0.9em;
+                    padding: 5px;
+                    cursor: pointer;
+                    &:active{
+                        color: var(--txt-color)
+                    }
+                }
+            }
+        }
+    }
+    ul{
+        padding-top: 90px;
+        margin-bottom: 20px;
+        li{
+            display: grid;
+            grid-template-columns: 50px 1fr 1fr 1fr auto;
+            border-radius: 5px;
+            height: 40px;
+            padding: 5px;
+            width: 100%;
+            margin: 5px 0;
+            // display: flex;
+            align-items: center;
+            column-gap: 10px;
+            transition: .3s;
+            color: var(--txt-color);
+            .img_div{
+                position: relative;
+                $size: 30px;
+                width: $size;
+                height: $size;
+                img{
+                    width: $size;
+                    height: $size;
+                }
+                div{
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+                    justify-content: center;
+                    align-items: center;
+                    display: none;
+                }
+            }
+            h2{
+                // display: flex;
+                // align-items: center;
+                position: relative;
+                font-size: .9em;
+                font-weight: 400;
+                height: 25px;
+                line-clamp: 2;
+                text-wrap: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            &:nth-child(2n){
+                background-color: var(--song-list-bg);
+            }
+            &:hover{
+                background-color: var(--song-list-bg);
+                cursor: pointer;
+                .img_div{
+                    color: var(--bg-color);
+                    div{
+                        display: flex;
+                        background-color: var(--img-brightness-color);
+                    }
+                }
+            }
+        }
+        .highlight{
+            background-color: var(--now-playing) !important;
+            color: var(--song-now-playing-color);
+            border: 1px solid var(--txt-color);
+            .img_div{
+                color: var(--now-playing-color) !important;
+                div{
+                    background-color: var(--now-playing-shadow) !important;
+                }
+            }
+        }
+    }
+}
+#notFound{
+    color: var(--txt-color);
+    font-weight: 400;
+    font-size: 2em;
+}
+
+@media screen and (max-width: 768px) {
+    .songs_window ul li{
+        .cell5{
+            display: none;
+        }
+    }
+}

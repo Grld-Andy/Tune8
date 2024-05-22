@@ -1,0 +1,30 @@
+.playlist-window nav {
+  position: fixed;
+  z-index: 5;
+  height: 90px;
+  width: calc(100% - 200px);
+  padding: 0 10px;
+  background-color: var(--bg-color);
+  top: 0;
+  left: 200px;
+  color: var(--txt-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 0 10px var(--translucent-black);
+}
+@media (max-width: 700px) {
+  .playlist-window nav {
+    width: calc(100% - 70px);
+    left: 70px;
+  }
+}
+.playlist-window nav h1 {
+  font-size: 1.7em;
+  position: relative;
+  z-index: 11;
+  transition: 1s ease-in-out;
+}
+.playlist-window .playlists {
+  color: var(--txt-color);
+}/*# sourceMappingURL=Playlist.css.map */

@@ -1,0 +1,116 @@
+.sidebar-root{
+    $profile-image-size: 170px;
+    $sidebar-font-size: 0.9em;
+    $sidebar-font-weight: 400;
+    $sidebar-width: 200px;
+
+    position: fixed;
+    background-color: var(--sidebar-bg-color);
+    color: var(--sidebar-text-color);
+    width: 200px;
+    height: 100%;
+    overflow: hidden;
+    padding: 0 10px;
+    font-size: $sidebar-font-size;
+    z-index: 8;
+    h2{
+        font-weight: calc($sidebar-font-weight);
+    }
+    h5{
+        font-weight: 400;
+        font-size: 18px;
+    }
+    .sidebar-mid-content{
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+    }
+    a{
+        font-size: calc($sidebar-font-size + 0.3em);
+        color: var(--sidebar-text-color);
+        text-decoration: none;
+        width: 100%;
+        padding: 2px 5px;
+        font-weight: $sidebar-font-weight;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
+        transition: .3s;
+        &:hover{
+            scale: 1.05;
+        }
+    }
+    .active{
+        transition: .5s;
+        color: var(--sidebar-link-color);
+        background-color: var(--sidebar-link-bg-color);
+        padding-left: 10px;
+        scale: 1.05;
+        transition: .5s;
+        &:before{
+            content: ' ';
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: .5s;
+            background-color: var(--sidebar-link-color);
+            height: 100%;
+            width: 5px;
+        }
+    }
+    .profile{
+        margin-bottom: 20px;
+        img{
+            width: $profile-image-size;
+            height: $profile-image-size;
+            border-radius: 50%;
+        }
+    }
+    .settings{
+        position: absolute;
+        bottom: 20px;
+        display: flex;
+        width: 180px;
+    }
+    .icon{
+        display: none;
+    }
+    @media (max-width: 700px) {
+        width: 70px;
+        h5{
+            display: none
+        }
+        .icon{
+            display: block;
+            text-align: center;
+            scale: 1.2;
+            margin-bottom: 5px;
+            position: relative;
+            top: 4px;
+            transition: .1s linear;
+            &:hover{
+                scale: 1.5;
+            }
+        }
+        .profile{
+            margin-top: 10px;
+            h1{
+                display: none;
+            }
+            img{
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+            }
+        }
+        .settings{
+            position: absolute;
+            bottom: 10px;
+            display: flex;
+            width: 50px;
+            .icon{
+                display: block;
+            }
+        }
+    }
+}

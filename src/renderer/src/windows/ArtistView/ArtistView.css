@@ -1,0 +1,133 @@
+.artist-window {
+  position: relative;
+}
+.artist-window nav {
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  height: 90px;
+  width: calc(100% - 200px);
+  color: var(--txt-color);
+  padding: 0 10px;
+  left: 200px;
+  background-color: var(--bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 0 10px var(--translucent-black);
+}
+@media (max-width: 700px) {
+  .artist-window nav {
+    width: calc(100% - 70px);
+    left: 70px;
+  }
+}
+.artist-window nav h1 {
+  font-size: 1.8em;
+}
+.artist-window .artist_card {
+  color: var(--txt-color);
+  background-color: var(--song-list-bg);
+  padding: 10px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 150px auto;
+  gap: 20px;
+  margin: 20px 0;
+}
+.artist-window .artist_card .img {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 5px;
+}
+.artist-window .artist_card .img img {
+  width: 100%;
+  height: 100%;
+}
+.artist-window .artist_card .info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.artist-window .artist_card .info h1 {
+  font-size: 1.4em;
+}
+.artist-window .artist_card .info div button {
+  background-color: var(--btn-bg-color);
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.artist-window .artist_card .info div button:active {
+  color: var(--txt-color);
+}
+.artist-window .songs-info {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr 1fr 70px 50px;
+  gap: 10px;
+  margin-bottom: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  height: 50px;
+  align-items: center;
+  color: var(--txt-color);
+}
+.artist-window .songs-info:hover {
+  background-color: var(--song-list-bg);
+}
+.artist-window .songs-info .album_cover {
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+.artist-window .songs-info .album_cover img {
+  width: 30px;
+  height: 30px;
+}
+.artist-window .songs-info .album_cover div {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+.artist-window .songs-info h1 {
+  font-size: 1em;
+  margin-left: 10px;
+  font-weight: 300;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.artist-window .songs-info:hover {
+  background-color: var(--song-list-bg);
+  cursor: pointer;
+}
+.artist-window .songs-info:hover .album_cover {
+  color: var(--bg-color);
+  border-radius: 50%;
+}
+.artist-window .songs-info:hover .album_cover div {
+  display: flex;
+  background-color: var(--img-brightness-color);
+}
+.artist-window .highlight {
+  background-color: var(--now-playing) !important;
+  color: var(--song-now-playing-color);
+  border: 1px solid var(--txt-color);
+}
+.artist-window .highlight .album_cover {
+  color: var(--now-playing-color) !important;
+}
+.artist-window .highlight .album_cover div {
+  background-color: var(--now-playing-shadow) !important;
+}/*# sourceMappingURL=ArtistView.css.map */

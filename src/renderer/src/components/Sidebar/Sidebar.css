@@ -1,0 +1,113 @@
+.sidebar-root {
+  position: fixed;
+  background-color: var(--sidebar-bg-color);
+  color: var(--sidebar-text-color);
+  width: 200px;
+  height: 100%;
+  overflow: hidden;
+  padding: 0 10px;
+  font-size: 0.9em;
+  z-index: 8;
+}
+.sidebar-root h2 {
+  font-weight: 400;
+}
+.sidebar-root h5 {
+  font-weight: 400;
+  font-size: 18px;
+}
+.sidebar-root .sidebar-mid-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.sidebar-root a {
+  font-size: 1.2em;
+  color: var(--sidebar-text-color);
+  text-decoration: none;
+  width: 100%;
+  padding: 2px 5px;
+  font-weight: 400;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+}
+.sidebar-root a:hover {
+  scale: 1.05;
+}
+.sidebar-root .active {
+  transition: 0.5s;
+  color: var(--sidebar-link-color);
+  background-color: var(--sidebar-link-bg-color);
+  padding-left: 10px;
+  scale: 1.05;
+  transition: 0.5s;
+}
+.sidebar-root .active:before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: 0.5s;
+  background-color: var(--sidebar-link-color);
+  height: 100%;
+  width: 5px;
+}
+.sidebar-root .profile {
+  margin-bottom: 20px;
+}
+.sidebar-root .profile img {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+}
+.sidebar-root .settings {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  width: 180px;
+}
+.sidebar-root .icon {
+  display: none;
+}
+@media (max-width: 700px) {
+  .sidebar-root {
+    width: 70px;
+  }
+  .sidebar-root h5 {
+    display: none;
+  }
+  .sidebar-root .icon {
+    display: block;
+    text-align: center;
+    scale: 1.2;
+    margin-bottom: 5px;
+    position: relative;
+    top: 4px;
+    transition: 0.1s linear;
+  }
+  .sidebar-root .icon:hover {
+    scale: 1.5;
+  }
+  .sidebar-root .profile {
+    margin-top: 10px;
+  }
+  .sidebar-root .profile h1 {
+    display: none;
+  }
+  .sidebar-root .profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  .sidebar-root .settings {
+    position: absolute;
+    bottom: 10px;
+    display: flex;
+    width: 50px;
+  }
+  .sidebar-root .settings .icon {
+    display: block;
+  }
+}/*# sourceMappingURL=Sidebar.css.map */

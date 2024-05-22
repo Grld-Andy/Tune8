@@ -1,0 +1,87 @@
+.settings-window nav {
+  position: fixed;
+  z-index: 5;
+  height: 90px;
+  width: calc(100% - 200px);
+  left: 200px;
+  padding: 0 10px;
+  top: 0;
+  background-color: var(--bg-color);
+  color: var(--txt-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 0 10px var(--translucent-black);
+}
+@media (max-width: 700px) {
+  .settings-window nav {
+    width: calc(100% - 70px);
+    left: 70px;
+  }
+}
+.settings-window nav h1 {
+  font-size: 1.7em;
+  position: relative;
+  z-index: 11;
+  transition: 1s ease-in-out;
+}
+.settings-window section {
+  padding-top: 10px;
+  color: var(--txt-color);
+}
+.settings-window section:nth-child(2n) {
+  margin-top: 10px;
+}
+.settings-window section h2 {
+  font-size: 1.2em;
+}
+.settings-window section .set-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+.settings-window section .set-grid .set-cell {
+  box-shadow: 0 0 5px var(--settings-cell);
+  padding: 10px;
+  display: flex;
+  border-radius: 5px;
+  justify-content: space-between;
+}
+.settings-window section .set-grid .set-cell h3 {
+  font-weight: 400;
+  font-size: 1.1em;
+}
+.settings-window section .set-grid .set-cell button {
+  border: none;
+  padding: 5px;
+  background-color: var(--btn-bg-color);
+  color: var(--bg-color);
+  border-radius: 5px;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+.settings-window section .set-grid .set-cell button:active {
+  color: var(--txt-color);
+}
+.settings-window section .set-grid .set-cell .themes {
+  display: flex;
+  gap: 10px;
+}
+.settings-window section .set-grid .set-cell .themes .black {
+  background-color: black;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.settings-window section .set-grid .set-cell .themes .white {
+  background-color: white;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.settings-window section .set-grid .set-cell .themes div {
+  cursor: pointer;
+}/*# sourceMappingURL=Settings.css.map */
