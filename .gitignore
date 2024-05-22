@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+dist-electron
+release
 *.local
 
 # Editor directories and files
@@ -22,11 +24,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-
-# Database and env variables
-database.db
-.env
-
-# my files
-src/renderer/public/*

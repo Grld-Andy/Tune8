@@ -1,0 +1,51 @@
+.home {
+  color: white;
+}
+.home section {
+  padding: 5px;
+}
+.home section h2 {
+  margin: 10px;
+}
+.home section .cards {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.home section .cards .card {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  transition: 0.2s ease-in;
+}
+.home section .cards .card .pic {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  width: 140px;
+  height: 140px;
+  border-radius: 5px;
+  background-color: red;
+}
+.home section .cards .card .pic img {
+  width: 140px;
+  height: 140px;
+}
+.home section .cards .card .lower {
+  padding: 5px;
+  width: 100%;
+}
+.home section .cards .card .lower .title {
+  color: white;
+}
+.home section .cards .card .lower .artist {
+  color: #aaa;
+}
+.home section .cards .card:hover {
+  background-color: #222;
+}/*# sourceMappingURL=style.css.map */
