@@ -1,13 +1,10 @@
-.home {
+.albums {
   color: white;
 }
-.home section {
+.albums section {
   padding: 5px;
 }
-.home section h2 {
-  margin: 10px;
-}
-.home section .cards {
+.albums section .cards {
   display: flex;
   gap: 5px;
   flex-wrap: wrap;

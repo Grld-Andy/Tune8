@@ -1,0 +1,62 @@
+.settings section {
+  padding: 10px;
+  color: white;
+}
+.settings section:nth-child(2n) {
+  margin-top: 10px;
+}
+.settings section h2 {
+  font-size: 1.2em;
+}
+.settings section .set-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+.settings section .set-grid .set-cell {
+  box-shadow: 0 0 5px black;
+  padding: 10px;
+  display: flex;
+  border-radius: 5px;
+  justify-content: space-between;
+  align-items: center;
+}
+.settings section .set-grid .set-cell h3 {
+  font-weight: 400;
+  font-size: 1.1em;
+}
+.settings section .set-grid .set-cell button {
+  border: none;
+  padding: 5px;
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+  font-size: 0.8em;
+  cursor: pointer;
+  transition: 0.1s ease-out;
+}
+.settings section .set-grid .set-cell button:active {
+  color: black;
+}
+.settings section .set-grid .set-cell .themes {
+  display: flex;
+  gap: 10px;
+}
+.settings section .set-grid .set-cell .themes .black {
+  background-color: black;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.settings section .set-grid .set-cell .themes .white {
+  background-color: white;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.settings section .set-grid .set-cell .themes div {
+  cursor: pointer;
+}/*# sourceMappingURL=style.css.map */

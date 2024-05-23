@@ -6,7 +6,7 @@ import {RiPlayListLine} from 'react-icons/ri'
 import {MdLibraryMusic, MdOutlinePlaylistPlay, MdPerson, MdFavorite, MdSettings } from 'react-icons/md'
 import { profile } from '../../assets'
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
   return (
     <div className='sidebar'>
       <div className="profile">

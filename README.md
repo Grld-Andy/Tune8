@@ -1,30 +1,14 @@
-# React + TypeScript + Vite
+## Title
+Electron Music App with Lyrics Integration
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
+Explore the world of music with Tune8, designed to deliver a seamless listening experience combined with the power of lyrics integration. Discover your favorite songs, access real-time lyrics, and save them for offline viewing.
 
-Currently, two official plugins are available:
+## Features
+Intuitive Interface: Enjoy a user-friendly interface that makes navigation effortless, allowing you to focus on what matters most - the music.
+Lyrics Integration: Dive deeper into the meaning behind the songs with lyrics to your favorite songs. Get access to accurate and annotated lyrics in real-time.
+Offline Lyrics: Lyrics automatically saved for offline viewing, ensuring you can enjoy them anytime, anywhere, without an internet connection.
+Cross-Platform Compatibility: Tune8 seamlessly across multiple platforms, including Windows, macOS, and Linux.
+Customizable Settings: Customize your music listening experience with adjustable settings for playback, display, and more.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+# ***NB : Still in Development***

@@ -1,6 +1,7 @@
 import React from 'react'
 import './style.css'
-import { music1, music2, music3, music4 } from '../../assets'
+import { songs } from '../../assets'
+import SongTile from '../../components/SongTile/SongTile'
 
 const Home: React.FC = () => {
   return (
@@ -17,60 +18,11 @@ const Home: React.FC = () => {
         <section>
           <h2>Recently Added</h2>
           <div className="cards">
-            <div className="card">
-              <div className="pic">
-                <img src={music1}/>
-              </div>
-              <div className="lower">
-                <div className="title">Random title</div>
-                <div className="artist">Some name</div>
-              </div>
-            </div>
-            <div className="card">
-              <div className="pic">
-                <img src={music2}/>
-              </div>
-              <div className="lower">
-                <div className="title">Random title</div>
-                <div className="artist">Some name</div>
-              </div>
-            </div>
-            <div className="card">
-              <div className="pic">
-                <img src={music3}/>
-              </div>
-              <div className="lower">
-                <div className="title">Random title</div>
-                <div className="artist">Some name</div>
-              </div>
-            </div>
-            <div className="card">
-              <div className="pic">
-                <img src={music4}/>
-              </div>
-              <div className="lower">
-                <div className="title">Random title</div>
-                <div className="artist">Some name</div>
-              </div>
-            </div>
-            <div className="card">
-              <div className="pic">
-                <img src={music1}/>
-              </div>
-              <div className="lower">
-                <div className="title">Random title</div>
-                <div className="artist">Some name</div>
-              </div>
-            </div>
-            <div className="card">
-              <div className="pic">
-                <img src={music2}/>
-              </div>
-              <div className="lower">
-                <div className="title">Random title</div>
-                <div className="artist">Some name</div>
-              </div>
-            </div>
+            {
+              songs.map(song => (
+                <SongTile song={song}/>
+              ))
+            }
           </div>
         </section>
       </div>

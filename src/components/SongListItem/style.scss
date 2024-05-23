@@ -1,0 +1,20 @@
+.song{
+    background-color: #555;
+    display: grid;
+    grid-template-columns: 20px 1fr 1fr 1fr auto;
+    margin: 5px;
+    gap: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    .icon{
+        cursor: pointer;
+    }
+    h3{
+        font-size: 1em;
+        line-clamp: 2;
+        font-weight: 400;
+        text-wrap: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

@@ -3,12 +3,12 @@ import { songs } from '../../assets'
 import './style.css'
 import SongListItem from '../../components/SongListItem/SongListItem';
 
-const Songs: React.FC = () => {
+const Queue: React.FC = () => {
   return (
     <>
       <nav>
         <div className="nav-left">
-          <h1>Songs</h1>
+          <h1>Queue</h1>
         </div>
         <div className="nav-right">
           <button>Add Files</button>
@@ -20,19 +20,9 @@ const Songs: React.FC = () => {
               <SongListItem song={song}/>
             ))
           }
-          {
-            songs.map(song => (
-              <SongListItem song={song}/>
-            ))
-          }
-          {
-            songs.map(song => (
-              <SongListItem song={song}/>
-            ))
-          }
         </div>
     </>
   )
 }
 
-export default Songs
+export default Queue

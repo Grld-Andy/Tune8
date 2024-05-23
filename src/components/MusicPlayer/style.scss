@@ -1,2 +1,57 @@
 .musicPlayer{
+    height: 100%;
+    .top{
+        display: flex;
+        width: 100vw;
+        align-items: center;
+        justify-content: space-between;
+        h5{
+            padding: 5px 10px;
+        }
+        progress{
+            width: 100%;
+        }
+    }
+    .bottom{
+        position: relative;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .b-left{
+            display: flex;
+            gap: 10px;
+            img{
+                height: 65px;
+                width: 65px;
+                border-radius: 5px;
+            }
+            .text{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                padding: 5px 0;
+                h5{
+                    font-size: 1.1em;
+                    font-weight: 400;
+                }
+            }
+        }
+        .b-center{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .b-right{
+            display: flex;
+            gap: 10px;
+        }
+    }
+    .icon{
+        color: white;
+        font-size: 1.2em;
+    }
 }

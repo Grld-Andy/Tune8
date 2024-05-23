@@ -21,7 +21,7 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 15vh;
+  height: 100px;
   background-color: #333;
   box-shadow: 0 -5px 5px grey;
   z-index: 21;
@@ -31,8 +31,25 @@
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+  overflow-x: hidden;
   padding-top: 15vh;
-  padding-bottom: 10px;
+  padding-bottom: 40px;
+}
+.view::-webkit-scrollbar-thumb {
+  background-color: grey;
+  border-radius: 10px;
+}
+.view::-webkit-scrollbar-thumb:hover {
+  background-color: grey;
+  cursor: pointer;
+}
+.view::-webkit-scrollbar {
+  width: 5px;
+  display: block;
+}
+.view::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 10px;
 }
 
 nav {
@@ -48,10 +65,22 @@ nav {
   background-color: #333;
   width: calc(100vw - 200px);
 }
+nav .nav-left h1 {
+  font-size: 1.6em;
+}
+nav .nav-right {
+  display: flex;
+  gap: 5px;
+}
 nav .nav-right button {
   padding: 5px;
   border: 1px solid gray;
   border-radius: 5px;
   background-color: #555;
   color: white;
+  cursor: pointer;
+  transition: 0.1s ease-in;
+}
+nav .nav-right button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
 }/*# sourceMappingURL=style.css.map */
