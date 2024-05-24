@@ -1,18 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './style.css'
 import { songs } from '../../assets'
 import SongTile from '../../components/SongTile/SongTile'
 import { SortedSongs } from '../../data'
+import { alphabets } from '../../constants'
 
 const Albums: React.FC = () => {
+  const [showNav, setShowNav] = useState(false)
+  const toggleShowNav: () => void = () => {
+    setShowNav(!showNav)
+  }
+  const closeAndScroll: () => void = () => {
+    setShowNav(false)
+  }
+
   const albums: SortedSongs = {}
 
   songs.forEach(song => {
-    const firstLetter:string = song.album.charAt(0).toUpperCase()
+    let firstLetter:string = song.tag.tags.album.charAt(0).toUpperCase()
+    firstLetter = /^[A-Za-z]$/.test(firstLetter) ? firstLetter : '#'
+    // initialize to store empty array before pushing
     if (!albums[firstLetter]) {
-      albums[firstLetter] = []
+      albums[firstLetter] = new Set()
     }
-    albums[firstLetter].push(song)
+    if(!Array.from(albums[firstLetter]).some(elem => elem.tag.tags.album === song.tag.tags.album)){
+      albums[firstLetter].add(song)
+    }
   })
 
   return (
@@ -25,17 +38,29 @@ const Albums: React.FC = () => {
           <button>Sort by</button>
           <button>Add Files</button>
         </div>
-      </nav>
+      </nav> 
       <div className="albums view">
             {
+              showNav &&
+              <div className="songs-nav" onClick={toggleShowNav}>
+                {
+                  alphabets.map(letter => (
+                    albums[letter] && albums[letter].size > 0 ?
+                    <a key={letter} href={`#${letter}`} className='open' onClick={closeAndScroll}>{letter}</a> :
+                    <a key={letter} className='closed'>{letter}</a> 
+                  ))
+                }
+              </div>
+            }
+            {
               Object.keys(albums).sort().map(letter => (
-                <section key={letter}>
-                  <h2>{letter}</h2>
+                <section key={letter} id={letter}>
+                  <h2 onClick={toggleShowNav}>{letter}</h2>
                   <div className="cards">
                     {
-                      albums[letter].map(song => (
+                      Array.from(albums[letter]).map(song => (
                         <SongTile
-                          key={song.title}
+                          key={song.tag.tags.title}
                           song={song}
                           page={'albums'}
                         />

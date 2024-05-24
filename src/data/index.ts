@@ -1,9 +1,15 @@
 export interface Song {
-    title: string,
-    artist: string,
-    album: string,
-    image: string
+    tag: {
+        tags: {
+            title: string,
+            artist: string,
+            album: string,
+            year: number
+        }
+    }
+    imageSrc: string,
+    duration: string
 }
 export interface SortedSongs {
-    [key: string]: Song[]
+    [key: string]: Set<Song>
 }

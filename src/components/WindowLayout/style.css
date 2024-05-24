@@ -34,6 +34,8 @@
   overflow-x: hidden;
   padding-top: 15vh;
   padding-bottom: 40px;
+  position: relative;
+  scroll-behavior: smooth;
 }
 .view::-webkit-scrollbar-thumb {
   background-color: grey;

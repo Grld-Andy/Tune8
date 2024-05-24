@@ -33,6 +33,8 @@
     overflow-x: hidden;
     padding-top: 15vh;
     padding-bottom: 40px;
+    position: relative;
+    scroll-behavior: smooth;
     &::-webkit-scrollbar-thumb {
         background-color: grey;
         border-radius: 10px;
