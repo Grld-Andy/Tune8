@@ -22,6 +22,9 @@
   height: 140px;
   transition: 0.3s ease-in;
 }
+.card .artists-page {
+  border-radius: 50%;
+}
 .card .lower {
   padding: 5px;
   width: 100%;

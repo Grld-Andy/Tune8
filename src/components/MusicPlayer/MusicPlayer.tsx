@@ -4,32 +4,49 @@ import {ImEnlarge} from 'react-icons/im'
 import {HiMiniWindow, HiMiniEllipsisHorizontal} from 'react-icons/hi2'
 import {MdFavoriteBorder, MdFavorite} from 'react-icons/md'
 import './style.css'
-import { music3 } from '../../assets'
+import { music3, song1 } from '../../assets'
 
 const MusicPlayer: React.FC = () => {
+  const [isFavorite, setIsFavorite] = React.useState(false)
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite)
+  }
+  const [isPlaying, setIsPlaying] = React.useState(false)
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying)
+  }
+
   return (
     <div className='musicPlayer'>
       <div className="top">
         <h5>00:00</h5>
-        <progress></progress>
-        <h5>03:10</h5>
+        <progress value={75} max={100}></progress>
+        <h5>{song1.duration}</h5>
       </div>
       <div className="bottom">
         <div className="b-left">
           <img src={music3} alt=''/>
           <div className="text">
-            <h5>Title</h5>
-            <h5>Artist</h5>
+            <h5>{song1.tag.tags.title}</h5>
+            <h5>{song1.tag.tags.artist}</h5>
           </div>
         </div>
         <div className="b-center">
           <FaShuffle className='icon'/>
           <FaRotate className='icon'/>
           <FaBackward className='icon'/>
-          <FaCirclePlay className='icon' size={40}/>
+          {
+            isPlaying?
+            <FaCirclePause className='icon' size={40} onClick={togglePlay}/>:
+            <FaCirclePlay className='icon' size={40} onClick={togglePlay}/>
+          }
           <FaForward className='icon'/>
           <HiMiniWindow className='icon'/>
-          <MdFavoriteBorder className='icon'/>
+          {
+            isFavorite ?
+            <MdFavorite className='icon' onClick={toggleFavorite}/>:
+            <MdFavoriteBorder className='icon' onClick={toggleFavorite}/>
+          }
         </div>
         <div className="b-right">
           <ImEnlarge className='icon'/>

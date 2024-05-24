@@ -1,5 +1,6 @@
 .musicPlayer{
     height: 100%;
+    color: white;
     .top{
         display: flex;
         width: 100vw;
@@ -7,6 +8,7 @@
         justify-content: space-between;
         h5{
             padding: 5px 10px;
+            font-weight: 400;
         }
         progress{
             width: 100%;
@@ -34,12 +36,15 @@
                 h5{
                     font-size: 1.1em;
                     font-weight: 400;
+                    font-weight: 400;
                 }
             }
         }
         .b-center{
             display: flex;
             align-items: center;
+            background-color: #333;
+            height: 100%;
             gap: 10px;
             position: absolute;
             left: 50%;
@@ -53,5 +58,6 @@
     .icon{
         color: white;
         font-size: 1.2em;
+        cursor: pointer;
     }
 }

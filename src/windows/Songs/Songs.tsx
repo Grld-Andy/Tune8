@@ -17,17 +17,17 @@ const Songs: React.FC = () => {
         <div className="songs view">
           {
             songs.map(song => (
-              <SongListItem song={song}/>
+              <SongListItem key={song.tag.tags.title} song={song}/>
             ))
           }
           {
             songs.map(song => (
-              <SongListItem song={song}/>
+              <SongListItem key={song.tag.tags.title} song={song}/>
             ))
           }
           {
             songs.map(song => (
-              <SongListItem song={song}/>
+              <SongListItem key={song.tag.tags.title} song={song}/>
             ))
           }
         </div>

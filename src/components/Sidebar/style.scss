@@ -19,10 +19,15 @@
         }
     }
     .sidebar-links{
-        height: 60%;
+        height: 75vh;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        &::-webkit-scrollbar{
+            display: none;
+        }
         h5{
             font-size: 1em;
         }
@@ -45,8 +50,23 @@
             color: green;
             background-color: #333;
         }
-        .icons{}
-        .upper-links{}
-        .lower-link{}
+    }
+}
+@media (max-width: 700px) {
+    .sidebar{
+        .profile{
+            h1{
+                display: none;
+            }
+            img{
+                width: 50px;
+                height: 50px;
+            }
+        }
+        .sidebar-links{
+            h5{
+                display: none;
+            }
+        }
     }
 }

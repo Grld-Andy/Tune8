@@ -9,7 +9,7 @@ export const music2 : string = 'placeholders/music2.jpg'
 export const music3 : string = 'placeholders/music3.jpg'
 export const music4 : string = 'placeholders/music4.jpg'
 
-const song1: Song = {
+export const song1: Song = {
     tag: {
         tags: {
             title: 'Stronger than I was',
@@ -129,17 +129,5 @@ const song10: Song = {
     imageSrc: music2,
     duration: '03:30',
 }
-const song11: Song = {
-    tag: {
-        tags: {
-            title: '90210',
-            artist: '$9ksdfk',
-            album: '2058',
-            year: 2013,
-        },
-    },
-    imageSrc: music2,
-    duration: '03:30',
-}
 
-export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9,song10, song11]
+export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9, song10]

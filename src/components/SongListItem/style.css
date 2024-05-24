@@ -6,6 +6,7 @@
   gap: 5px;
   padding: 5px;
   border-radius: 5px;
+  transition: 0.2s ease-in;
 }
 .song .icon {
   cursor: pointer;
@@ -18,4 +19,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: default;
+}
+.song:hover {
+  background-color: #777;
+}
+
+.song:nth-child(2n) {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.song:nth-child(2n):hover {
+  background-color: #777;
 }/*# sourceMappingURL=style.css.map */

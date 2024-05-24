@@ -85,4 +85,17 @@ nav .nav-right button {
 }
 nav .nav-right button:hover {
   background-color: rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 700px) {
+  .main .left__ {
+    width: 55px;
+  }
+  .main .right__ {
+    width: calc(100vw - 55px);
+    margin-left: 55px;
+  }
+  nav {
+    width: calc(100vw - 55px);
+  }
 }/*# sourceMappingURL=style.css.map */
