@@ -18,6 +18,7 @@
         img{
             width: 140px;
             height: 140px;
+            transition: .3s ease-in;
         }
     }
     .lower{
@@ -38,5 +39,11 @@
     }
     &:hover{
         background-color: #222;
+        box-shadow: 0 0 5px 2px black;
+        .pic{
+            img{
+                scale: 1.1;
+            }
+        }
     }
 }

@@ -32,6 +32,12 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
+    show: false
+  })
+  
+  // Show the window once it is ready to be shown
+  win.once('ready-to-show', () => {
+    win?.show()
   })
 
   // Test active push message to Renderer-process.

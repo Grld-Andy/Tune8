@@ -4,6 +4,6 @@ export interface Song {
     album: string,
     image: string
 }
-export interface AlbumsInterface {
+export interface SortedSongs {
     [key: string]: Song[]
 }

@@ -24,5 +24,6 @@ const song6: Song = {title: 'Calling For You', artist: 'Drake', album: 'For All 
 const song7: Song = {title: 'Isis', artist: 'Joyner Lucas', album: 'ADHD', image: music3, time: '03: 30'}
 const song8: Song = {title: 'Jesus Walks', artist: 'Kanye West', album: 'The College Dropout(Explicit)', image: music4, time: '03: 30'}
 const song9: Song = {title: 'Day N Night', artist: 'Kid Cudi', album: 'Unknown Album', image: music1, time: '03: 30'}
+const song10: Song = {title: 'Beautiful Pain', artist: 'Eminem', album: 'The Marshall Mathers LP 2', image: music2, time: '03: 30'}
 
-export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9]
+export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9,song10]

@@ -2,10 +2,10 @@ import React from 'react'
 import './style.css'
 import { songs } from '../../assets'
 import SongTile from '../../components/SongTile/SongTile'
-import { AlbumsInterface } from '../../data'
+import { SortedSongs } from '../../data'
 
 const Albums: React.FC = () => {
-  const albums: AlbumsInterface[] = {}
+  const albums: SortedSongs = {}
 
   songs.forEach(song => {
     const firstLetter:string = song.album.charAt(0).toUpperCase()
@@ -35,7 +35,7 @@ const Albums: React.FC = () => {
                     {
                       albums[letter].map(song => (
                         <SongTile
-                          key={song.id}
+                          key={song.title}
                           song={song}
                           page={'albums'}
                         />
