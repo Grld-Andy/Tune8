@@ -3,6 +3,8 @@
   color: white;
   padding: 10px 10px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .sidebar .profile {
   display: flex;
@@ -20,12 +22,12 @@
   border-radius: 50%;
 }
 .sidebar .sidebar-links {
-  height: 75vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow-y: scroll;
   overflow-x: hidden;
+  height: 100%;
 }
 .sidebar .sidebar-links::-webkit-scrollbar {
   display: none;

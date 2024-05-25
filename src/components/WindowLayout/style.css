@@ -1,14 +1,17 @@
 .main {
   display: grid;
-  grid-template-rows: auto 100px;
+  grid-template-rows: calc(100vh - 100px) 100px;
 }
 .main .left__ {
   position: fixed;
   z-index: 20;
   top: 0;
   left: 0;
-  height: 85vh;
+  height: calc(100% - 100px);
   width: 200px;
+}
+.main .left__::-webkit-scrollbar {
+  display: none;
 }
 .main .right__ {
   position: fixed;
