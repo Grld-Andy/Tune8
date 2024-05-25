@@ -48,6 +48,7 @@
 }
 .sidebar .sidebar-links .link:hover {
   color: green;
+  background-color: #333;
 }
 .sidebar .sidebar-links .active {
   border-left: 5px solid green;

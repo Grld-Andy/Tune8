@@ -1,0 +1,42 @@
+.songs-nav {
+  position: fixed;
+  grid-template-columns: repeat(4, 1fr);
+  display: grid;
+  gap: 10px;
+  padding: 50px;
+  overflow-y: scroll;
+  width: calc(100% - 200px);
+  height: calc(100% - 200px);
+  background-color: #222;
+}
+.songs-nav::-webkit-scrollbar {
+  display: none;
+}
+.songs-nav a {
+  font-size: 1.5em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 5px;
+  transition: 0.2s ease-in;
+  text-decoration: none;
+}
+.songs-nav .open {
+  color: white;
+  cursor: pointer;
+}
+.songs-nav .open:hover {
+  background-color: #333;
+}
+.songs-nav .closed {
+  opacity: 0.1;
+  cursor: default;
+}
+
+@media (max-width: 700px) {
+  .songs-nav {
+    width: calc(100% - 50px);
+  }
+}/*# sourceMappingURL=style.css.map */

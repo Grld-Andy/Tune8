@@ -1,0 +1,12 @@
+.artist {
+  color: white;
+}
+.artist section {
+  padding: 5px;
+}
+.artist section .cards {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  width: 100%;
+}/*# sourceMappingURL=style.css.map */

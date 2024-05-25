@@ -18,40 +18,4 @@
             flex-wrap: wrap;
         }
     }
-    .songs-nav{
-        position: fixed;
-        grid-template-columns: repeat(4, 1fr);
-        display: grid;
-        gap: 10px;
-        padding: 50px;
-        overflow-y: scroll;
-        width: calc(100% - 200px);
-        height: calc(100% - 200px);
-        background-color: #222;
-        &::-webkit-scrollbar{
-            display: none;
-        }
-        a{
-            font-size: 1.5em;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            border-radius: 5px;
-            transition: .2s ease-in;
-            text-decoration: none;
-        }
-        .open{
-            color: white;
-            cursor: pointer;
-            &:hover{
-                background-color: #333;
-            }
-        }
-        .closed{
-            opacity: .1;
-            cursor: default;
-        }
-    }
 }

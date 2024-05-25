@@ -1,6 +1,7 @@
 .musicPlayer{
     height: 100%;
     color: white;
+    box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.3);
     .top{
         display: flex;
         width: 100vw;
@@ -9,6 +10,7 @@
         h5{
             padding: 5px 10px;
             font-weight: 400;
+            cursor: default;
         }
         progress{
             width: 100%;
@@ -33,6 +35,7 @@
                 flex-direction: column;
                 justify-content: space-around;
                 padding: 5px 0;
+                cursor: default;
                 h5{
                     font-size: 1.1em;
                     font-weight: 400;

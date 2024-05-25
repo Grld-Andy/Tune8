@@ -1,0 +1,12 @@
+.album {
+  color: white;
+}
+.album section {
+  padding: 5px;
+}
+.album section .cards {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  width: 100%;
+}/*# sourceMappingURL=style.css.map */

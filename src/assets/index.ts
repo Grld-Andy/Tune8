@@ -1,13 +1,13 @@
 import { Song } from "../data"
 
 // profile placeholder
-export const profile : string = 'my_images/profile.jpg'
+export const profile : string = '/my_images/profile.jpg'
 
 // music placeholder
-export const music1 : string = 'placeholders/music1.jpg'
-export const music2 : string = 'placeholders/music2.jpg'
-export const music3 : string = 'placeholders/music3.jpg'
-export const music4 : string = 'placeholders/music4.jpg'
+export const music1 : string = '/placeholders/music1.jpg'
+export const music2 : string = '/placeholders/music2.jpg'
+export const music3 : string = '/placeholders/music3.jpg'
+export const music4 : string = '/placeholders/music4.jpg'
 
 export const song1: Song = {
     tag: {
@@ -129,5 +129,17 @@ const song10: Song = {
     imageSrc: music2,
     duration: '03:30',
 }
+const song11: Song = {
+    tag: {
+        tags: {
+            title: 'Hurricane',
+            artist: 'Kanye West',
+            album: 'Donda',
+            year: 2019,
+        },
+    },
+    imageSrc: music3,
+    duration: '02:14',
+}
 
-export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9, song10]
+export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9, song10, song11]

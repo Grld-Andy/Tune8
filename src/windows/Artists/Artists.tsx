@@ -3,10 +3,12 @@ import './style.css'
 import { songs } from '../../assets'
 import SongTile from '../../components/SongTile/SongTile'
 import { SortedSongs } from '../../data'
-import { alphabets } from '../../constants'
+import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
+import { Link } from 'react-router-dom'
 
 const Artists: React.FC = () => {
   const [showNav, setShowNav] = useState(false)
+
   const toggleShowNav: () => void = () => {
     setShowNav(!showNav)
   }
@@ -42,15 +44,7 @@ const Artists: React.FC = () => {
       <div className="artists view">
             {
               showNav &&
-              <div className="songs-nav" onClick={toggleShowNav}>
-                {
-                  alphabets.map(letter => (
-                    artists[letter] && artists[letter].size > 0 ?
-                    <a key={`nav-${letter}`} href={`#${letter}`} className='open' onClick={closeAndScroll}>{letter}</a> :
-                    <a key={`nav-${letter}`} className='closed'>{letter}</a> 
-                  ))
-                }
-              </div>
+              <MusicNavigation toggleShowNav={toggleShowNav} object={artists} closeAndScroll={closeAndScroll}/>
             }
             {
               Object.keys(artists).sort().map(letter => (
@@ -59,11 +53,13 @@ const Artists: React.FC = () => {
                   <div className="cards">
                     {
                       Array.from(artists[letter]).map(song => (
-                        <SongTile
-                          key={song.tag.tags.title}
-                          song={song}
-                          page={'artists'}
-                        />
+                        <Link to={`/artistView/${song.tag.tags.artist}`}
+                        key={song.tag.tags.title}>
+                          <SongTile
+                            song={song}
+                            page={'artists'}
+                          />
+                        </Link>
                       ))
                     }
                   </div>

@@ -17,7 +17,7 @@
         width: calc(100vw - 200px);
         margin-left: 200px;
         background-color: #444;
-        height: 85vh;
+        height: calc(100% - 100px);
     }
     .bottom__{
         position: fixed;
@@ -25,17 +25,16 @@
         width: 100%;
         height: 100px;
         background-color: #333;
-        box-shadow: 0 -5px 5px grey;
         z-index: 21;
     }
 }
 .view{
     width: 100%;
-    height: 100%;
+    height: calc(100% - 15vh);
     overflow-y: scroll;
     overflow-x: hidden;
-    padding-top: 15vh;
-    padding-bottom: 40px;
+    top: 15vh;
+    padding-bottom: 10px;
     position: relative;
     scroll-behavior: smooth;
     &::-webkit-scrollbar-thumb {
@@ -85,6 +84,75 @@ nav{
             transition: .1s ease-in;
             &:hover{
                 background-color: rgba(255, 255, 255, 0.25);
+            }
+        }
+    }
+}
+.singles-nav{
+    height: 200px;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    gap: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.25);
+    .singles-image{
+        height: 100%;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 0 5px black;
+        img{
+            height: 100%;
+            width: 180px;
+        }
+    }
+    .circle{
+        border-radius: 50%;
+    }
+    .singles-info{
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px 0;
+        h1{
+            font-size: 2em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-wrap: nowrap;
+        }
+        h2{
+            font-size: 1.5em;
+        }
+        .h2{
+            display: flex;
+            gap: 10px;
+            li{
+                list-style-type: none;
+                font-size: 1.5em;
+            }
+        }
+        .others{
+            font-size: 1.2em;
+            opacity: .6;
+            display: flex;
+            gap: 30px;
+            li{
+                font-weight: lighter;
+                list-style-type:none;
+            }
+        }
+        .buttons{
+            display: flex;
+            gap: 5px;
+            button{
+                padding: 5px;
+                border-radius: 5px;
+                border: none;
+                font-size: .9em;
+                background-color: green;
+                color: white;
             }
         }
     }

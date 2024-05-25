@@ -3,7 +3,8 @@ import './style.css'
 import { songs } from '../../assets'
 import SongTile from '../../components/SongTile/SongTile'
 import { SortedSongs } from '../../data'
-import { alphabets } from '../../constants'
+import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
+import { Link } from 'react-router-dom'
 
 const Albums: React.FC = () => {
   const [showNav, setShowNav] = useState(false)
@@ -42,15 +43,7 @@ const Albums: React.FC = () => {
       <div className="albums view">
             {
               showNav &&
-              <div className="songs-nav" onClick={toggleShowNav}>
-                {
-                  alphabets.map(letter => (
-                    albums[letter] && albums[letter].size > 0 ?
-                    <a key={letter} href={`#${letter}`} className='open' onClick={closeAndScroll}>{letter}</a> :
-                    <a key={letter} className='closed'>{letter}</a> 
-                  ))
-                }
-              </div>
+              <MusicNavigation toggleShowNav={toggleShowNav} object={albums} closeAndScroll={closeAndScroll}/>
             }
             {
               Object.keys(albums).sort().map(letter => (
@@ -59,11 +52,13 @@ const Albums: React.FC = () => {
                   <div className="cards">
                     {
                       Array.from(albums[letter]).map(song => (
-                        <SongTile
-                          key={song.tag.tags.title}
-                          song={song}
-                          page={'albums'}
-                        />
+                        <Link to={`/albumView/${song.tag.tags.album}`}
+                        key={song.tag.tags.title}>
+                          <SongTile
+                            song={song}
+                            page={'albums'}
+                          />
+                        </Link>
                       ))
                     }
                   </div>

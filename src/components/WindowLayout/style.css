@@ -18,7 +18,7 @@
   width: calc(100vw - 200px);
   margin-left: 200px;
   background-color: #444;
-  height: 85vh;
+  height: calc(100% - 100px);
 }
 .main .bottom__ {
   position: fixed;
@@ -26,17 +26,16 @@
   width: 100%;
   height: 100px;
   background-color: #333;
-  box-shadow: 0 -5px 5px grey;
   z-index: 21;
 }
 
 .view {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 15vh);
   overflow-y: scroll;
   overflow-x: hidden;
-  padding-top: 15vh;
-  padding-bottom: 40px;
+  top: 15vh;
+  padding-bottom: 10px;
   position: relative;
   scroll-behavior: smooth;
 }
@@ -88,6 +87,76 @@ nav .nav-right button {
 }
 nav .nav-right button:hover {
   background-color: rgba(255, 255, 255, 0.25);
+}
+
+.singles-nav {
+  height: 200px;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  gap: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.25);
+}
+.singles-nav .singles-image {
+  height: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 0 5px black;
+}
+.singles-nav .singles-image img {
+  height: 100%;
+  width: 180px;
+}
+.singles-nav .circle {
+  border-radius: 50%;
+}
+.singles-nav .singles-info {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+.singles-nav .singles-info h1 {
+  font-size: 2em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+}
+.singles-nav .singles-info h2 {
+  font-size: 1.5em;
+}
+.singles-nav .singles-info .h2 {
+  display: flex;
+  gap: 10px;
+}
+.singles-nav .singles-info .h2 li {
+  list-style-type: none;
+  font-size: 1.5em;
+}
+.singles-nav .singles-info .others {
+  font-size: 1.2em;
+  opacity: 0.6;
+  display: flex;
+  gap: 30px;
+}
+.singles-nav .singles-info .others li {
+  font-weight: lighter;
+  list-style-type: none;
+}
+.singles-nav .singles-info .buttons {
+  display: flex;
+  gap: 5px;
+}
+.singles-nav .singles-info .buttons button {
+  padding: 5px;
+  border-radius: 5px;
+  border: none;
+  font-size: 0.9em;
+  background-color: green;
+  color: white;
 }
 
 @media (max-width: 700px) {
