@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './style.css'
+import { ThemeContext } from '../../contexts/ThemeContext'
 
 const Settings: React.FC = () => {
+  const {dispatch} = useContext(ThemeContext)
+
+  const changeTheme = () => {
+    dispatch({type: 'CHANGE_THEME'})
+  }
+
   return (
     <>
       <nav>
@@ -32,8 +39,8 @@ const Settings: React.FC = () => {
             <div className="set-cell">
               <h3>Change Theme</h3>
               <div className="themes">
-                <div className="black"></div>
-                <div className="white"></div>
+                <div className="black" onClick={changeTheme}></div>
+                <div className="white" onClick={changeTheme}></div>
               </div>
             </div>
           </div>

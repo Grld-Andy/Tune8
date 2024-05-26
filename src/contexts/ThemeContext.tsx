@@ -1,13 +1,16 @@
-import { createContext, Dispatch, useReducer } from "react";
+import { createContext, Dispatch, useEffect, useReducer } from "react";
 import { themeReducer } from "../reducers/ThemeReducer";
 
 export const ThemeContext = createContext()
 
-const ThemeContextProvider = (props: { children: React.JSX.Element }) => {
+const ThemeContextProvider = (props) => {
     const [theme, dispatch]: [string, Dispatch<{ type: string; }>] = useReducer(themeReducer, 'dark', () => {
         const localTheme: string|null = localStorage.getItem('theme')
         return localTheme ? localTheme : 'dark'
     })
+    useEffect(() => {
+        localStorage.setItem('theme', theme)
+    }, [theme])
     return (
         <ThemeContext.Provider value={{theme, dispatch}}>
             {props.children}
