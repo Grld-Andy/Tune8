@@ -1,6 +1,12 @@
+.light{}
+.dark{
+    --sidebar-bg: #000;
+    --sidebar-link-color: #080;
+    --sidebar-link-active-bg: #333;
+}
 .sidebar{
-    background-color: black;
-    color: white;
+    background-color: var(--sidebar-bg);
+    color: var(--primary-text-color);
     padding: 10px 10px;
     height: 100%;
     display: flex;
@@ -34,7 +40,7 @@
             font-size: 1em;
         }
         .link{
-            color: white;
+            color: var(--primary-text-color);
             text-decoration: none;
             display: flex;
             gap: 10px;
@@ -44,14 +50,14 @@
             margin: 5px 0;
             transition: .1s ease-in;
             &:hover{
-                color: green;
-                background-color: #333;
+                color: var(--sidebar-link-color);
+                background-color: var(--sidebar-link-active-bg);
             }
         }
         .active{
-            border-left: 5px solid green;
-            color: green;
-            background-color: #333;
+            border-left: 5px solid var(--sidebar-link-color);
+            color: var(--sidebar-link-color);
+            background-color: var(--sidebar-link-active-bg);
         }
     }
 }

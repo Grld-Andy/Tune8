@@ -1,3 +1,9 @@
+.light{}
+.dark{
+    --subtitle-text-color: #aaa;
+    --songtile-card-bg-hover: #222;
+    --songtile-shadow: #000;
+}
 .card{
     display: flex;
     flex-direction: column;
@@ -28,21 +34,21 @@
         padding: 5px;
         width: 100%;
         .title{
-            color: white;
+            color: var(--primary-text-color);
             overflow: hidden;
             text-wrap: nowrap;
             text-overflow: ellipsis;
         }
         .artist{
-            color: #aaa;
+            color: var(--subtitle-text-color);
             overflow: hidden;
             text-wrap: nowrap;
             text-overflow: ellipsis;
         }
     }
     &:hover{
-        background-color: #222;
-        box-shadow: 0 0 5px 2px black;
+        background-color: var(--songtile-card-bg-hover);
+        box-shadow: 0 0 5px 2px var(--songtile-shadow);
         .pic{
             img{
                 scale: 1.1;

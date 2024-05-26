@@ -1,3 +1,8 @@
+.light{}
+.dark{
+    --songs-nav-bg: #222;
+    --songs-nav-open-links: #333;
+}
 .songs-nav{
     position: fixed;
     grid-template-columns: repeat(4, 1fr);
@@ -7,7 +12,7 @@
     overflow-y: scroll;
     width: calc(100% - 200px);
     height: calc(100% - 200px);
-    background-color: #222;
+    background-color: var(--songs-nav-bg);
     &::-webkit-scrollbar{
         display: none;
     }
@@ -26,7 +31,7 @@
         color: white;
         cursor: pointer;
         &:hover{
-            background-color: #333;
+            background-color: var(--songs-nav-open-links);
         }
     }
     .closed{

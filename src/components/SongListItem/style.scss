@@ -1,5 +1,12 @@
+.light{}
+.dark{
+    --songlist-bg: #555;
+    --songlist-text-hover: #0300;
+    --songlist-bg-hover: #777;
+    --songlist-bg-even: #ffffff1a;
+}
 .song{
-    background-color: #555;
+    background-color: var(--songlist-bg);
     display: grid;
     grid-template-columns: 20px 1fr 1fr 1fr auto;
     margin: 5px;
@@ -18,7 +25,7 @@
         line-clamp: 2;
         font-weight: lighter;
         cursor: default;
-        color: white;
+        color: --(--primary-text-color);
         text-wrap: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -26,17 +33,17 @@
     .link{
         transition: .1s ease-out;
         &:hover{
-            color: rgb(0, 49, 0);
+            color: var(--songlist-text-hover);
         }
     }
     &:hover{
-        background-color: #777;
+        background-color: var(--songlist-bg-hover);
     }
 }
 .song:nth-child(2n){
     background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--songlist-bg-even);
     &:hover{
-        background-color: #777;
+        background-color: var(--songlist-bg-hover);
     }
 }

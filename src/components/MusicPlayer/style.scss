@@ -1,7 +1,11 @@
+.light{}
+.dark{
+    --music-player-shadow: #00000030;
+}
 .musicPlayer{
     height: 100%;
     color: white;
-    box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 -5px 5px var(--music-player-shadow);
     .top{
         display: flex;
         width: 100vw;
@@ -46,7 +50,7 @@
         .b-center{
             display: flex;
             align-items: center;
-            background-color: #333;
+            background-color: var(--music-player-bg-color);
             height: 100%;
             gap: 10px;
             position: absolute;
@@ -59,7 +63,7 @@
         }
     }
     .icon{
-        color: white;
+        color: var(--primary-text-color);
         font-size: 1.2em;
         cursor: pointer;
     }

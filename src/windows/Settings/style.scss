@@ -1,7 +1,7 @@
 .settings{
     section{
         padding: 10px;
-        color: white;
+        color: var(--primary-text-color);
         &:nth-child(2n){
             margin-top: 10px;
         }

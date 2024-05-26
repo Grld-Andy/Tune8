@@ -1,3 +1,16 @@
+.light{
+}
+.dark{
+    --right-bg-color: #444;
+    --music-player-bg-color: #333;
+    --navbar-bg-color: #333;
+    --navbar-shadow: #0005;
+    --primary-button-bg-color: #555;
+    --primary-text-color: #fff;
+    --primary-button-bg-hover: #ffffff25;
+    --singles-nav-bg: #fff1;
+    --singles-nav-image-shadow: #000;
+}
 .main{
     display: grid;
     grid-template-rows: calc(100vh - 100px) 100px;
@@ -16,7 +29,7 @@
         position: fixed;
         width: calc(100vw - 200px);
         margin-left: 200px;
-        background-color: #444;
+        background-color: var(--right-bg-color);
         height: calc(100% - 100px);
     }
     .bottom__{
@@ -24,7 +37,7 @@
         bottom: 0;
         width: 100%;
         height: 100px;
-        background-color: #333;
+        background-color: var(--music-player-bg-color);
         z-index: 21;
     }
 }
@@ -57,14 +70,14 @@
 nav{
     height: 15vh;
     padding: 10px;
-    box-shadow: 0 5px 5px #00000050;
-    color: white;
+    box-shadow: 0 5px 5px var(--navbar-shadow);
+    color: var(--primary-text-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
     z-index: 10;
     position: fixed;
-    background-color: #333;
+    background-color: var(--navbar-bg-color);
     width: calc(100vw - 200px);
     .nav-left{
         h1{
@@ -78,12 +91,12 @@ nav{
             padding: 5px;
             border: 1px solid gray;
             border-radius: 5px;
-            background-color: #555;
-            color: white;
+            background-color: var(--primary-button-bg-color);
+            color: var(--primary-text-color);
             cursor: pointer;
             transition: .1s ease-in;
             &:hover{
-                background-color: rgba(255, 255, 255, 0.25);
+                background-color: var(--primary-button-bg-hover);
             }
         }
     }
@@ -95,13 +108,13 @@ nav{
     padding: 10px;
     display: flex;
     gap: 20px;
-    background-color: rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.25);
+    background-color: var(--single-nav-bg);
+    box-shadow: inset 0 0 20px var(--primary-button-bg-hover);
     .singles-image{
         height: 100%;
         border-radius: 5px;
         overflow: hidden;
-        box-shadow: 0 0 5px black;
+        box-shadow: 0 0 5px var(--singles-nav-image-shadow);
         img{
             height: 100%;
             width: 180px;
@@ -111,7 +124,7 @@ nav{
         border-radius: 50%;
     }
     .singles-info{
-        color: white;
+        color: var(--primary-text-color);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
