@@ -1,6 +1,12 @@
 ## Title
 Electron Music App with Lyrics Integration
 
+## Dark Mode - Full View
+![Dark mode](./public/my_images/tune8/fullscreen_dark.png)
+
+## Light Mode - Responsive View
+![Light mode](./public/my_images/tune8/responsive_light.png)
+
 ## Description
 Explore the world of music with Tune8, designed to deliver a seamless listening experience combined with the power of lyrics integration. Discover your favorite songs, access real-time lyrics, and save them for offline viewing.
 

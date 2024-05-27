@@ -1,4 +1,8 @@
-.light{}
+.light{
+    --subtitle-text-color: #777;
+    --songtile-card-bg-hover: #ddd;
+    --songtile-shadow: #bbb;
+}
 .dark{
     --subtitle-text-color: #aaa;
     --songtile-card-bg-hover: #222;
@@ -12,8 +16,8 @@
     justify-content: center;
     border-radius: 5px;
     padding: 5px;
-    cursor: pointer;
-    transition: .2s ease-in;
+    cursor: default;
+    transition: .1s ease-in;
     .pic{
         overflow: hidden;
         display: flex;
@@ -24,7 +28,7 @@
         img{
             width: 140px;
             height: 140px;
-            transition: .3s ease-in;
+            transition: .2s ease-in;
         }
     }
     .artists-page{

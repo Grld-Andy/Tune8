@@ -1,5 +1,5 @@
 .home {
-  color: white;
+  color: var(--primary-text-color);
 }
 .home section {
   padding: 5px;

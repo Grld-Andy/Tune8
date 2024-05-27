@@ -1,3 +1,9 @@
+.light{
+    --settings-btn-bg: #00c;
+}
+.dark{
+    --settings-btn-bg: #009;
+}
 .settings{
     section{
         padding: 10px;
@@ -27,8 +33,8 @@
                 button{
                     border: none;
                     padding: 5px;
-                    background-color: green;
-                    color: white;
+                    background-color: var(--sidebar-link-color);
+                    color: black;
                     border-radius: 5px;
                     font-size: .8em;
                     cursor: pointer;
@@ -46,11 +52,10 @@
                         width: $theme-size;
                         height: $theme-size;
                         border-radius: 50%;
-                        border: 1px solid rgba(255, 255, 255, 0.3);
                     }
                     .white{
                         background-color: white;
-                        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+                        box-shadow: inset 0 0 5px #0007;
                         width: $theme-size;
                         height: $theme-size;
                         border-radius: 50%;

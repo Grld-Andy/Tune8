@@ -1,9 +1,14 @@
-.light{}
+.light{
+    --songlist-bg: #ddd;
+    --songlist-text-hover: #00f8;
+    --songlist-bg-hover: #bbb;
+    --songlist-bg-even: #0003;
+}
 .dark{
     --songlist-bg: #555;
-    --songlist-text-hover: #0300;
+    --songlist-text-hover: #00f8;
     --songlist-bg-hover: #777;
-    --songlist-bg-even: #ffffff1a;
+    --songlist-bg-even: #fff1;
 }
 .song{
     background-color: var(--songlist-bg);
@@ -25,13 +30,14 @@
         line-clamp: 2;
         font-weight: lighter;
         cursor: default;
-        color: --(--primary-text-color);
+        color: var(--primary-text-color);
         text-wrap: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
     .link{
         transition: .1s ease-out;
+        cursor: pointer;
         &:hover{
             color: var(--songlist-text-hover);
         }

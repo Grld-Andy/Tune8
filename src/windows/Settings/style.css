@@ -1,6 +1,14 @@
+.light {
+  --settings-btn-bg: #00c;
+}
+
+.dark {
+  --settings-btn-bg: #009;
+}
+
 .settings section {
   padding: 10px;
-  color: white;
+  color: var(--primary-text-color);
 }
 .settings section:nth-child(2n) {
   margin-top: 10px;
@@ -29,8 +37,8 @@
 .settings section .set-grid .set-cell button {
   border: none;
   padding: 5px;
-  background-color: green;
-  color: white;
+  background-color: var(--sidebar-link-color);
+  color: black;
   border-radius: 5px;
   font-size: 0.8em;
   cursor: pointer;
@@ -48,11 +56,10 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 .settings section .set-grid .set-cell .themes .white {
   background-color: white;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4666666667);
   width: 30px;
   height: 30px;
   border-radius: 50%;

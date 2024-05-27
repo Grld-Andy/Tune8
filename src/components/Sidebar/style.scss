@@ -1,12 +1,14 @@
-.light{}
+.light{
+    --sidebar-bg: #000;
+    --sidebar-link-active-bg: #333;
+}
 .dark{
     --sidebar-bg: #000;
-    --sidebar-link-color: #080;
     --sidebar-link-active-bg: #333;
 }
 .sidebar{
     background-color: var(--sidebar-bg);
-    color: var(--primary-text-color);
+    color: white;
     padding: 10px 10px;
     height: 100%;
     display: flex;
@@ -16,13 +18,12 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        margin-bottom: 10px;
         h1{
-            font-size: 3em;
+            font-size: 2.3em;
         }
         img{
-            height: 160px;
-            width: 160px;
+            height: 150px;
+            width: 150px;
             border-radius: 50%;
         }
     }
@@ -40,7 +41,7 @@
             font-size: 1em;
         }
         .link{
-            color: var(--primary-text-color);
+            color: white;
             text-decoration: none;
             display: flex;
             gap: 10px;

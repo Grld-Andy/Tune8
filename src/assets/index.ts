@@ -4,10 +4,16 @@ import { Song } from "../data"
 export const profile : string = '/my_images/profile.jpg'
 
 // music placeholder
-export const music1 : string = '/placeholders/music1.jpg'
-export const music2 : string = '/placeholders/music2.jpg'
-export const music3 : string = '/placeholders/music3.jpg'
-export const music4 : string = '/placeholders/music4.jpg'
+export const adhd : string = '../../public/my_images/music_cover/ADHD.jpg'
+export const damn : string = '../../public/my_images/music_cover/DAMN.jpg'
+export const donda : string = '../../public/my_images/music_cover/donda.jpg'
+export const FATD : string = '../../public/my_images/music_cover/for_all_the_dogs.jpg'
+export const TCD : string = '../../public/my_images/music_cover/The_College_Dropout.jpg'
+export const TMMLp : string = '../../public/my_images/music_cover/the_marshall_mathers_lp_2.jpg'
+export const TOS : string = '../../public/my_images/music_cover/the_off_season.jpg'
+export const utopia : string = '../../public/my_images/music_cover/UTOPIA.jpg'
+export const WDTY : string = '../../public/my_images/music_cover/we_dont_trust_you.jpg'
+export const dayNnite : string = '../../public/my_images/music_cover/day_n_nite.jpg'
 
 export const song1: Song = {
     tag: {
@@ -18,7 +24,7 @@ export const song1: Song = {
             year: 2013,
         },
     },
-    imageSrc: music1,
+    imageSrc: TMMLp,
     duration: '03:30',
 }
 const song2: Song = {
@@ -30,7 +36,7 @@ const song2: Song = {
             year: 2017,
         },
     },
-    imageSrc: music2,
+    imageSrc: damn,
     duration: '03:30',
 }
 const song3: Song = {
@@ -42,7 +48,7 @@ const song3: Song = {
             year: 2022,
         },
     },
-    imageSrc: music3,
+    imageSrc: utopia,
     duration: '03:30',
 }
 const song4: Song = {
@@ -54,7 +60,7 @@ const song4: Song = {
             year: 2023,
         },
     },
-    imageSrc: music4,
+    imageSrc: WDTY,
     duration: '03:30',
 }
 const song5: Song = {
@@ -66,7 +72,7 @@ const song5: Song = {
             year: 2021,
         },
     },
-    imageSrc: music1,
+    imageSrc: TOS,
     duration: '03:30',
 }
 const song6: Song = {
@@ -78,7 +84,7 @@ const song6: Song = {
             year: 2024,
         },
     },
-    imageSrc: music2,
+    imageSrc: FATD,
     duration: '03:30',
 }
 const song7: Song = {
@@ -90,7 +96,7 @@ const song7: Song = {
             year: 2019,
         },
     },
-    imageSrc: music3,
+    imageSrc: adhd,
     duration: '03:30',
 }
 const song8: Song = {
@@ -102,7 +108,7 @@ const song8: Song = {
             year: 2004,
         },
     },
-    imageSrc: music4,
+    imageSrc: TCD,
     duration: '03:30',
 }
 const song9: Song = {
@@ -114,7 +120,7 @@ const song9: Song = {
             year: 2009,
         },
     },
-    imageSrc: music1,
+    imageSrc: dayNnite,
     duration: '03:30',
 }
 const song10: Song = {
@@ -126,7 +132,7 @@ const song10: Song = {
             year: 2013,
         },
     },
-    imageSrc: music2,
+    imageSrc: TMMLp,
     duration: '03:30',
 }
 const song11: Song = {
@@ -138,7 +144,7 @@ const song11: Song = {
             year: 2019,
         },
     },
-    imageSrc: music3,
+    imageSrc: donda,
     duration: '02:14',
 }
 

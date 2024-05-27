@@ -4,6 +4,7 @@ import { songs } from '../../assets'
 import { useParams } from 'react-router-dom'
 import { Song } from '../../data'
 import SongListItem from '../../components/SongListItem/SongListItem'
+import { TotalDuration } from '../../constants'
 
 const Artist: React.FC = () => {
   const {artist} = useParams<string>()
@@ -26,7 +27,7 @@ const Artist: React.FC = () => {
             <li>{artistSongs.length} Songs</li>
           </ul>
           <div className="others">
-            <h4>{artistSongs[0].duration}</h4>
+            <h4>{TotalDuration(artistSongs)}</h4>
           </div>
           <div className="buttons">
             <button className="play">Play All</button>

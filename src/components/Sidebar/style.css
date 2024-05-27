@@ -1,5 +1,15 @@
+.light {
+  --sidebar-bg: #000;
+  --sidebar-link-active-bg: #333;
+}
+
+.dark {
+  --sidebar-bg: #000;
+  --sidebar-link-active-bg: #333;
+}
+
 .sidebar {
-  background-color: black;
+  background-color: var(--sidebar-bg);
   color: white;
   padding: 10px 10px;
   height: 100%;
@@ -11,14 +21,13 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-bottom: 10px;
 }
 .sidebar .profile h1 {
-  font-size: 3em;
+  font-size: 2.3em;
 }
 .sidebar .profile img {
-  height: 160px;
-  width: 160px;
+  height: 150px;
+  width: 150px;
   border-radius: 50%;
 }
 .sidebar .sidebar-links {
@@ -47,13 +56,13 @@
   transition: 0.1s ease-in;
 }
 .sidebar .sidebar-links .link:hover {
-  color: green;
-  background-color: #333;
+  color: var(--sidebar-link-color);
+  background-color: var(--sidebar-link-active-bg);
 }
 .sidebar .sidebar-links .active {
-  border-left: 5px solid green;
-  color: green;
-  background-color: #333;
+  border-left: 5px solid var(--sidebar-link-color);
+  color: var(--sidebar-link-color);
+  background-color: var(--sidebar-link-active-bg);
 }
 
 @media (max-width: 700px) {

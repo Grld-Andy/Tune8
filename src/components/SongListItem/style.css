@@ -1,5 +1,19 @@
+.light {
+  --songlist-bg: #ddd;
+  --songlist-text-hover: #00f8;
+  --songlist-bg-hover: #bbb;
+  --songlist-bg-even: #0003;
+}
+
+.dark {
+  --songlist-bg: #555;
+  --songlist-text-hover: #00f8;
+  --songlist-bg-hover: #777;
+  --songlist-bg-even: #fff1;
+}
+
 .song {
-  background-color: #555;
+  background-color: var(--songlist-bg);
   display: grid;
   grid-template-columns: 20px 1fr 1fr 1fr auto;
   margin: 5px;
@@ -19,25 +33,26 @@
   line-clamp: 2;
   font-weight: lighter;
   cursor: default;
-  color: white;
+  color: var(--primary-text-color);
   text-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .song .link {
   transition: 0.1s ease-out;
+  cursor: pointer;
 }
 .song .link:hover {
-  color: rgb(0, 49, 0);
+  color: var(--songlist-text-hover);
 }
 .song:hover {
-  background-color: #777;
+  background-color: var(--songlist-bg-hover);
 }
 
 .song:nth-child(2n) {
   background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--songlist-bg-even);
 }
 .song:nth-child(2n):hover {
-  background-color: #777;
+  background-color: var(--songlist-bg-hover);
 }/*# sourceMappingURL=style.css.map */

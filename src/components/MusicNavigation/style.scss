@@ -1,7 +1,12 @@
-.light{}
+.light{
+    --songs-nav-bg: #fff;
+    --songs-nav-open-links: #000;
+    --songs-nav-open-links-bg: #ddd;
+}
 .dark{
     --songs-nav-bg: #222;
-    --songs-nav-open-links: #333;
+    --songs-nav-open-links: #fff;
+    --songs-nav-open-links-bg: #333;
 }
 .songs-nav{
     position: fixed;
@@ -11,7 +16,7 @@
     padding: 50px;
     overflow-y: scroll;
     width: calc(100% - 200px);
-    height: calc(100% - 200px);
+    height: calc(100% - 195px);
     background-color: var(--songs-nav-bg);
     &::-webkit-scrollbar{
         display: none;
@@ -28,14 +33,14 @@
         text-decoration: none;
     }
     .open{
-        color: white;
+        color: var(--songs-nav-open-links);
         cursor: pointer;
         &:hover{
-            background-color: var(--songs-nav-open-links);
+            background-color: var(--songs-nav-open-links-bg);
         }
     }
     .closed{
-        opacity: .1;
+        opacity: .15;
         cursor: default;
     }
 }

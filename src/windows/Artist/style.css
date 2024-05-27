@@ -1,5 +1,5 @@
 .artist {
-  color: white;
+  color: var(--primary-text-color);
 }
 .artist section {
   padding: 5px;

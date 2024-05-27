@@ -1,5 +1,5 @@
 .albums {
-  color: white;
+  color: var(--primary-text-color);
 }
 .albums section {
   padding: 5px;

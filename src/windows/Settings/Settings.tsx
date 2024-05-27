@@ -5,8 +5,8 @@ import { ThemeContext } from '../../contexts/ThemeContext'
 const Settings: React.FC = () => {
   const {dispatch} = useContext(ThemeContext)
 
-  const changeTheme = () => {
-    dispatch({type: 'CHANGE_THEME'})
+  const changeTheme = (type:string) => {
+    dispatch({type: `${type}_THEME`})
   }
 
   return (
@@ -39,8 +39,8 @@ const Settings: React.FC = () => {
             <div className="set-cell">
               <h3>Change Theme</h3>
               <div className="themes">
-                <div className="black" onClick={changeTheme}></div>
-                <div className="white" onClick={changeTheme}></div>
+                <div className="black" onClick={() => {changeTheme('DARK')}}></div>
+                <div className="white" onClick={() => {changeTheme('LIGHT')}}></div>
               </div>
             </div>
           </div>
