@@ -4,148 +4,123 @@ import { Song } from "../data"
 export const profile : string = '/my_images/profile.jpg'
 
 // music placeholder
-export const adhd : string = '../../public/my_images/music_cover/ADHD.jpg'
-export const damn : string = '../../public/my_images/music_cover/DAMN.jpg'
-export const donda : string = '../../public/my_images/music_cover/donda.jpg'
-export const FATD : string = '../../public/my_images/music_cover/for_all_the_dogs.jpg'
-export const TCD : string = '../../public/my_images/music_cover/The_College_Dropout.jpg'
-export const TMMLp : string = '../../public/my_images/music_cover/the_marshall_mathers_lp_2.jpg'
-export const TOS : string = '../../public/my_images/music_cover/the_off_season.jpg'
-export const utopia : string = '../../public/my_images/music_cover/UTOPIA.jpg'
-export const WDTY : string = '../../public/my_images/music_cover/we_dont_trust_you.jpg'
-export const dayNnite : string = '../../public/my_images/music_cover/day_n_nite.jpg'
+export const crown : string = '/my_images/music_cover/crown.jpg'
+export const fearless : string = '/my_images/music_cover/fearless.jpg'
+export const giants : string = '/my_images/music_cover/giants.jpg'
+export const headspace : string = '/my_images/music_cover/headspace.jpg'
+export const kami : string = '/my_images/music_cover/kami.jpg'
+export const rare : string = '/my_images/music_cover/rare.jpg'
+export const light_of_the_sun : string = '/my_images/music_cover/light_of_the_sun.jpg'
+export const the_search : string = '/my_images/music_cover/the_search.jpg'
+export const when_i_grow_up : string = '/my_images/music_cover/when_i_grow_up.jpg'
 
 export const song1: Song = {
     tag: {
         tags: {
-            title: 'Stronger than I was',
-            artist: 'Eminem',
-            album: 'The Marshall Mathers LP 2',
+            title: 'Crown',
+            artist: 'Neffex',
+            album: 'Neffex 1',
             year: 2013,
         },
     },
-    imageSrc: TMMLp,
-    duration: '03:30',
+    imageSrc: crown,
+    duration: '02:17',
 }
 const song2: Song = {
     tag: {
         tags: {
-            title: 'DNA',
-            artist: 'Kendrick Lamar',
-            album: 'DAMN',
+            title: 'Fearless',
+            artist: 'Lost Sky',
+            album: 'Lost',
             year: 2017,
         },
     },
-    imageSrc: damn,
-    duration: '03:30',
+    imageSrc: fearless,
+    duration: '02:48',
 }
 const song3: Song = {
     tag: {
         tags: {
-            title: 'Til Further Notice(Ft. 21 Savage & James Blake)',
-            artist: 'Travis Scott',
-            album: 'UTOPIA',
+            title: 'Giants',
+            artist: 'True Damage',
+            album: 'League of Legends',
             year: 2022,
         },
     },
-    imageSrc: utopia,
+    imageSrc: giants,
     duration: '03:30',
 }
 const song4: Song = {
     tag: {
         tags: {
-            title: 'Claustrophobic',
-            artist: 'Future',
-            album: `We don't trust you`,
+            title: 'Kami',
+            artist: 'Rustage',
+            album: `Rustage 1`,
             year: 2023,
         },
     },
-    imageSrc: WDTY,
+    imageSrc: kami,
     duration: '03:30',
 }
 const song5: Song = {
     tag: {
         tags: {
-            title: 'Amari',
-            artist: 'J. Cole',
-            album: 'The Off-Season',
+            title: 'Rare',
+            artist: 'Neffex',
+            album: '2 Neffex',
             year: 2021,
         },
     },
-    imageSrc: TOS,
-    duration: '03:30',
+    imageSrc: rare,
+    duration: '02:30',
 }
 const song6: Song = {
     tag: {
         tags: {
-            title: 'Calling For You',
-            artist: 'Drake',
-            album: 'For All The Dogs',
+            title: 'Light of the Sun',
+            artist: 'Rustage',
+            album: 'Rustage 1',
             year: 2024,
         },
     },
-    imageSrc: FATD,
-    duration: '03:30',
+    imageSrc: light_of_the_sun,
+    duration: '03:06',
 }
 const song7: Song = {
     tag: {
         tags: {
-            title: 'Isis',
-            artist: 'Joyner Lucas',
-            album: 'ADHD',
+            title: 'The Search',
+            artist: 'NF',
+            album: 'The Search Tour',
             year: 2019,
         },
     },
-    imageSrc: adhd,
+    imageSrc: the_search,
     duration: '03:30',
 }
 const song8: Song = {
     tag: {
         tags: {
-            title: 'Jesus Walks',
-            artist: 'Kanye West',
-            album: 'The College Dropout(Explicit)',
-            year: 2004,
+            title: 'When I Grow Up',
+            artist: 'NF',
+            album: 'The Search Tour',
+            year: 2019,
         },
     },
-    imageSrc: TCD,
-    duration: '03:30',
+    imageSrc: when_i_grow_up,
+    duration: '02:00',
 }
 const song9: Song = {
     tag: {
         tags: {
-            title: 'Day N Night',
-            artist: 'Kid Cudi',
-            album: 'Unknown Album',
-            year: 2009,
-        },
-    },
-    imageSrc: dayNnite,
-    duration: '03:30',
-}
-const song10: Song = {
-    tag: {
-        tags: {
-            title: 'Beautiful Pain',
-            artist: 'Eminem',
-            album: 'The Marshall Mathers LP 2',
-            year: 2013,
-        },
-    },
-    imageSrc: TMMLp,
-    duration: '03:30',
-}
-const song11: Song = {
-    tag: {
-        tags: {
-            title: 'Hurricane',
-            artist: 'Kanye West',
-            album: 'Donda',
+            title: 'Headspace',
+            artist: 'Fame on Fire',
+            album: 'Flame',
             year: 2019,
         },
     },
-    imageSrc: donda,
-    duration: '02:14',
+    imageSrc: headspace,
+    duration: '02:00',
 }
 
-export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9, song10, song11]
+export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9]

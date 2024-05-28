@@ -4,7 +4,7 @@ import {ImEnlarge} from 'react-icons/im'
 import {HiMiniWindow, HiMiniEllipsisHorizontal} from 'react-icons/hi2'
 import {MdFavoriteBorder, MdFavorite} from 'react-icons/md'
 import './style.css'
-import { song1, TMMLp } from '../../assets'
+import { song1 } from '../../assets'
 
 const MusicPlayer: React.FC = () => {
   const [isFavorite, setIsFavorite] = React.useState(false)
@@ -25,7 +25,7 @@ const MusicPlayer: React.FC = () => {
       </div>
       <div className="bottom">
         <div className="b-left">
-          <img src={TMMLp} alt=''/>
+          <img src={song1.imageSrc} alt=''/>
           <div className="text">
             <h5>{song1.tag.tags.title}</h5>
             <h5>{song1.tag.tags.artist}</h5>
