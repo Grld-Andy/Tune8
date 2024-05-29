@@ -3,12 +3,14 @@
     --songlist-text-hover: #00f8;
     --songlist-bg-hover: #bbb;
     --songlist-bg-even: #0003;
+    --current-song-color: #ff0;
 }
 .dark{
     --songlist-bg: #555;
     --songlist-text-hover: #00f8;
     --songlist-bg-hover: #777;
     --songlist-bg-even: #fff1;
+    --current-song-color: #ff0;
 }
 .song{
     background-color: var(--songlist-bg);
@@ -51,5 +53,10 @@
     border: 1px solid var(--songlist-bg-even);
     &:hover{
         background-color: var(--songlist-bg-hover);
+    }
+}
+.currentSong{
+    h3, a{
+        color: var(--current-song-color);
     }
 }

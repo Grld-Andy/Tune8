@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { songs } from '../../assets'
 import './style.css'
 import SongListItem from '../../components/SongListItem/SongListItem';
+import { QueueSongsContext } from '../../contexts/QueueSongsContext';
 
 const Favorites: React.FC = () => {
+  const {dispatch} = useContext(QueueSongsContext)
+  const setQueueSongs = () => {
+    dispatch({type: 'SET_QUEUE', payload: songs})
+  }
   return (
     <>
       <nav>
@@ -17,7 +22,8 @@ const Favorites: React.FC = () => {
         <div className="songs view">
           {
             songs.map(song => (
-              <SongListItem key={song.tag.tags.title} song={song}/>
+              <SongListItem key={song.tag.tags.title} song={song}
+              setQueueSongs={setQueueSongs}/>
             ))
           }
         </div>

@@ -1,15 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './style.css'
 import { songs } from '../../assets'
 import { useParams } from 'react-router-dom'
 import { Song } from '../../data'
 import SongListItem from '../../components/SongListItem/SongListItem'
 import { TotalDuration } from '../../constants'
+import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 
 const Album: React.FC = () => {
   const {album} = useParams<string>()
+
   const currentAlbum : Song|undefined = songs.find(song => song.tag.tags.album === album)
   const albumSongs: Song[] = songs.filter(song => song.tag.tags.album === album)
+
+  const {dispatch} = useContext(QueueSongsContext)
+  const setQueueSongs = () => {
+    dispatch({type: 'SET_QUEUE', payload: albumSongs})
+  }
 
   return (
     <>
@@ -41,7 +48,8 @@ const Album: React.FC = () => {
           <div className="cards">
             {
               albumSongs.map(song => (
-                <SongListItem key={song.tag.tags.title} song={song}/>
+                <SongListItem key={song.tag.tags.title} song={song}
+                setQueueSongs={setQueueSongs}/>
               ))
             }
           </div>

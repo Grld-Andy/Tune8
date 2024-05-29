@@ -5,15 +5,18 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import ThemeContextProvider from './contexts/ThemeContext.tsx'
 import CurrentSongContextProvider from './contexts/CurrentSongContext.tsx'
+import QueueSongsContextProvider from './contexts/QueueSongsContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeContextProvider>
+    <QueueSongsContextProvider>
     <CurrentSongContextProvider>
     <BrowserRouter>
       <App />
     </BrowserRouter>
     </CurrentSongContextProvider>
+    </QueueSongsContextProvider>
     </ThemeContextProvider>
   </React.StrictMode>,
 )

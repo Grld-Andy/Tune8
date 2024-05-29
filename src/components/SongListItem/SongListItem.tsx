@@ -7,17 +7,19 @@ import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 
 interface Props {
   song: Song
+  setQueueSongs: () => void
 }
 
-const SongListItem: React.FC<Props> = ({song}) => {
-  const {dispatch} = useContext(CurrentSongContext)
+const SongListItem: React.FC<Props> = ({song, setQueueSongs}) => {
+  const {currentSong, dispatch} = useContext(CurrentSongContext)
 
   const playSong = (song: Song) => {
     dispatch({type: 'SET_CURRENT_SONG', payload: song})
+    setQueueSongs()
   }
 
   return (
-    <div className="song">
+    <div className={currentSong === song ? `song currentSong` : 'song'}>
       <BsPlayCircle className='icon' onClick={() => {playSong(song)}}/>
       <h3>{song.tag.tags.title}</h3>
       <Link to={`/artistView/${song.tag.tags.artist}`}>

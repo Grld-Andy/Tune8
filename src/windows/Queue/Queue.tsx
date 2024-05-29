@@ -1,9 +1,15 @@
-import React from 'react'
-import { songs } from '../../assets'
+import React, { useContext } from 'react'
 import './style.css'
 import SongListItem from '../../components/SongListItem/SongListItem';
+import { QueueSongsContext } from '../../contexts/QueueSongsContext';
 
 const Queue: React.FC = () => {
+  const {queue, dispatch} = useContext(QueueSongsContext)
+
+  const clearQueue = () => {
+    dispatch({type: 'CLEAR_QUEUE', payload: []})
+  }
+
   return (
     <>
       <nav>
@@ -11,12 +17,13 @@ const Queue: React.FC = () => {
           <h1>Queue</h1>
         </div>
         <div className="nav-right">
+          <button onClick={clearQueue}>Clear Queue</button>
           <button>Add Files</button>
         </div>
       </nav>
         <div className="songs view">
           {
-            songs.map(song => (
+            queue.map(song => (
               <SongListItem key={song.tag.tags.title} song={song}/>
             ))
           }
