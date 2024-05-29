@@ -9,6 +9,9 @@ const Queue: React.FC = () => {
   const clearQueue = () => {
     dispatch({type: 'CLEAR_QUEUE', payload: []})
   }
+  const setQueueSongs = () => {
+    dispatch({type: 'DEFAULT', payload: queue})
+  }
 
   return (
     <>
@@ -24,7 +27,8 @@ const Queue: React.FC = () => {
         <div className="songs view">
           {
             queue.map(song => (
-              <SongListItem key={song.tag.tags.title} song={song}/>
+              <SongListItem key={song.tag.tags.title} song={song}
+              setQueueSongs={setQueueSongs}/>
             ))
           }
         </div>

@@ -25,6 +25,7 @@ export const song1: Song = {
     },
     imageSrc: crown,
     duration: '02:17',
+    isFavorite: false
 }
 const song2: Song = {
     tag: {
@@ -37,6 +38,7 @@ const song2: Song = {
     },
     imageSrc: fearless,
     duration: '02:48',
+    isFavorite: false
 }
 const song3: Song = {
     tag: {
@@ -49,6 +51,7 @@ const song3: Song = {
     },
     imageSrc: giants,
     duration: '03:30',
+    isFavorite: false
 }
 const song4: Song = {
     tag: {
@@ -61,6 +64,7 @@ const song4: Song = {
     },
     imageSrc: kami,
     duration: '03:30',
+    isFavorite: false
 }
 const song5: Song = {
     tag: {
@@ -73,6 +77,7 @@ const song5: Song = {
     },
     imageSrc: rare,
     duration: '02:30',
+    isFavorite: false
 }
 const song6: Song = {
     tag: {
@@ -85,6 +90,7 @@ const song6: Song = {
     },
     imageSrc: light_of_the_sun,
     duration: '03:06',
+    isFavorite: false
 }
 const song7: Song = {
     tag: {
@@ -97,6 +103,7 @@ const song7: Song = {
     },
     imageSrc: the_search,
     duration: '03:30',
+    isFavorite: false
 }
 const song8: Song = {
     tag: {
@@ -109,6 +116,7 @@ const song8: Song = {
     },
     imageSrc: when_i_grow_up,
     duration: '02:00',
+    isFavorite: false
 }
 const song9: Song = {
     tag: {
@@ -121,6 +129,7 @@ const song9: Song = {
     },
     imageSrc: headspace,
     duration: '02:00',
+    isFavorite: false
 }
 
 export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9]

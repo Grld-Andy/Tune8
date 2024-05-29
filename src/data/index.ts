@@ -8,7 +8,8 @@ export interface Song {
         }
     }
     imageSrc: string,
-    duration: string
+    duration: string,
+    isFavorite: boolean,
 }
 export interface SortedSongs {
     [key: string]: Set<Song>

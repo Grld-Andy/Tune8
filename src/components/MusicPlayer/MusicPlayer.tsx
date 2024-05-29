@@ -42,6 +42,7 @@ const MusicPlayer: React.FC = () => {
   const [isFavorite, setIsFavorite] = React.useState(false)
   const toggleFavorite: () => void = () => {
     setIsFavorite(!isFavorite)
+    dispatch({type: 'TOGGLE_FAVORITE', payload: null})
   }
   const [isPlaying, setIsPlaying] = React.useState(false)
   const togglePlay: () => void = () => {
@@ -98,7 +99,7 @@ const MusicPlayer: React.FC = () => {
           <FaForward className='icon' onClick={nextSong}/>
           <HiMiniWindow className='icon'/>
           {
-            isFavorite ?
+            currentSong?.isFavorite ?
             <MdFavorite className='icon' onClick={toggleFavorite}/>:
             <MdFavoriteBorder className='icon' onClick={toggleFavorite}/>
           }

@@ -15,7 +15,12 @@ export const CurrentSongContext = createContext<CurrentSongType>({
 })
 
 const CurrentSongContextProvider: React.FC<Props> = (props) => {
-    const [currentSong, dispatch] = useReducer(currentSongReducer, null)
+    const [currentSong, dispatch] = useReducer(currentSongReducer, null, () => {
+        const lastPlayed = localStorage.getItem('lastPlayed')
+        try { return lastPlayed ? JSON.parse(lastPlayed) : null }
+        catch { return null }
+    })
+    console.log('current song', currentSong)
 
     return(
     <CurrentSongContext.Provider value={{currentSong, dispatch}}>
