@@ -9,6 +9,7 @@
   --singles-nav-bg: #fff1;
   --singles-nav-image-shadow: #000;
   --music-player-shadow: #0005;
+  --sidebar-link-color: #f70;
 }
 
 .dark {
@@ -22,10 +23,10 @@
   --singles-nav-bg: #fff1;
   --singles-nav-image-shadow: #000;
   --music-player-shadow: #0003;
+  --sidebar-link-color: #ff0;
 }
 
 .main {
-  --sidebar-link-color: #ff0;
   display: grid;
   grid-template-rows: calc(100vh - 100px) 100px;
 }

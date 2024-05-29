@@ -81,7 +81,7 @@ const MusicPlayer: React.FC = () => {
             }
           </div>
         </div>
-        <div className="b-center">
+        <div className={currentSong ? 'b-center' : 'b-center locked'}>
           <FaShuffle className='icon'/>
           {
             repeat === 'repeat-all'?

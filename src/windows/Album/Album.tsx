@@ -6,6 +6,7 @@ import { Song } from '../../data'
 import SongListItem from '../../components/SongListItem/SongListItem'
 import { TotalDuration } from '../../constants'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
+import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 
 const Album: React.FC = () => {
   const {album} = useParams<string>()
@@ -14,8 +15,13 @@ const Album: React.FC = () => {
   const albumSongs: Song[] = songs.filter(song => song.tag.tags.album === album)
 
   const {dispatch} = useContext(QueueSongsContext)
+  const {currentSongDispatch} = useContext(CurrentSongContext)
   const setQueueSongs = () => {
     dispatch({type: 'SET_QUEUE', payload: albumSongs})
+  }
+  const playAllSongs = () => {
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: albumSongs[0]})
+    setQueueSongs()
   }
 
   return (
@@ -37,8 +43,8 @@ const Album: React.FC = () => {
             <li>{TotalDuration(albumSongs)} duration</li>
           </div>
           <div className="buttons">
-            <button className="play">Play All</button>
-            <button className="shuffle">Shuffle and play</button>
+            <button className="play" onClick={playAllSongs}>Play All</button>
+            <button className="shuffle">Shuffle and Play</button>
             <button className="add">Add to</button>
           </div>
         </div>

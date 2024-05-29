@@ -2,11 +2,15 @@
     --subtitle-text-color: #777;
     --songtile-card-bg-hover: #ddd;
     --songtile-shadow: #bbb;
+    --songtile-icon-bg-hover: #2225;
+    --songtile-overlay-color: #0009;
 }
 .dark{
     --subtitle-text-color: #aaa;
     --songtile-card-bg-hover: #222;
     --songtile-shadow: #000;
+    --songtile-icon-bg-hover: #ddd5;
+    --songtile-overlay-color: #0009;
 }
 .card{
     display: flex;
@@ -18,6 +22,9 @@
     padding: 5px;
     cursor: default;
     transition: .1s ease-in;
+    .album_icons{
+        position: absolute
+    }
     .pic{
         overflow: hidden;
         display: flex;
@@ -25,6 +32,39 @@
         width: 140px;
         height: 140px;
         border-radius: 5px;
+        position: relative;
+        .song-tile-overlay{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--songtile-overlay-color);
+            opacity: 0;
+            transition: .2s;
+        }
+        .tile-icons{
+            position: absolute;
+            border: 1px solid var(--primary-text-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-text-color);
+            display: none;
+            &:hover{
+                background-color: var(--songtile-icon-bg-hover);
+            }
+        }
+        .play_icon{
+            bottom: 5px;
+            left: 5px;
+        }
+        .drop_up{
+            bottom: 5px;
+            right: 5px;
+        }
         img{
             width: 140px;
             height: 140px;
@@ -54,6 +94,12 @@
         background-color: var(--songtile-card-bg-hover);
         box-shadow: 0 0 5px 2px var(--songtile-shadow);
         .pic{
+            .song-tile-overlay{
+                opacity: 1;
+            }
+            .tile-icons{
+                display: flex;
+            }
             img{
                 scale: 1.1;
             }

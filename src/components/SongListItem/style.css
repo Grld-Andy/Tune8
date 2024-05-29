@@ -3,7 +3,7 @@
   --songlist-text-hover: #00f8;
   --songlist-bg-hover: #bbb;
   --songlist-bg-even: #0003;
-  --current-song-color: #ff0;
+  --current-song-color: #f70;
 }
 
 .dark {
@@ -61,4 +61,5 @@
 
 .currentSong h3, .currentSong a {
   color: var(--current-song-color);
+  font-weight: 400;
 }/*# sourceMappingURL=style.css.map */
