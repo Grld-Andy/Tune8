@@ -9,6 +9,9 @@ export const currentSongReducer = (currentSong: Song | null, action: {type: stri
       return currentSong !== null 
         ? {...currentSong, isFavorite: !currentSong.isFavorite}
         : currentSong
+    case 'CLEAR_CURRENT_SONG':
+      localStorage.setItem('lastPlayed', JSON.stringify(null))
+      return null
     default:
       return currentSong
   }

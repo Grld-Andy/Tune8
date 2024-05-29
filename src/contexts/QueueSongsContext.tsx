@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useEffect, useReducer } from "react";
 import { Song } from "../data";
 import { QueueSongsReducer } from "../reducers/QueueSongsReducer";
-import { songs } from "../assets";
 
 interface Props{
     children: ReactNode
@@ -17,11 +16,15 @@ export const QueueSongsContext = createContext<QueueSongsType>({
 })
 
 const QueueSongsContextProvider: React.FC<Props> = (props) => {
-    const [queue, dispatch] = useReducer(QueueSongsReducer, [])
+    const [queue, dispatch] = useReducer(QueueSongsReducer, [], () => {
+        const localQueue = localStorage.getItem('queue')
+        try { return localQueue ? JSON.parse(localQueue) : [] }
+        catch { return [] }
+    })
 
     useEffect(() => {
-        dispatch({type: 'SET_QUEUE', payload: songs})
-    }, [])
+        localStorage.setItem('queue', JSON.stringify(queue))
+    }, [queue])
 
     return (
         <QueueSongsContext.Provider value={{queue, dispatch}}>

@@ -21,7 +21,7 @@ const MusicPlayer: React.FC = () => {
     localStorage.setItem('repeatType', repeatTypes[repeatIndex + 1])
   }
 
-  const {currentSong, dispatch} = useContext(CurrentSongContext)
+  const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const {queue} = useContext(QueueSongsContext)
 
   const nextSong: () => void = () => {
@@ -29,20 +29,20 @@ const MusicPlayer: React.FC = () => {
     if(currentSongIndex === queue.length-1){
       currentSongIndex = -1
     }
-    dispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex + 1]})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex + 1]})
   }
   const prevSong: () => void = () => {
     let currentSongIndex: number = queue.findIndex(song => song.tag.tags.title === currentSong?.tag.tags.title)
     if(currentSongIndex === 0){
       currentSongIndex = queue.length
     }
-    dispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex - 1]})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex - 1]})
   }
   
   const [isFavorite, setIsFavorite] = React.useState(false)
   const toggleFavorite: () => void = () => {
     setIsFavorite(!isFavorite)
-    dispatch({type: 'TOGGLE_FAVORITE', payload: null})
+    currentSongDispatch({type: 'TOGGLE_FAVORITE', payload: null})
   }
   const [isPlaying, setIsPlaying] = React.useState(false)
   const togglePlay: () => void = () => {

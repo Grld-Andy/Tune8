@@ -7,11 +7,11 @@ interface Props{
 }
 interface CurrentSongType{
     currentSong: Song | null,
-    dispatch: React.Dispatch<{type: string, payload: Song|null}>
+    currentSongDispatch: React.Dispatch<{type: string, payload: Song|null}>
 }
 export const CurrentSongContext = createContext<CurrentSongType>({
     currentSong: null,
-    dispatch: () => null
+    currentSongDispatch: () => null
 })
 
 const CurrentSongContextProvider: React.FC<Props> = (props) => {
@@ -20,10 +20,9 @@ const CurrentSongContextProvider: React.FC<Props> = (props) => {
         try { return lastPlayed ? JSON.parse(lastPlayed) : null }
         catch { return null }
     })
-    console.log('current song', currentSong)
 
     return(
-    <CurrentSongContext.Provider value={{currentSong, dispatch}}>
+    <CurrentSongContext.Provider value={{currentSong, currentSongDispatch: dispatch}}>
         {props.children}
     </CurrentSongContext.Provider>
 )}

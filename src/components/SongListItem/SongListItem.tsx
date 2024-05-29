@@ -11,15 +11,15 @@ interface Props {
 }
 
 const SongListItem: React.FC<Props> = ({song, setQueueSongs}) => {
-  const {currentSong, dispatch} = useContext(CurrentSongContext)
+  const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
 
   const playSong = (song: Song) => {
-    dispatch({type: 'SET_CURRENT_SONG', payload: song})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song})
     setQueueSongs()
   }
 
   return (
-    <div className={currentSong === song ? `song currentSong` : 'song'}>
+    <div className={currentSong?.tag.tags.title === song.tag.tags.title ? `song currentSong` : 'song'}>
       <BsPlayCircle className='icon' onClick={() => {playSong(song)}}/>
       <h3>{song.tag.tags.title}</h3>
       <Link to={`/artistView/${song.tag.tags.artist}`}>
