@@ -4,7 +4,6 @@ import { songs } from '../../assets'
 import SongTile from '../../components/SongTile/SongTile'
 import { SortedSongs } from '../../data'
 import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
-import { Link } from 'react-router-dom'
 
 const Albums: React.FC = () => {
   const [showNav, setShowNav] = useState(false)
@@ -52,13 +51,11 @@ const Albums: React.FC = () => {
                   <div className="cards">
                     {
                       Array.from(albums[letter]).map(song => (
-                        <Link to={`/albumView/${song.tag.tags.album}`}
-                        key={song.tag.tags.title}>
-                          <SongTile
-                            song={song}
-                            page={'albums'}
-                          />
-                        </Link>
+                        <SongTile
+                          song={song}
+                          key={song.tag.tags.title}
+                          page={'album'}
+                        />
                       ))
                     }
                   </div>

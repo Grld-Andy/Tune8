@@ -20,7 +20,7 @@ const Home: React.FC = () => {
           <div className="cards">
             {
               songs.map(song => (
-                <SongTile key={song.tag.tags.title} song={song} page={''}/>
+                <SongTile key={song.tag.tags.title} song={song} page={'home'}/>
               ))
             }
           </div>

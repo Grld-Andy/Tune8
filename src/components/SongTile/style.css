@@ -22,8 +22,36 @@
   justify-content: center;
   border-radius: 5px;
   padding: 5px;
+  margin: 2.5px;
+  position: relative;
   cursor: default;
   transition: 0.1s ease-in;
+}
+.card a {
+  width: 100%;
+}
+.card .tile-icons {
+  position: absolute;
+  border: 1px solid var(--primary-text-color);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-text-color);
+  display: none;
+  z-index: 10;
+}
+.card .tile-icons:hover {
+  background-color: var(--songtile-icon-bg-hover);
+}
+.card .play_icon {
+  bottom: 65px;
+  left: 10px;
+}
+.card .drop_up {
+  bottom: 65px;
+  right: 10px;
 }
 .card .album_icons {
   position: absolute;
@@ -37,6 +65,11 @@
   border-radius: 5px;
   position: relative;
 }
+.card .pic a {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
 .card .pic .song-tile-overlay {
   position: absolute;
   left: 0;
@@ -46,36 +79,16 @@
   background-color: var(--songtile-overlay-color);
   opacity: 0;
   transition: 0.2s;
-}
-.card .pic .tile-icons {
-  position: absolute;
-  border: 1px solid var(--primary-text-color);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  align-items: center;
-  justify-content: center;
-  color: var(--primary-text-color);
-  display: none;
-}
-.card .pic .tile-icons:hover {
-  background-color: var(--songtile-icon-bg-hover);
-}
-.card .pic .play_icon {
-  bottom: 5px;
-  left: 5px;
-}
-.card .pic .drop_up {
-  bottom: 5px;
-  right: 5px;
+  pointer-events: none;
 }
 .card .pic img {
   width: 140px;
   height: 140px;
   transition: 0.2s ease-in;
 }
-.card .artists-page {
+.card .artist-page {
   border-radius: 50%;
+  overflow: hidden;
 }
 .card .lower {
   padding: 5px;
@@ -97,11 +110,11 @@
   background-color: var(--songtile-card-bg-hover);
   box-shadow: 0 0 5px 2px var(--songtile-shadow);
 }
+.card:hover .tile-icons {
+  display: flex;
+}
 .card:hover .pic .song-tile-overlay {
   opacity: 1;
-}
-.card:hover .pic .tile-icons {
-  display: flex;
 }
 .card:hover .pic img {
   scale: 1.1;

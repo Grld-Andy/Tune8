@@ -20,8 +20,36 @@
     justify-content: center;
     border-radius: 5px;
     padding: 5px;
+    margin: 2.5px;
+    position: relative;
     cursor: default;
     transition: .1s ease-in;
+    a{
+        width: 100%;
+    }
+    .tile-icons{
+        position: absolute;
+        border: 1px solid var(--primary-text-color);
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-text-color);
+        display: none;
+        z-index: 10;
+        &:hover{
+            background-color: var(--songtile-icon-bg-hover);
+        }
+    }
+    .play_icon{
+        bottom: 65px;
+        left: 10px;
+    }
+    .drop_up{
+        bottom: 65px;
+        right: 10px;
+    }
     .album_icons{
         position: absolute
     }
@@ -33,6 +61,11 @@
         height: 140px;
         border-radius: 5px;
         position: relative;
+        a{
+            padding: 0;
+            margin: 0;
+            height: 100%;
+        }
         .song-tile-overlay{
             position: absolute;
             left: 0;
@@ -42,28 +75,7 @@
             background-color: var(--songtile-overlay-color);
             opacity: 0;
             transition: .2s;
-        }
-        .tile-icons{
-            position: absolute;
-            border: 1px solid var(--primary-text-color);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-text-color);
-            display: none;
-            &:hover{
-                background-color: var(--songtile-icon-bg-hover);
-            }
-        }
-        .play_icon{
-            bottom: 5px;
-            left: 5px;
-        }
-        .drop_up{
-            bottom: 5px;
-            right: 5px;
+            pointer-events: none;
         }
         img{
             width: 140px;
@@ -71,8 +83,9 @@
             transition: .2s ease-in;
         }
     }
-    .artists-page{
+    .artist-page{
         border-radius: 50%;
+        overflow: hidden;
     }
     .lower{
         padding: 5px;
@@ -93,13 +106,14 @@
     &:hover{
         background-color: var(--songtile-card-bg-hover);
         box-shadow: 0 0 5px 2px var(--songtile-shadow);
+        .tile-icons{
+            display: flex;
+        }
         .pic{
             .song-tile-overlay{
                 opacity: 1;
             }
-            .tile-icons{
-                display: flex;
-            }
+            
             img{
                 scale: 1.1;
             }
