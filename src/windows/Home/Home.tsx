@@ -2,7 +2,6 @@ import React from 'react'
 import './style.css'
 import { songs } from '../../assets'
 import SongTile from '../../components/SongTile/SongTile'
-import ContextMenu from '../../components/ContextMenu/ContextMenu'
 
 const Home: React.FC = () => {
   return (
@@ -26,7 +25,6 @@ const Home: React.FC = () => {
             }
           </div>
         </section>
-        <ContextMenu/>
       </div>
     </>
   )

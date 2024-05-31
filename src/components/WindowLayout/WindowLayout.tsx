@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import MusicPlayer from '../MusicPlayer/MusicPlayer'
 import './style.css'
 import {ThemeContext} from '../../contexts/ThemeContext'
+import ContextMenu from '../ContextMenu/ContextMenu'
 
 const WindowLayout: React.FC = () => {
   const {theme} = useContext(ThemeContext)
@@ -15,6 +16,7 @@ const WindowLayout: React.FC = () => {
       </div>
       <div className="right__">
         <Outlet/>
+        <ContextMenu/>
       </div>
       <div className="bottom__">
         <MusicPlayer/>

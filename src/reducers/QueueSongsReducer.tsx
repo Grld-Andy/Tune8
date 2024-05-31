@@ -4,6 +4,8 @@ export const QueueSongsReducer = (queue: Array<Song>, action: {type: string, pay
     switch(action.type){
         case 'SET_QUEUE':
             return action.payload
+        case 'ADD_TO_QUEUE':
+            return [...queue, ...action.payload]
         case 'CLEAR_QUEUE':
             return []
         default:

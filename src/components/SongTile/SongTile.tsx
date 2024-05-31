@@ -6,6 +6,7 @@ import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { songs } from '../../assets'
 import { Link } from 'react-router-dom'
+import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 
 interface Props{
     song: Song,
@@ -35,25 +36,37 @@ const SongTile: React.FC<Props> = ({song, page}) => {
   const {dispatch} = useContext(QueueSongsContext)
   const linkTo: string = page === 'album' ? song.tag.tags.album : page === 'artist' ? song.tag.tags.artist : ''
 
-  const playSong = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song})
+  const getAllSongs: () => Array<Song> = () => {
     if(page === 'album'){
       const albumSongs = songs.filter(item => item.tag.tags.album === song.tag.tags.album)
-      dispatch({type: 'SET_QUEUE', payload: albumSongs})
+      return albumSongs
     }else if(page === 'artist'){
       const artistSongs = songs.filter(item => item.tag.tags.artist === song.tag.tags.artist)
-      dispatch({type: 'SET_QUEUE', payload: artistSongs})
+      return artistSongs
     }else{
-      dispatch({type: 'SET_QUEUE', payload: [song]})
+      return [song]
     }
   }
 
+  const {contextMenuDispatch} = useContext(ContextMenuContext)
+  const openContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault()
+    const itemClicked = getAllSongs()
+    contextMenuDispatch({type: 'OPEN_MENU', payload: {x: e.clientX, y: e.clientY, lastClicked: itemClicked}})
+  }
+
+  const playSong = () => {
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song})
+    const allSongs: Array<Song> = getAllSongs()
+    dispatch({type: 'SET_QUEUE', payload: allSongs})
+  }
+
   return (
-    <div className="card">
+    <div className="card" onContextMenu={openContextMenu}>
       <div className="tile-icons play_icon">
         <IoMdArrowDropright onClick={playSong} size={40}/>
       </div>
-      <div className="tile-icons drop_up">
+      <div className="tile-icons drop_up" onClick={openContextMenu}>
         <IoMdArrowDropup size={40}/>
       </div>
       <div className={`pic ${page}-page`}>

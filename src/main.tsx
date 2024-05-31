@@ -6,10 +6,12 @@ import './index.css'
 import ThemeContextProvider from './contexts/ThemeContext.tsx'
 import CurrentSongContextProvider from './contexts/CurrentSongContext.tsx'
 import QueueSongsContextProvider from './contexts/QueueSongsContext.tsx'
+import ContextMenuContextProvider from './contexts/ContextMenuContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeContextProvider>
+    <ContextMenuContextProvider>
     <QueueSongsContextProvider>
     <CurrentSongContextProvider>
     <BrowserRouter>
@@ -17,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </BrowserRouter>
     </CurrentSongContextProvider>
     </QueueSongsContextProvider>
+    </ContextMenuContextProvider>
     </ThemeContextProvider>
   </React.StrictMode>,
 )

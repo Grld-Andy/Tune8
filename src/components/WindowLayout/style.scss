@@ -24,6 +24,15 @@
     --music-player-shadow: #0003;
     --sidebar-link-color: #ff0;
 }
+.context-overlay{
+    background-color: #0001;
+    position: absolute;
+    top: 0;
+    left: -200px;
+    width: calc(100% + 200px);
+    height: 100%;
+    z-index: 22;
+}
 .main{
     display: grid;
     grid-template-rows: calc(100vh - 100px) 100px;
@@ -44,6 +53,7 @@
         margin-left: 200px;
         background-color: var(--right-bg-color);
         height: calc(100% - 100px);
+        z-index: 21;
     }
     .bottom__{
         position: fixed;
