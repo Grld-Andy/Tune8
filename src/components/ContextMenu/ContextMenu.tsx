@@ -4,6 +4,7 @@ import { ContextMenuContext } from '../../contexts/ContextMenuContext';
 import { CurrentSongContext } from '../../contexts/CurrentSongContext';
 import { QueueSongsContext } from '../../contexts/QueueSongsContext';
 import { FavoritesContext } from '../../contexts/FavoritesContext';
+import { Link } from 'react-router-dom';
 
 const ContextMenu: React.FC = () => {
   const { contextMenu, contextMenuDispatch } = useContext(ContextMenuContext);
@@ -57,8 +58,12 @@ const ContextMenu: React.FC = () => {
             </h2>
             <h2 className='to-sub end-context'>View ...
                 <div className='submenu'>
-                    <h2 className='start-context'>Artist</h2>
-                    <h2 className='end-context'>Album</h2>
+                    <h2 className='start-context'>
+                      <Link to={`/artistView/${contextMenu.lastClicked[0].tag.tags.artist}`}>Artist</Link>
+                    </h2>
+                    <h2 className='end-context'>
+                      <Link to={`/albumView/${contextMenu.lastClicked[0].tag.tags.album}`}>Album</Link>
+                    </h2>
                 </div>
             </h2>
         </div>

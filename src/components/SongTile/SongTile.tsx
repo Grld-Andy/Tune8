@@ -20,8 +20,8 @@ const SongTileDetails: React.FC<Props> = ({song, page}) => {
         {
           page === 'album' ?
           <div className="title">{song.tag.tags.album}</div>:
-          // page === 'artist' ?
-          // <div className="title">{song.tag.tags.artist}</div>:
+          page === 'artist' ?
+          <div className="title">{song.tag.tags.artist}</div>:
           <div className="title">{song.tag.tags.title}</div>
         }
         {

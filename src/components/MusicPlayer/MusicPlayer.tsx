@@ -45,6 +45,7 @@ const MusicPlayer: React.FC = () => {
     setIsPlaying(!isPlaying)
   }
   
+  // favorites logic
   const {favorites, favoritesDispatch} = useContext(FavoritesContext)
   const [isFavorite, setIsFavorite] = useState(favorites.some(favSong => favSong.tag.tags.title === currentSong?.tag.tags.title))
   const toggleFavorite: () => void = () => {
