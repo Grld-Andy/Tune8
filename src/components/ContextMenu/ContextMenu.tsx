@@ -12,16 +12,23 @@ const ContextMenu: React.FC = () => {
   }
 
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
-  const {dispatch} = useContext(QueueSongsContext)
+  const {queue, dispatch} = useContext(QueueSongsContext)
   const playSong = () => {
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0]})
-    dispatch({type: 'SET_QUEUE', payload: contextMenu.lastClicked})
+    dispatch({type: 'SET_QUEUE', payload: contextMenu.lastClicked, index: 0})
   }
-  const nextInQueue = () => {
+  const playNextInQueue = () => {
     if(!currentSong){
         currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0]})
     }
-    dispatch({type: 'ADD_TO_QUEUE', payload: contextMenu.lastClicked})
+    const currentSongQueueID = queue.findIndex(item => item.tag.tags.title === currentSong?.tag.tags.title)
+    dispatch({type: 'PLAY_NEXT', payload: contextMenu.lastClicked, index: currentSongQueueID})
+  }
+  const addToQueue = () => {
+    if(!currentSong){
+        currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0]})
+    }
+    dispatch({type: 'ADD_TO_QUEUE', payload: contextMenu.lastClicked, index: 0})
   }
   
 
@@ -34,11 +41,11 @@ const ContextMenu: React.FC = () => {
     onClick={closeMenu}>
         <div className="labels">
             <h2 className='start-context' onClick={playSong}>Play Now</h2>
-            <h2 onClick={nextInQueue}>Play Next</h2>
+            <h2 onClick={playNextInQueue}>Play Next</h2>
             <h2 className='to-sub'>
                 Add to...
                 <div className='submenu'>
-                    <h2 className='start-context'>Queue</h2>
+                    <h2 className='start-context' onClick={addToQueue}>Queue</h2>
                     <h2>Playlist</h2>
                     <h2 className='end-context'>Favorites</h2>
                 </div>

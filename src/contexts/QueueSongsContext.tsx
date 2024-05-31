@@ -7,7 +7,7 @@ interface Props{
 }
 interface QueueSongsType{
     queue: Array<Song> | [],
-    dispatch: React.Dispatch<{type: string, payload: Array<Song>|[]}>
+    dispatch: React.Dispatch<{type: string, payload: Array<Song>|[], index: number}>
 }
 
 export const QueueSongsContext = createContext<QueueSongsType>({
