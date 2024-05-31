@@ -16,11 +16,11 @@ const WindowLayout: React.FC = () => {
       </div>
       <div className="right__">
         <Outlet/>
-        <ContextMenu/>
       </div>
       <div className="bottom__">
         <MusicPlayer/>
       </div>
+      <ContextMenu/>
     </div>
   )
 }
