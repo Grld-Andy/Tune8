@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {FaCirclePause, FaCirclePlay, FaShuffle, FaForward, FaBackward} from 'react-icons/fa6'
 import {ImEnlarge} from 'react-icons/im'
 import {TbRepeat, TbRepeatOnce, TbRepeatOff} from 'react-icons/tb'
@@ -8,8 +8,10 @@ import { song1 } from '../../assets'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import './style.css'
+import FavoritesContext from '../../contexts/FavoritesContext'
 
 const MusicPlayer: React.FC = () => {
+  // repeat logic
   const repeatTypes: Array<string> = ['repeat-all', 'no-repeat', 'repeat-one']
   const [repeat, setRepeat] = useState(localStorage.getItem('repeatType') ? localStorage.getItem('repeatType') : repeatTypes[0])
   const handleSongRepeatCycle: () => void = () => {
@@ -21,9 +23,9 @@ const MusicPlayer: React.FC = () => {
     localStorage.setItem('repeatType', repeatTypes[repeatIndex + 1])
   }
 
+  // currentsong logic(next, prev, play/pause)
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const {queue} = useContext(QueueSongsContext)
-
   const nextSong: () => void = () => {
     let currentSongIndex: number = queue.findIndex(song => song.tag.tags.title === currentSong?.tag.tags.title)
     if(currentSongIndex === queue.length-1){
@@ -38,16 +40,28 @@ const MusicPlayer: React.FC = () => {
     }
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex - 1]})
   }
-  
-  const [isFavorite, setIsFavorite] = React.useState(false)
-  const toggleFavorite: () => void = () => {
-    setIsFavorite(!isFavorite)
-    currentSongDispatch({type: 'TOGGLE_FAVORITE', payload: null})
-  }
-  const [isPlaying, setIsPlaying] = React.useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
   const togglePlay: () => void = () => {
     setIsPlaying(!isPlaying)
   }
+  
+  const {favorites, favoritesDispatch} = useContext(FavoritesContext)
+  const [isFavorite, setIsFavorite] = useState(favorites.some(favSong => favSong.tag.tags.title === currentSong?.tag.tags.title))
+  const toggleFavorite: () => void = () => {
+    if(currentSong){
+      if(!favorites.some(favSong => favSong.tag.tags.title === currentSong?.tag.tags.title)){
+        setIsFavorite(true)
+        favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: [currentSong]})
+      }else{
+        setIsFavorite(false)
+        favoritesDispatch({type: 'REMOVE_FROM_FAVORITES', payload: [currentSong]})
+      }
+      currentSongDispatch({type: 'TOGGLE_FAVORITE', payload: null})
+    }
+  }
+  useEffect(() => {
+    setIsFavorite(favorites.some(favSong => favSong.tag.tags.title === currentSong?.tag.tags.title))
+  }, [currentSong, favorites])
 
   return (
     <div className='musicPlayer'>
@@ -99,7 +113,7 @@ const MusicPlayer: React.FC = () => {
           <FaForward className='icon' onClick={nextSong}/>
           <HiMiniWindow className='icon'/>
           {
-            currentSong?.isFavorite ?
+            isFavorite ?
             <MdFavorite className='icon' onClick={toggleFavorite}/>:
             <MdFavoriteBorder className='icon' onClick={toggleFavorite}/>
           }

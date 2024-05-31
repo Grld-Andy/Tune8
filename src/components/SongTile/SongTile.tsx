@@ -14,13 +14,14 @@ interface Props{
 }
 
 const SongTileDetails: React.FC<Props> = ({song, page}) => {
+  console.log('current page: ', page)
   return (
     <div className="lower">
         {
           page === 'album' ?
           <div className="title">{song.tag.tags.album}</div>:
-          page === 'artist' ?
-          <div className="title">{song.tag.tags.artist}</div>:
+          // page === 'artist' ?
+          // <div className="title">{song.tag.tags.artist}</div>:
           <div className="title">{song.tag.tags.title}</div>
         }
         {
@@ -79,8 +80,8 @@ const SongTile: React.FC<Props> = ({song, page}) => {
       </div>
       {
           page === 'home'
-          ?<SongTileDetails song={song} page='page'/>
-          :<Link to={`/${page}View/${linkTo}`}><SongTileDetails song={song} page='page'/></Link>
+          ?<SongTileDetails song={song} page={page}/>
+          :<Link to={`/${page}View/${linkTo}`}><SongTileDetails song={song} page={page}/></Link>
         }
     </div>
   )

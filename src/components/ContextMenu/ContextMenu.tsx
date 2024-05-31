@@ -3,6 +3,7 @@ import './style.css'
 import { ContextMenuContext } from '../../contexts/ContextMenuContext';
 import { CurrentSongContext } from '../../contexts/CurrentSongContext';
 import { QueueSongsContext } from '../../contexts/QueueSongsContext';
+import { FavoritesContext } from '../../contexts/FavoritesContext';
 
 const ContextMenu: React.FC = () => {
   const { contextMenu, contextMenuDispatch } = useContext(ContextMenuContext);
@@ -30,6 +31,10 @@ const ContextMenu: React.FC = () => {
     }
     dispatch({type: 'ADD_TO_QUEUE', payload: contextMenu.lastClicked, index: 0})
   }
+  const {favoritesDispatch} = useContext(FavoritesContext)
+  const addToFavorites = () => {
+    favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: contextMenu.lastClicked})
+  }
   
 
   return (
@@ -47,7 +52,7 @@ const ContextMenu: React.FC = () => {
                 <div className='submenu'>
                     <h2 className='start-context' onClick={addToQueue}>Queue</h2>
                     <h2>Playlist</h2>
-                    <h2 className='end-context'>Favorites</h2>
+                    <h2 className='end-context' onClick={addToFavorites}>Favorites</h2>
                 </div>
             </h2>
             <h2 className='to-sub end-context'>View ...
