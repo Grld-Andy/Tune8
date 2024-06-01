@@ -4,7 +4,7 @@ import './style.css'
 import { Song } from '../../data'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
-import { songs } from '../../assets'
+import { playlists, songs } from '../../assets'
 import { Link } from 'react-router-dom'
 import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 
@@ -46,7 +46,11 @@ const SongTile: React.FC<Props> = ({song, page, playlistName}) => {
     }else if(page === 'artist'){
       const artistSongs = songs.filter(item => item.tag.tags.artist === song.tag.tags.artist)
       return artistSongs
-    }else{
+    }else if(page === 'playlist'){
+      const playlistSongs = playlists.filter(playlist => playlist.name === playlistName)[0]
+      return [...playlistSongs.songs]
+    }
+    else{
       return [song]
     }
   }
