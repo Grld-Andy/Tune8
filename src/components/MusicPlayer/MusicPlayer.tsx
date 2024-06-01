@@ -9,6 +9,7 @@ import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import './style.css'
 import FavoritesContext from '../../contexts/FavoritesContext'
+import { shuffleArray } from '../../constants'
 
 const MusicPlayer: React.FC = () => {
   // repeat logic
@@ -23,22 +24,28 @@ const MusicPlayer: React.FC = () => {
     localStorage.setItem('repeatType', repeatTypes[repeatIndex + 1])
   }
 
-  // currentsong logic(next, prev, play/pause)
+  // currentsong logic(next, prev, shuffle, play/pause)
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const {queue} = useContext(QueueSongsContext)
   const nextSong: () => void = () => {
-    let currentSongIndex: number = queue.findIndex(song => song.tag.tags.title === currentSong?.tag.tags.title)
+    let currentSongIndex: number = currentSong.index
     if(currentSongIndex === queue.length-1){
       currentSongIndex = -1
     }
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex + 1]})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex + 1], index: currentSongIndex + 1})
   }
   const prevSong: () => void = () => {
-    let currentSongIndex: number = queue.findIndex(song => song.tag.tags.title === currentSong?.tag.tags.title)
+    let currentSongIndex: number = currentSong.index
     if(currentSongIndex === 0){
       currentSongIndex = queue.length
     }
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex - 1]})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex - 1], index: currentSongIndex - 1})
+  }
+  const {dispatch} = useContext(QueueSongsContext)
+  const shuffleSongs: () => void = () => {
+    const newQueue = shuffleArray(queue)
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0})
+    dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
   const [isPlaying, setIsPlaying] = useState(false)
   const togglePlay: () => void = () => {
@@ -47,21 +54,21 @@ const MusicPlayer: React.FC = () => {
   
   // favorites logic
   const {favorites, favoritesDispatch} = useContext(FavoritesContext)
-  const [isFavorite, setIsFavorite] = useState(favorites.some(favSong => favSong.tag.tags.title === currentSong?.tag.tags.title))
+  const [isFavorite, setIsFavorite] = useState(favorites.some(favSong => favSong.tag.tags.title === currentSong.song?.tag.tags.title))
   const toggleFavorite: () => void = () => {
-    if(currentSong){
-      if(!favorites.some(favSong => favSong.tag.tags.title === currentSong?.tag.tags.title)){
+    if(currentSong.song){
+      if(!favorites.some(favSong => favSong.tag.tags.title === currentSong.song?.tag.tags.title)){
         setIsFavorite(true)
-        favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: [currentSong]})
+        favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: [currentSong.song]})
       }else{
         setIsFavorite(false)
-        favoritesDispatch({type: 'REMOVE_FROM_FAVORITES', payload: [currentSong]})
+        favoritesDispatch({type: 'REMOVE_FROM_FAVORITES', payload: [currentSong.song]})
       }
-      currentSongDispatch({type: 'TOGGLE_FAVORITE', payload: null})
+      currentSongDispatch({type: 'TOGGLE_FAVORITE', payload: null, index: currentSong.index})
     }
   }
   useEffect(() => {
-    setIsFavorite(favorites.some(favSong => favSong.tag.tags.title === currentSong?.tag.tags.title))
+    setIsFavorite(favorites.some(favSong => favSong.tag.tags.title === currentSong.song?.tag.tags.title))
   }, [currentSong, favorites])
 
   return (
@@ -70,7 +77,7 @@ const MusicPlayer: React.FC = () => {
         <h5>00:00</h5>
         <progress value={75} max={100}></progress>
         {
-          currentSong?
+          currentSong.song?
           <h5>{song1.duration}</h5>:
           <h5>00:00</h5>
         }
@@ -78,16 +85,16 @@ const MusicPlayer: React.FC = () => {
       <div className="bottom">
         <div className="b-left">
           {
-            currentSong?
-            <img src={currentSong.imageSrc} alt=''/>:
+            currentSong.song?
+            <img src={currentSong.song.imageSrc} alt=''/>:
             <img src='/placeholders/music1.jpg' alt=''/>
           }
           <div className="text">
             {
-              currentSong?
+              currentSong.song?
               <>
-                <h5>{currentSong.tag.tags.title}</h5>
-                <h5>{currentSong.tag.tags.artist}</h5>
+                <h5>{currentSong.song.tag.tags.title}</h5>
+                <h5>{currentSong.song.tag.tags.artist}</h5>
               </>:
               <>
                 <h5>Play a song</h5>
@@ -96,31 +103,32 @@ const MusicPlayer: React.FC = () => {
             }
           </div>
         </div>
-        <div className={currentSong ? 'b-center' : 'b-center locked'}>
-          <FaShuffle className='icon'/>
+        {/* <div className='b-space'></div> */}
+        <div className={currentSong.song ? 'b-center' : 'b-center locked'}>
+          <FaShuffle className='icon shuffle_icon' onClick={shuffleSongs}/>
           {
             repeat === 'repeat-all'?
-            <TbRepeat className='icon' onClick={handleSongRepeatCycle}/>:
+            <TbRepeat className='icon repeat_icon' onClick={handleSongRepeatCycle}/>:
             repeat === 'repeat-one'?
-            <TbRepeatOnce className='icon' onClick={handleSongRepeatCycle}/>:
-            <TbRepeatOff className='icon' onClick={handleSongRepeatCycle}/>
+            <TbRepeatOnce className='icon repeat_icon' onClick={handleSongRepeatCycle}/>:
+            <TbRepeatOff className='icon repeat_icon' onClick={handleSongRepeatCycle}/>
           }
-          <FaBackward className='icon' onClick={prevSong}/>
+          <FaBackward className='icon prev_icon' onClick={prevSong}/>
           {
             isPlaying?
-            <FaCirclePause className='icon' size={40} onClick={togglePlay}/>:
-            <FaCirclePlay className='icon' size={40} onClick={togglePlay}/>
+            <FaCirclePause className='icon pause_icon' size={40} onClick={togglePlay}/>:
+            <FaCirclePlay className='icon play_icon' size={40} onClick={togglePlay}/>
           }
-          <FaForward className='icon' onClick={nextSong}/>
-          <HiMiniWindow className='icon'/>
+          <FaForward className='icon next_icon' onClick={nextSong}/>
+          <HiMiniWindow className='icon mini_icon'/>
           {
             isFavorite ?
-            <MdFavorite className='icon' onClick={toggleFavorite}/>:
-            <MdFavoriteBorder className='icon' onClick={toggleFavorite}/>
+            <MdFavorite className='icon fav_icon' onClick={toggleFavorite}/>:
+            <MdFavoriteBorder className='icon fav_icon' onClick={toggleFavorite}/>
           }
         </div>
         <div className="b-right">
-          <ImEnlarge className='icon'/>
+          <ImEnlarge className='icon enlarge_icon'/>
           <HiMiniEllipsisHorizontal className='icon'/>
         </div>
       </div>

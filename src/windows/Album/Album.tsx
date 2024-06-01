@@ -4,7 +4,7 @@ import { songs } from '../../assets'
 import { useParams } from 'react-router-dom'
 import { Song } from '../../data'
 import SongListItem from '../../components/SongListItem/SongListItem'
-import { TotalDuration } from '../../constants'
+import { shuffleArray, TotalDuration } from '../../constants'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 
@@ -17,11 +17,16 @@ const Album: React.FC = () => {
   const {dispatch} = useContext(QueueSongsContext)
   const {currentSongDispatch} = useContext(CurrentSongContext)
   const setQueueSongs = () => {
-    dispatch({type: 'SET_QUEUE', payload: albumSongs})
+    dispatch({type: 'SET_QUEUE', payload: albumSongs, index: 0})
   }
   const playAllSongs = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: albumSongs[0]})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: albumSongs[0], index: 0})
     setQueueSongs()
+  }
+  const shuffleSongs: () => void = () => {
+    const newQueue = shuffleArray(albumSongs)
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0})
+    dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
 
   return (
@@ -44,7 +49,7 @@ const Album: React.FC = () => {
           </div>
           <div className="buttons">
             <button className="play" onClick={playAllSongs}>Play All</button>
-            <button className="shuffle">Shuffle and Play</button>
+            <button className="shuffle" onClick={shuffleSongs}>Shuffle and Play</button>
             <button className="add">Add to</button>
           </div>
         </div>
@@ -53,9 +58,9 @@ const Album: React.FC = () => {
         <section>
           <div className="cards">
             {
-              albumSongs.map(song => (
-                <SongListItem key={song.tag.tags.title} song={song}
-                setQueueSongs={setQueueSongs}/>
+              albumSongs.map((song, index) => (
+                <SongListItem key={index} song={song}
+                setQueueSongs={setQueueSongs} index={index}/>
               ))
             }
           </div>

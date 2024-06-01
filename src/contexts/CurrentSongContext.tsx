@@ -5,20 +5,30 @@ import { Song } from "../data";
 interface Props{
     children: ReactNode
 }
+export interface CurrentSongState{
+    song: Song|null,
+    index: number
+}
+const initialState: CurrentSongState = {
+    song: null,
+    index: -1
+}
 interface CurrentSongType{
-    currentSong: Song | null,
-    currentSongDispatch: React.Dispatch<{type: string, payload: Song|null}>
+    currentSong: CurrentSongState,
+    currentSongDispatch: React.Dispatch<{type: string, payload: Song|null, index: number}>
 }
 export const CurrentSongContext = createContext<CurrentSongType>({
-    currentSong: null,
+    currentSong: initialState,
     currentSongDispatch: () => null
 })
 
 const CurrentSongContextProvider: React.FC<Props> = (props) => {
-    const [currentSong, dispatch] = useReducer(currentSongReducer, null, () => {
+    const [currentSong, dispatch] = useReducer(currentSongReducer, initialState, () => {
         const lastPlayed = localStorage.getItem('lastPlayed')
-        try { return lastPlayed ? JSON.parse(lastPlayed) : null }
-        catch { return null }
+        try { 
+            return lastPlayed ? JSON.parse(lastPlayed) : initialState 
+        }
+        catch { return initialState }
     })
 
     return(

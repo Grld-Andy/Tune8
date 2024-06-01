@@ -38,17 +38,19 @@
         color: var(--primary-text-color);
         display: none;
         z-index: 10;
+        bottom: 65px;
         &:hover{
             background-color: var(--songtile-icon-bg-hover);
         }
     }
     .play_icon{
-        bottom: 65px;
         left: 10px;
     }
     .drop_up{
-        bottom: 65px;
         right: 10px;
+    }
+    .playlist,.artist{
+        bottom: 45px;
     }
     .album_icons{
         position: absolute

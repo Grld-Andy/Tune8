@@ -28,9 +28,9 @@ const Favorites: React.FC = () => {
       </nav>
         <div className="songs view">
           {
-            favorites.map(song => (
-              <SongListItem key={song.tag.tags.title} song={song}
-              setQueueSongs={setQueueSongs}/>
+            favorites.map((song, index) => (
+              <SongListItem key={index} song={song}
+              setQueueSongs={setQueueSongs} index={index}/>
             ))
           }
         </div>

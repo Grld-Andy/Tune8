@@ -41,17 +41,19 @@
   color: var(--primary-text-color);
   display: none;
   z-index: 10;
+  bottom: 65px;
 }
 .card .tile-icons:hover {
   background-color: var(--songtile-icon-bg-hover);
 }
 .card .play_icon {
-  bottom: 65px;
   left: 10px;
 }
 .card .drop_up {
-  bottom: 65px;
   right: 10px;
+}
+.card .playlist, .card .artist {
+  bottom: 45px;
 }
 .card .album_icons {
   position: absolute;

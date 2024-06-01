@@ -18,16 +18,36 @@
     .bottom{
         position: relative;
         padding: 0 10px;
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 220px 1fr;
         align-items: center;
+        gap: 10px;
         justify-content: space-between;
         .b-left{
             display: flex;
             gap: 10px;
+            border-radius: 5px;
+            transition: .3s ease-in-out;
+            overflow: hidden;
+            // change both later
+            &:hover{
+                background-color: gray;
+                box-shadow: inset 0 0 5px var(--primary-text-color);
+            }
+            &:active{
+                background-color: gray;
+                box-shadow:  0 0 5px var(--primary-text-color);
+            }
             img{
-                height: 65px;
-                width: 65px;
+                margin: 3px;
+                min-height: 63px;
+                min-width: 63px;
+                max-height: 63px;
+                max-width: 63px;
                 border-radius: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             .text{
                 display: flex;
@@ -35,22 +55,26 @@
                 justify-content: space-around;
                 padding: 5px 0;
                 cursor: default;
+                width: 100%;
+                overflow: hidden;
                 h5{
                     font-size: 1.1em;
                     font-weight: 400;
                     font-weight: 400;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    text-wrap: nowrap;
                 }
             }
         }
         .b-center{
+            width: 220px;
             display: flex;
             align-items: center;
             background-color: var(--music-player-bg-color);
+            background-color: transparent;
             height: 100%;
             gap: 10px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
         }
         .locked{
             opacity: .3;
@@ -59,11 +83,23 @@
         .b-right{
             display: flex;
             gap: 10px;
+            justify-self: end;
         }
     }
     .icon{
         color: var(--primary-text-color);
         font-size: 1.2em;
         cursor: pointer;
+    }
+    @media (max-width: 600px) {
+        .shuffle_icon, .fav_icon, .repeat_icon, .mini_icon{
+            display: none;
+        }
+        .bottom{
+            grid-template-columns: 1fr 100px 1fr;
+            .b-center{
+                width: 100px;
+            }
+        }
     }
 }

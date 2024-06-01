@@ -9,12 +9,14 @@ import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 interface Props {
   song: Song
   setQueueSongs: () => void
+  index: number
+  page?: string
 }
 
-const SongListItem: React.FC<Props> = ({song, setQueueSongs}) => {
+const SongListItem: React.FC<Props> = ({song, setQueueSongs, index, page = 'link'}) => {
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const playSong = (song: Song) => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song, index: index})
     setQueueSongs()
   }
 
@@ -24,9 +26,14 @@ const SongListItem: React.FC<Props> = ({song, setQueueSongs}) => {
     contextMenuDispatch({type: 'OPEN_MENU', payload: {x: e.clientX, y: e.clientY, lastClicked: [song]}})
   }
 
+  console.log(page)
+
   return (
     <div
-    className={currentSong?.tag.tags.title === song.tag.tags.title ? `song currentSong` : 'song'}
+    className={currentSong.index === index && page === 'queue' ? `song currentSong` :
+    page !== 'queue' && currentSong.song?.tag.tags.title === song.tag.tags.title
+      && currentSong.song?.tag.tags.album === song.tag.tags.album ? `song currentSong`:
+    'song'}
     onContextMenu={showContextMenu}>
       <BsPlayCircle className='icon' onClick={() => {playSong(song)}}/>
       <h3>{song.tag.tags.title}</h3>

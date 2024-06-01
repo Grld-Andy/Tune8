@@ -132,4 +132,22 @@ const song9: Song = {
     isFavorite: false
 }
 
+export interface PlaylistInterface {
+    name: string,
+    songs: Array<Song>
+}
+const playlist1: PlaylistInterface = {
+    name: 'random_1',
+    songs: [song1, song2, song3, song4]
+}
+const playlist2: PlaylistInterface = {
+    name: '1st playlist',
+    songs: [song7]
+}
+const playlist3: PlaylistInterface = {
+    name: 'Some_songs',
+    songs: [song2, song5]
+}
+export const playlists: Array<PlaylistInterface> = [playlist1, playlist2, playlist3]
+
 export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9]

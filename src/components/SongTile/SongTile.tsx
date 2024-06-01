@@ -10,11 +10,11 @@ import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 
 interface Props{
     song: Song,
-    page: string
+    page: string,
+    playlistName?: string
 }
 
-const SongTileDetails: React.FC<Props> = ({song, page}) => {
-  console.log('current page: ', page)
+const SongTileDetails: React.FC<Props> = ({song, page, playlistName}) => {
   return (
     <div className="lower">
         {
@@ -22,20 +22,22 @@ const SongTileDetails: React.FC<Props> = ({song, page}) => {
           <div className="title">{song.tag.tags.album}</div>:
           page === 'artist' ?
           <div className="title">{song.tag.tags.artist}</div>:
+          page === 'playlist' ?
+          <div className="title">{playlistName}</div>:
           <div className="title">{song.tag.tags.title}</div>
         }
         {
-          page === 'artist' ||
+          page === 'artist' || page === 'playlist' ||
           <div className="artist">{song.tag.tags.artist}</div>
         }
       </div>
   )
 }
 
-const SongTile: React.FC<Props> = ({song, page}) => {
+const SongTile: React.FC<Props> = ({song, page, playlistName}) => {
   const {currentSongDispatch} = useContext(CurrentSongContext)
   const {dispatch} = useContext(QueueSongsContext)
-  const linkTo: string = page === 'album' ? song.tag.tags.album : page === 'artist' ? song.tag.tags.artist : ''
+  const linkTo: string|undefined = page === 'album' ? song.tag.tags.album : page === 'artist' ? song.tag.tags.artist : page === 'playlist' ? playlistName : ''
 
   const getAllSongs: () => Array<Song> = () => {
     if(page === 'album'){
@@ -57,17 +59,17 @@ const SongTile: React.FC<Props> = ({song, page}) => {
   }
 
   const playSong = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song, index: 0})
     const allSongs: Array<Song> = getAllSongs()
     dispatch({type: 'SET_QUEUE', payload: allSongs, index: 0})
   }
 
   return (
     <div className="card" onContextMenu={openContextMenu}>
-      <div className="tile-icons play_icon">
+      <div className={`tile-icons play_icon ${page}`}>
         <IoMdArrowDropright onClick={playSong} size={40}/>
       </div>
-      <div className="tile-icons drop_up" onClick={openContextMenu}>
+      <div className={`tile-icons drop_up ${page}`} onClick={openContextMenu}>
         <IoMdArrowDropup size={40}/>
       </div>
       <div className={`pic ${page}-page`}>
@@ -81,7 +83,7 @@ const SongTile: React.FC<Props> = ({song, page}) => {
       {
           page === 'home'
           ?<SongTileDetails song={song} page={page}/>
-          :<Link to={`/${page}View/${linkTo}`}><SongTileDetails song={song} page={page}/></Link>
+          :<Link to={`/${page}View/${linkTo}`}><SongTileDetails song={song} page={page} playlistName={playlistName}/></Link>
         }
     </div>
   )

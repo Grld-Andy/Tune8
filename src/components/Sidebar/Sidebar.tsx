@@ -30,7 +30,7 @@ const Sidebar: React.FC = () => {
             <div className="icon"><MdOutlinePlaylistPlay title='Queue'/></div><h5>Queue</h5></NavLink>
           <NavLink className='link' to='favorites'>
             <div className="icon"><MdFavorite title='Favorites'/></div><h5>Favorites</h5></NavLink>
-          <NavLink className='link' to='playlists'>
+          <NavLink className={location.pathname.includes('playlist') ? 'active link' : 'link'} to='playlists'>
             <div className="icon"><RiPlayListLine title='Playlist'/></div><h5>Playlists</h5></NavLink>
         </div>
         <div className="lower-links">

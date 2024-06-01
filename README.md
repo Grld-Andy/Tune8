@@ -19,4 +19,4 @@ Customizable Settings: Customize your music listening experience with adjustable
 
 # ***NB : Still in Development***
 
-todo: id's for each queue song
+todo: do not clear queue if now play clicked on queue

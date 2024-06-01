@@ -16,21 +16,21 @@ const ContextMenu: React.FC = () => {
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const {queue, dispatch} = useContext(QueueSongsContext)
   const playSong = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0]})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
     dispatch({type: 'SET_QUEUE', payload: contextMenu.lastClicked, index: 0})
   }
   const playNextInQueue = () => {
-    if(!currentSong){
-        currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0]})
+    if(!currentSong.song){
+        currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
     }
-    const currentSongQueueID = queue.findIndex(item => item.tag.tags.title === currentSong?.tag.tags.title)
+    const currentSongQueueID = queue.findIndex(item => item.tag.tags.title === currentSong.song?.tag.tags.title)
     dispatch({type: 'PLAY_NEXT', payload: contextMenu.lastClicked, index: currentSongQueueID})
   }
   const addToQueue = () => {
-    if(!currentSong){
-        currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0]})
+    if(!currentSong.song){
+        currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
     }
-    dispatch({type: 'ADD_TO_QUEUE', payload: contextMenu.lastClicked, index: 0})
+    dispatch({type: 'ADD_TO_QUEUE', payload: contextMenu.lastClicked, index: currentSong.index})
   }
   const {favoritesDispatch} = useContext(FavoritesContext)
   const addToFavorites = () => {

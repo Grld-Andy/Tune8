@@ -1,32 +1,28 @@
 import React, { useContext } from 'react'
 import './style.css'
-import { songs } from '../../assets'
+import { PlaylistInterface, playlists } from '../../assets'
 import { useParams } from 'react-router-dom'
-import { Song } from '../../data'
 import SongListItem from '../../components/SongListItem/SongListItem'
 import { shuffleArray, TotalDuration } from '../../constants'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 
-const Artist: React.FC = () => {
-  const {artist} = useParams<string>()
-
-  const currentArtist : Song|undefined = songs.find(song => song.tag.tags.artist === artist)
-  const artistSongs: Song[] = songs.filter(song => song.tag.tags.artist === artist)
-  const uniqueAlbums = artistSongs.map(song => song.tag.tags.album)
+const Playlist: React.FC = () => {
+  const {playlist} = useParams<string>()
+  const playlistSongs: PlaylistInterface = playlists.filter(item => item.name === playlist)[0]
   
   const {dispatch} = useContext(QueueSongsContext)
   const {currentSongDispatch} = useContext(CurrentSongContext)
   
   const setQueueSongs = () => {
-    dispatch({type: 'SET_QUEUE', payload: artistSongs, index: 0})
+    dispatch({type: 'SET_QUEUE', payload: playlistSongs.songs, index: 0})
   }
   const playAllSongs = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: artistSongs[0], index: 0})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: playlistSongs.songs[0], index: 0})
     setQueueSongs()
   }
   const shuffleSongs: () => void = () => {
-    const newQueue = shuffleArray(artistSongs)
+    const newQueue = shuffleArray(playlistSongs.songs)
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0})
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
@@ -35,18 +31,17 @@ const Artist: React.FC = () => {
     <>
       <div className="singles-nav">
         <div className="singles-image circle">
-          <img src={currentArtist?.imageSrc}/>
+          <img src={playlistSongs.songs[0]?.imageSrc}/>
         </div>
         <div className="singles-info">
           <h1>
-            {currentArtist?.tag.tags.artist}
+            {playlistSongs.name}
           </h1>
           <ul className='h2'>
-            <li>{uniqueAlbums.length} Albums</li><br/>
-            <li>{artistSongs.length} Songs</li>
+            <li>{playlistSongs.songs.length} Songs</li>
           </ul>
           <div className="others">
-            <h4>{TotalDuration(artistSongs)}</h4>
+            <h4>{TotalDuration(playlistSongs.songs)}</h4>
           </div>
           <div className="buttons">
             <button className="play" onClick={playAllSongs}>Play All</button>
@@ -59,7 +54,7 @@ const Artist: React.FC = () => {
         <section>
           <div className="cards">
             {
-              artistSongs.map((song, index) => (
+              playlistSongs.songs.map((song, index) => (
                 <SongListItem key={index} song={song}
                 setQueueSongs={setQueueSongs} index={index}/>
               ))
@@ -71,4 +66,4 @@ const Artist: React.FC = () => {
   )
 }
 
-export default Artist
+export default Playlist

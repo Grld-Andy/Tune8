@@ -13,6 +13,8 @@ import Artist from './windows/Artist/Artist'
 import ArtistView from './components/DynamicViews/ArtistView'
 import AlbumView from './components/DynamicViews/AlbumView'
 import Album from './windows/Album/Album'
+import PlaylistView from './components/DynamicViews/PlaylistView'
+import Playlist from './windows/Playlist/Playlist'
 
 
 // Routing
@@ -34,6 +36,9 @@ function App() {
         <Route path='queue' element={<Queue/>}></Route>
         <Route path='favorites' element={<Favorites/>}></Route>
         <Route path='playlists' element={<Playlists/>}></Route>
+        <Route path='playlistView' element={<PlaylistView/>}>
+          <Route path=':playlist' element={<Playlist/>}></Route>
+        </Route>
         <Route path='settings' element={<Settings/>}></Route>
       </Route>
     </Routes>
