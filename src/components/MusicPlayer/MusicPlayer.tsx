@@ -101,7 +101,7 @@ const MusicPlayer: React.FC = () => {
             else if(repeat === 'no-repeat')
               audioRef.current.pause()
             else if(repeat === 'repeat-one'){
-              currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSong.index], index: currentSong.index})
+              audioRef.current.currentTime = 0
             }
           }
         }
