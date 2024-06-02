@@ -30,7 +30,7 @@
   font-weight: var(--context-font-weight);
   cursor: default;
   padding: 2px;
-  font-size: 1.3em;
+  font-size: 1.15em;
   color: var(--primary-text-color);
   text-shadow: 0 0 5px white;
   position: relative;
@@ -52,23 +52,12 @@
   width: 130px;
   height: -moz-min-content;
   height: min-content;
-  background-color: transparent;
+  background-color: #999;
   -webkit-backdrop-filter: blur(3px);
           backdrop-filter: blur(3px);
-  background-image: linear-gradient(120deg, rgba(255, 255, 255, 0.6), rgba(0, 0, 0, 0.6));
   display: none;
 }
 .context-menu .labels h2 .submenu h2 {
   font-weight: var(--context-font-weight);
   font-size: 1em;
-}
-
-.start-context {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
-.end-context {
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
 }/*# sourceMappingURL=style.css.map */

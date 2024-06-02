@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './style.css'
-import { PlaylistInterface, playlists } from '../../assets'
 import SongTile from '../../components/SongTile/SongTile'
 // import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
-import { SortedSongs } from '../../data'
+import { SortedPlaylists, SortedSongs } from '../../data'
+import { PlaylistContext } from '../../contexts/PlaylistsContext'
+import { placeholderSongImages } from '../../assets'
 
 const Playlists: React.FC = () => {
   const [showNav, setShowNav] = useState(false)
@@ -14,9 +15,8 @@ const Playlists: React.FC = () => {
   //   setShowNav(false)
   // }
 
-  interface SortedPlaylists {
-    [key: string]: Set<PlaylistInterface>
-}
+  const {playlists} = useContext(PlaylistContext)
+  
   const Allplaylists: SortedPlaylists = {}
   const sortedSongs: SortedSongs = {}
 
@@ -54,14 +54,20 @@ const Playlists: React.FC = () => {
                   <h2 onClick={toggleShowNav}>{letter}</h2>
                   <div className="cards">
                     {
-                      Array.from(Allplaylists[letter]).map(playlist => (
+                      Array.from(Allplaylists[letter]).map((playlist, index) => {
+                        const newEmpty = {
+                          tag: {tags: {title: '',artist: '',album: '',year: 0}},
+                          imageSrc: playlist.defaultImage ? playlist.defaultImage : placeholderSongImages[Math.floor(Math.random() * 4)],
+                          duration: '', isFavorite: false
+                        }
+                        return(
                         <SongTile
-                          song={playlist.songs[0]}
-                          key={playlist.songs[0].tag.tags.title}
+                          song={playlist.songs.length > 0 ? playlist.songs[0] : newEmpty}
+                          key={index}
                           page={'playlist'}
                           playlistName={playlist.name}
                         />
-                      ))
+                      )})
                     }
                   </div>
                 </section>

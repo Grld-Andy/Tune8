@@ -8,21 +8,24 @@ import CurrentSongContextProvider from './contexts/CurrentSongContext.tsx'
 import QueueSongsContextProvider from './contexts/QueueSongsContext.tsx'
 import ContextMenuContextProvider from './contexts/ContextMenuContext.tsx'
 import { FavoritesContextProvider } from './contexts/FavoritesContext.tsx'
+import PlaylistsContextProvider from './contexts/PlaylistsContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeContextProvider>
-    <ContextMenuContextProvider>
-    <QueueSongsContextProvider>
-    <FavoritesContextProvider>
-    <CurrentSongContextProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-    </CurrentSongContextProvider>
-    </FavoritesContextProvider>
-    </QueueSongsContextProvider>
-    </ContextMenuContextProvider>
+      <ContextMenuContextProvider>
+        <QueueSongsContextProvider>
+          <FavoritesContextProvider>
+            <PlaylistsContextProvider>
+              <CurrentSongContextProvider>
+                <BrowserRouter>
+                  <App />
+                </BrowserRouter>
+              </CurrentSongContextProvider>
+            </PlaylistsContextProvider>
+          </FavoritesContextProvider>
+        </QueueSongsContextProvider>
+      </ContextMenuContextProvider>
     </ThemeContextProvider>
   </React.StrictMode>,
 )

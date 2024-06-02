@@ -10,7 +10,16 @@ export interface Song {
     imageSrc: string,
     duration: string,
     isFavorite: boolean,
+    src: string
 }
 export interface SortedSongs {
     [key: string]: Set<Song>
+}
+export interface PlaylistInterface {
+    name: string,
+    songs: Array<Song>,
+    defaultImage?: string
+}
+export interface SortedPlaylists {
+    [key: string]: Set<PlaylistInterface>
 }

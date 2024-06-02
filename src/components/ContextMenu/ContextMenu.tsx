@@ -4,20 +4,31 @@ import { ContextMenuContext } from '../../contexts/ContextMenuContext';
 import { CurrentSongContext } from '../../contexts/CurrentSongContext';
 import { QueueSongsContext } from '../../contexts/QueueSongsContext';
 import { FavoritesContext } from '../../contexts/FavoritesContext';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import { PlaylistContext } from '../../contexts/PlaylistsContext';
 
 const ContextMenu: React.FC = () => {
   const { contextMenu, contextMenuDispatch } = useContext(ContextMenuContext);
+  // close context menu
   const closeMenu = (e: React.MouseEvent) => {
     e.preventDefault()
     contextMenuDispatch({ type: 'CLOSE_MENU', payload: {x: 0, y: 0, lastClicked: []} })
   }
 
+  // context menu options
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const {queue, dispatch} = useContext(QueueSongsContext)
+  const {playlistsDispatch} = useContext(PlaylistContext)
+  const location = useLocation()
+  const {playlist} = useParams()
   const playSong = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
-    dispatch({type: 'SET_QUEUE', payload: contextMenu.lastClicked, index: 0})
+    if(location.pathname === '/queue'){
+      if(contextMenu.indexClicked)
+        currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: contextMenu.indexClicked})
+    }else{
+      currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
+      dispatch({type: 'SET_QUEUE', payload: contextMenu.lastClicked, index: 0})
+    }
   }
   const playNextInQueue = () => {
     if(!currentSong.song){
@@ -36,6 +47,27 @@ const ContextMenu: React.FC = () => {
   const addToFavorites = () => {
     favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: contextMenu.lastClicked})
   }
+  const remove = () => {
+    switch(location.pathname){
+      case '/queue':
+        if(contextMenu.indexClicked)
+          dispatch({type: 'REMOVE_FROM_QUEUE', payload: [], index: contextMenu.indexClicked})
+        break
+      case '/favorites':
+        favoritesDispatch({type: 'REMOVE_FROM_FAVORITES', payload: contextMenu.lastClicked})
+        break
+      case '/playlists':
+        if(contextMenu.nameClicked)
+          playlistsDispatch({type: 'REMOVE_PLAYLIST', payload: {name:contextMenu.nameClicked, songs: []}})
+        break
+      default:
+        break
+    }
+    if(playlist){
+      if(playlist)
+        playlistsDispatch({type: 'REMOVE_FROM_PLAYLIST', payload: {name: playlist, songs: contextMenu.lastClicked}})
+    }
+  }
   
 
   return (
@@ -46,22 +78,26 @@ const ContextMenu: React.FC = () => {
     style={{ top: contextMenu.position.y, left: contextMenu.position.x }}
     onClick={closeMenu}>
         <div className="labels">
-            <h2 className='start-context' onClick={playSong}>Play Now</h2>
+            <h2 onClick={playSong}>Play Now</h2>
             <h2 onClick={playNextInQueue}>Play Next</h2>
             <h2 className='to-sub'>
                 Add to...
                 <div className='submenu'>
-                    <h2 className='start-context' onClick={addToQueue}>Queue</h2>
+                    <h2 onClick={addToQueue}>Queue</h2>
                     <h2>Playlist</h2>
-                    <h2 className='end-context' onClick={addToFavorites}>Favorites</h2>
+                    {
+                      location.pathname === '/favorites'||
+                      <h2 onClick={addToFavorites}>Favorites</h2>
+                    }
                 </div>
             </h2>
-            <h2 className='to-sub end-context'>View ...
+            <h2 onClick={remove}>Remove</h2>
+            <h2 className='to-sub'>View ...
                 <div className='submenu'>
-                    <h2 className='start-context'>
+                    <h2>
                       <Link to={`/artistView/${contextMenu.lastClicked[0].tag.tags.artist}`}>Artist</Link>
                     </h2>
-                    <h2 className='end-context'>
+                    <h2>
                       <Link to={`/albumView/${contextMenu.lastClicked[0].tag.tags.album}`}>Album</Link>
                     </h2>
                 </div>

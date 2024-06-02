@@ -6,6 +6,8 @@ export const QueueSongsReducer = (queue: Array<Song>, action: {type: string, pay
             return action.payload
         case 'ADD_TO_QUEUE':
             return [...queue, ...action.payload]
+        case 'REMOVE_FROM_QUEUE':
+            return [...queue.slice(0, action.index), ...queue.slice(action.index+1)]
         case 'PLAY_NEXT':
             return [...queue.slice(0,action.index+1), ...action.payload, ...queue.slice(action.index+1)]
         case 'CLEAR_QUEUE':

@@ -9,18 +9,22 @@ interface Props {
 export interface ContextMenuState {
   isOpen: boolean,
   position: { x: number; y: number },
-  lastClicked: Array<Song>
+  lastClicked: Array<Song>,
+  indexClicked?: number,
+  nameClicked?: string
 }
 
 interface ContextMenuType {
   contextMenu: ContextMenuState;
-  contextMenuDispatch: Dispatch<{ type: string, payload: {x:number, y:number, lastClicked: Array<Song>} }>
+  contextMenuDispatch: Dispatch<{ type: string, payload: {x:number, y:number, lastClicked: Array<Song>, indexClicked?: number, nameClicked?: string} }>
 }
 
 const initialState: ContextMenuState = {
   isOpen: false,
   position: { x: 0, y: 0 },
-  lastClicked: []
+  lastClicked: [],
+  indexClicked: -1,
+  nameClicked: ''
 };
 
 export const ContextMenuContext = createContext<ContextMenuType>({

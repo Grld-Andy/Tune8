@@ -18,5 +18,3 @@ Cross-Platform Compatibility: Tune8 seamlessly across multiple platforms, includ
 Customizable Settings: Customize your music listening experience with adjustable settings for playback, display, and more.
 
 # ***NB : Still in Development***
-
-todo: do not clear queue if now play clicked on queue

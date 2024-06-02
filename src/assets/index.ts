@@ -1,7 +1,13 @@
-import { Song } from "../data"
+import { PlaylistInterface, Song } from "../data"
 
 // profile placeholder
 export const profile : string = '/my_images/profile.jpg'
+
+export const image1 : string = '/placeholders/music1.jpg'
+export const image2 : string = '/placeholders/music2.jpg'
+export const image3 : string = '/placeholders/music3.jpg'
+export const image4 : string = '/placeholders/music4.jpg'
+export const placeholderSongImages: Array<string> = [image1, image2, image3, image4]
 
 // music placeholder
 export const crown : string = '/my_images/music_cover/crown.jpg'
@@ -25,7 +31,8 @@ export const song1: Song = {
     },
     imageSrc: crown,
     duration: '02:17',
-    isFavorite: false
+    isFavorite: false,
+    src: '../../public/tune 8/NEFFEX_Crown_Copyright_Free.m4a'
 }
 const song2: Song = {
     tag: {
@@ -38,7 +45,8 @@ const song2: Song = {
     },
     imageSrc: fearless,
     duration: '02:48',
-    isFavorite: false
+    isFavorite: false,
+    src: '../../public/tune 8/Fearless-Lost_Sky.mp3'
 }
 const song3: Song = {
     tag: {
@@ -51,7 +59,8 @@ const song3: Song = {
     },
     imageSrc: giants,
     duration: '03:30',
-    isFavorite: false
+    isFavorite: false,
+    src: '../../public/tune 8/League Of Legends (ft. Becky G, Keke Palmer, SOYEON, DUCKWRT.mp3'
 }
 const song4: Song = {
     tag: {
@@ -64,7 +73,8 @@ const song4: Song = {
     },
     imageSrc: kami,
     duration: '03:30',
-    isFavorite: false
+    isFavorite: false,
+    src: '../../public/tune 8/Rustage - Kami.m4a'
 }
 const song5: Song = {
     tag: {
@@ -77,7 +87,8 @@ const song5: Song = {
     },
     imageSrc: rare,
     duration: '02:30',
-    isFavorite: false
+    isFavorite: false,
+    src: '../../public/tune 8/neffex-rare.m4a'
 }
 const song6: Song = {
     tag: {
@@ -90,7 +101,8 @@ const song6: Song = {
     },
     imageSrc: light_of_the_sun,
     duration: '03:06',
-    isFavorite: false
+    isFavorite: false,
+    src: '../../public/tune 8/rustage-sun-wukong-rap-light-of-the-sun-rustage-ft-johnald.m4a'
 }
 const song7: Song = {
     tag: {
@@ -103,7 +115,8 @@ const song7: Song = {
     },
     imageSrc: the_search,
     duration: '03:30',
-    isFavorite: false
+    isFavorite: false,
+    src: '../../public/tune 8/The search.mp3'
 }
 const song8: Song = {
     tag: {
@@ -116,7 +129,8 @@ const song8: Song = {
     },
     imageSrc: when_i_grow_up,
     duration: '02:00',
-    isFavorite: false
+    isFavorite: false,
+    src: '../../public/tune 8/when i grow up.mp3'
 }
 const song9: Song = {
     tag: {
@@ -129,12 +143,8 @@ const song9: Song = {
     },
     imageSrc: headspace,
     duration: '02:00',
-    isFavorite: false
-}
-
-export interface PlaylistInterface {
-    name: string,
-    songs: Array<Song>
+    isFavorite: false,
+    src: '../../public/tune 8/HEADSPACE FT. POORSTACY (feat. POORSTACY) - Fame on Fire.m4a'
 }
 const playlist1: PlaylistInterface = {
     name: 'random_1',
@@ -148,6 +158,6 @@ const playlist3: PlaylistInterface = {
     name: 'Some_songs',
     songs: [song2, song5]
 }
-export const playlists: Array<PlaylistInterface> = [playlist1, playlist2, playlist3]
+export const currentPlaylists: Array<PlaylistInterface> = [playlist1, playlist2, playlist3]
 
 export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9]

@@ -4,9 +4,10 @@ import './style.css'
 import { Song } from '../../data'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
-import { playlists, songs } from '../../assets'
+import { songs } from '../../assets'
 import { Link } from 'react-router-dom'
 import { ContextMenuContext } from '../../contexts/ContextMenuContext'
+import { PlaylistContext } from '../../contexts/PlaylistsContext'
 
 interface Props{
     song: Song,
@@ -39,6 +40,7 @@ const SongTile: React.FC<Props> = ({song, page, playlistName}) => {
   const {dispatch} = useContext(QueueSongsContext)
   const linkTo: string|undefined = page === 'album' ? song.tag.tags.album : page === 'artist' ? song.tag.tags.artist : page === 'playlist' ? playlistName : ''
 
+  const {playlists} = useContext(PlaylistContext)
   const getAllSongs: () => Array<Song> = () => {
     if(page === 'album'){
       const albumSongs = songs.filter(item => item.tag.tags.album === song.tag.tags.album)
@@ -59,7 +61,7 @@ const SongTile: React.FC<Props> = ({song, page, playlistName}) => {
   const openContextMenu = (e: React.MouseEvent) => {
     e.preventDefault()
     const itemClicked = getAllSongs()
-    contextMenuDispatch({type: 'OPEN_MENU', payload: {x: e.clientX, y: e.clientY, lastClicked: itemClicked}})
+    contextMenuDispatch({type: 'OPEN_MENU', payload: {x: e.clientX, y: e.clientY, lastClicked: itemClicked, nameClicked: playlistName}})
   }
 
   const playSong = () => {

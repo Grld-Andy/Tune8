@@ -1,14 +1,16 @@
 import React, { useContext } from 'react'
 import './style.css'
-import { PlaylistInterface, playlists } from '../../assets'
 import { useParams } from 'react-router-dom'
 import SongListItem from '../../components/SongListItem/SongListItem'
 import { shuffleArray, TotalDuration } from '../../constants'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
+import { PlaylistContext } from '../../contexts/PlaylistsContext'
+import { PlaylistInterface } from '../../data'
 
 const Playlist: React.FC = () => {
   const {playlist} = useParams<string>()
+  const {playlists, playlistsDispatch} = useContext(PlaylistContext)
   const playlistSongs: PlaylistInterface = playlists.filter(item => item.name === playlist)[0]
   
   const {dispatch} = useContext(QueueSongsContext)
@@ -26,12 +28,16 @@ const Playlist: React.FC = () => {
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0})
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
+  const clearPlaylist: () => void = () => {
+    if(playlist)
+    playlistsDispatch({type: 'CLEAR_PLAYLIST', payload: {name: playlist, songs: []}})
+  }
 
   return (
     <>
       <div className="singles-nav">
         <div className="singles-image circle">
-          <img src={playlistSongs.songs[0]?.imageSrc}/>
+          <img src={playlistSongs.songs[0] ? playlistSongs.songs[0].imageSrc : playlistSongs.defaultImage}/>
         </div>
         <div className="singles-info">
           <h1>
@@ -46,6 +52,7 @@ const Playlist: React.FC = () => {
           <div className="buttons">
             <button className="play" onClick={playAllSongs}>Play All</button>
             <button className="shuffle" onClick={shuffleSongs}>Shuffle and Play</button>
+            <button className="shuffle" onClick={clearPlaylist}>Clear</button>
             <button className="add">Add to</button>
           </div>
         </div>
