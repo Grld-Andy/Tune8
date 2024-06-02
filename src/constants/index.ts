@@ -15,8 +15,8 @@ export const DurationToString = (totalSeconds:number) => {
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
     return hours > 0 ?
-        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}` :
-        `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+        `${String(Math.trunc(hours)).padStart(2, '0')}:${String(Math.trunc(minutes)).padStart(2, '0')}:${String(Math.trunc(seconds)).padStart(2, '0')}` :
+        `${String(Math.trunc(minutes)).padStart(2, '0')}:${String(Math.trunc(seconds)).padStart(2, '0')}`
 }
 export const TotalDuration: (s:Song[]) => string = (songs: Song[]) => {
     let totalTime = 0

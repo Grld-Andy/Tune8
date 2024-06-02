@@ -50,8 +50,15 @@ const ContextMenu: React.FC = () => {
   const remove = () => {
     switch(location.pathname){
       case '/queue':
-        if(contextMenu.indexClicked)
+        if(contextMenu.indexClicked || contextMenu.indexClicked === 0){
+          if(queue.length > 1){
+            let nextIndex = contextMenu.indexClicked + 1
+            if(nextIndex >= queue.length) nextIndex = 0
+            currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[nextIndex], index: nextIndex!==0 ? nextIndex-1 : 0})
+          }
+          else currentSongDispatch({type: 'CLEAR_CURRENT_SONG', payload: null, index: -1})
           dispatch({type: 'REMOVE_FROM_QUEUE', payload: [], index: contextMenu.indexClicked})
+        }
         break
       case '/favorites':
         favoritesDispatch({type: 'REMOVE_FROM_FAVORITES', payload: contextMenu.lastClicked})
@@ -91,7 +98,10 @@ const ContextMenu: React.FC = () => {
                     }
                 </div>
             </h2>
-            <h2 onClick={remove}>Remove</h2>
+            {
+              location.pathname === '/songs'||
+              <h2 onClick={remove}>Remove</h2>
+            }
             <h2 className='to-sub'>View ...
                 <div className='submenu'>
                     <h2>

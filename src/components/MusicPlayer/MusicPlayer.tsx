@@ -1,15 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {FaCirclePause, FaCirclePlay, FaShuffle, FaForward, FaBackward} from 'react-icons/fa6'
 import {ImEnlarge} from 'react-icons/im'
 import {TbRepeat, TbRepeatOnce, TbRepeatOff} from 'react-icons/tb'
 import {HiMiniWindow, HiMiniEllipsisHorizontal} from 'react-icons/hi2'
 import {MdFavoriteBorder, MdFavorite} from 'react-icons/md'
-import { song1 } from '../../assets'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import './style.css'
 import FavoritesContext from '../../contexts/FavoritesContext'
-import { shuffleArray } from '../../constants'
+import { DurationToString, shuffleArray } from '../../constants'
 
 const MusicPlayer: React.FC = () => {
   // repeat logic
@@ -25,6 +24,7 @@ const MusicPlayer: React.FC = () => {
   }
 
   // currentsong logic(next, prev, shuffle, play/pause)
+  const audioRef = useRef<HTMLAudioElement|null>(null)
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const {queue} = useContext(QueueSongsContext)
   const nextSong: () => void = () => {
@@ -70,15 +70,60 @@ const MusicPlayer: React.FC = () => {
   useEffect(() => {
     setIsFavorite(favorites.some(favSong => favSong.tag.tags.title === currentSong.song?.tag.tags.title))
   }, [currentSong, favorites])
+  useEffect(() => {
+    if(currentSong){
+      if(isPlaying)
+        audioRef.current?.play()
+      else
+        audioRef.current?.pause()
+    }else{
+      if(audioRef.current)
+        audioRef.current = null
+    }
+  }, [isPlaying, currentSong])
+
+  // progress bar logic
+  const [songProgress, setSongProgress] = useState<number>(0)
+  const [timePlayed, setTimePlayed] = useState<string>('00:00')
+  const intervalRef = useRef<number | null>(null)
+  const handleSongProgress = () => {
+    if(intervalRef.current){
+      clearInterval(intervalRef.current)
+    }
+    intervalRef.current = window.setInterval(() => {
+      if(audioRef.current){
+        setSongProgress(audioRef.current.currentTime / audioRef.current.duration * 100)
+        setTimePlayed(DurationToString(audioRef.current.currentTime))
+        if(currentSong.song){
+          if(audioRef.current.currentTime === audioRef.current.duration){
+            if(repeat === 'repeat-all')
+              nextSong()
+            else if(repeat === 'no-repeat')
+              audioRef.current.pause()
+            else if(repeat === 'repeat-one'){
+              currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSong.index], index: currentSong.index})
+            }
+          }
+        }
+      }
+    }, 250)
+  }
+  useEffect(() => {
+    if(currentSong.song)
+      handleSongProgress()
+  }, [currentSong, queue])
+
+  // next when done playing current
 
   return (
     <div className='musicPlayer'>
+      <audio src={currentSong.song?.src} ref={audioRef}></audio>
       <div className="top">
-        <h5>00:00</h5>
-        <progress value={75} max={100}></progress>
+        <h5>{timePlayed}</h5>
+        <progress value={songProgress} max={100}></progress>
         {
-          currentSong.song?
-          <h5>{song1.duration}</h5>:
+          currentSong.song && audioRef.current?
+          <h5>{DurationToString(audioRef.current?.duration)}</h5>:
           <h5>00:00</h5>
         }
       </div>
