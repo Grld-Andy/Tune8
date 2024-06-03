@@ -65,7 +65,7 @@ const SongTile: React.FC<Props> = ({song, page, playlistName}) => {
   }
 
   const playSong = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song, index: 0, isPlaying: true})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song, index: 0, isPlaying: true, reset:true})
     const allSongs: Array<Song> = getAllSongs()
     dispatch({type: 'SET_QUEUE', payload: allSongs, index: 0})
   }
@@ -89,7 +89,9 @@ const SongTile: React.FC<Props> = ({song, page, playlistName}) => {
       {
           page === 'home'
           ?<SongTileDetails song={song} page={page}/>
-          :<Link to={`/${page}View/${linkTo}`}><SongTileDetails song={song} page={page} playlistName={playlistName}/></Link>
+          :<Link to={`/${page}View/${linkTo}`}>
+            <SongTileDetails song={song} page={page} playlistName={playlistName}/>
+          </Link>
         }
     </div>
   )

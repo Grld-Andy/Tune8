@@ -2,25 +2,29 @@ import { createContext, ReactNode, useReducer } from "react";
 import { currentSongReducer } from "../reducers/CurrentSongReducer";
 import { Song } from "../data";
 
-interface Props{
+interface Props {
     children: ReactNode
 }
-export interface CurrentSongState{
-    song: Song|null,
-    index: number,
-    isPlaying?: boolean,
-    // audioRef: HTMLAudioElement|null
+
+export interface CurrentSongState {
+    song: Song | null;
+    index: number;
+    isPlaying?: boolean;
+    audioRef?: HTMLAudioElement | null;
 }
+
 const initialState: CurrentSongState = {
     song: null,
     index: -1,
     isPlaying: false,
-    // audioRef: null
+    audioRef: null
 }
-interface CurrentSongType{
+
+interface CurrentSongType {
     currentSong: CurrentSongState,
-    currentSongDispatch: React.Dispatch<{type: string, payload: Song|null, index: number, isPlaying?: boolean}>
+    currentSongDispatch: React.Dispatch<{ type: string, payload: Song | null, index: number, isPlaying?: boolean, audioRef?: HTMLAudioElement | null, reset?: boolean }>
 }
+
 export const CurrentSongContext = createContext<CurrentSongType>({
     currentSong: initialState,
     currentSongDispatch: () => null
@@ -29,18 +33,19 @@ export const CurrentSongContext = createContext<CurrentSongType>({
 const CurrentSongContextProvider: React.FC<Props> = (props) => {
     const [currentSong, dispatch] = useReducer(currentSongReducer, initialState, () => {
         const lastPlayed = localStorage.getItem('lastPlayed')
-        try { 
-            return lastPlayed ? JSON.parse(lastPlayed) : initialState 
+        try {
+            const parsed = lastPlayed ? JSON.parse(lastPlayed) : initialState;
+            return { ...parsed, audioRef: parsed.song ? new Audio(parsed.song.src) : null };
+        } catch {
+            return initialState;
         }
-        catch { return initialState }
-    })
-    if(currentSong.song)
-        // currentSong.audioRef = new Audio(src: currentSong.song.src)
+    });
 
-    return(
-    <CurrentSongContext.Provider value={{currentSong, currentSongDispatch: dispatch}}>
-        {props.children}
-    </CurrentSongContext.Provider>
-)}
+    return (
+        <CurrentSongContext.Provider value={{ currentSong, currentSongDispatch: dispatch }}>
+            {props.children}
+        </CurrentSongContext.Provider>
+    )
+}
 
-export default CurrentSongContextProvider
+export default CurrentSongContextProvider;

@@ -54,9 +54,11 @@ const ContextMenu: React.FC = () => {
           if(queue.length > 1){
             let nextIndex = contextMenu.indexClicked + 1
             if(nextIndex >= queue.length) nextIndex = 0
-            currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[nextIndex], index: nextIndex!==0 ? nextIndex-1 : 0})
+            currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[nextIndex], index: nextIndex!==0 ? nextIndex-1 : 0, isPlaying: currentSong.isPlaying})
           }
-          else currentSongDispatch({type: 'CLEAR_CURRENT_SONG', payload: null, index: -1})
+          else {
+            currentSongDispatch({type: 'CLEAR_CURRENT_SONG', payload: null, index: -1, audioRef: null, isPlaying: false})
+          }
           dispatch({type: 'REMOVE_FROM_QUEUE', payload: [], index: contextMenu.indexClicked})
         }
         break

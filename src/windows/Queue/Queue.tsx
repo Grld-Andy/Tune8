@@ -11,7 +11,8 @@ const Queue: React.FC = () => {
 
   const clearQueue = () => {
     dispatch({type: 'CLEAR_QUEUE', payload: [], index: 0})
-    currentSongDispatch({type: 'CLEAR_CURRENT_SONG', payload: null, index: -1})
+    currentSongDispatch({type: 'TOGGLE_CURRENT_SONG_STATE', payload: null, index: 0, isPlaying: false})
+    currentSongDispatch({type: 'CLEAR_CURRENT_SONG', payload: null, index: -1, audioRef: null, isPlaying: false})
   }
   const setQueueSongs = () => {
     dispatch({type: 'DEFAULT', payload: queue, index: 0})

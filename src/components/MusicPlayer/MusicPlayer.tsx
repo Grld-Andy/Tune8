@@ -24,7 +24,6 @@ const MusicPlayer: React.FC = () => {
   }
 
   // currentsong logic(next, prev, shuffle, play/pause)
-  const audioRef = useRef<HTMLAudioElement|null>(null)
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const {queue} = useContext(QueueSongsContext)
   const nextSong: () => void = () => {
@@ -32,21 +31,30 @@ const MusicPlayer: React.FC = () => {
     if(currentSongIndex === queue.length-1){
       currentSongIndex = -1
     }
-    if(audioRef.current)audioRef.current.currentTime = 0
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex + 1], index: currentSongIndex + 1})
+    if (currentSong.audioRef) currentSong.audioRef.currentTime = 0
+    currentSongDispatch({
+      type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex + 1], isPlaying: true,
+      index: currentSongIndex + 1, audioRef: new Audio(queue[currentSongIndex + 1].src)
+    })
   }
   const prevSong: () => void = () => {
     let currentSongIndex: number = currentSong.index
     if(currentSongIndex === 0){
       currentSongIndex = queue.length
     }
-    if(audioRef.current)audioRef.current.currentTime = 0
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex - 1], index: currentSongIndex - 1})
+    if (currentSong.audioRef) currentSong.audioRef.currentTime = 0
+    currentSongDispatch({
+      type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex - 1], isPlaying: true,
+      index: currentSongIndex - 1, audioRef: new Audio(queue[currentSongIndex - 1].src)
+    })
   }
   const {dispatch} = useContext(QueueSongsContext)
   const shuffleSongs: () => void = () => {
     const newQueue = shuffleArray(queue)
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0})
+    currentSongDispatch({
+      type: 'SET_CURRENT_SONG', payload: newQueue[0],
+      index: 0, audioRef: new Audio(queue[0].src)
+    })
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
   const togglePlay: (val: boolean) => void = (val: boolean) => {
@@ -72,15 +80,23 @@ const MusicPlayer: React.FC = () => {
     setIsFavorite(favorites.some(favSong => favSong.tag.tags.title === currentSong.song?.tag.tags.title))
   }, [currentSong, favorites])
   useEffect(() => {
-    if(currentSong){
-      if(currentSong.isPlaying)
-        audioRef.current?.play()
+    // if (currentSong) {
+      if (currentSong.isPlaying)
+        currentSong.audioRef?.play()
       else
-        audioRef.current?.pause()
-    }else{
-      if(audioRef.current)
-        audioRef.current = null
-    }
+        currentSong.audioRef?.pause()
+    // } 
+    // else {
+    //   if (currentSong.audioRef)
+    //     currentSong.audioRef = null
+    // }
+  }, [currentSong])
+
+  // reset time played if no song playing
+  useEffect(() => {
+    if(!currentSong)
+      setTimePlayed('00:00')
+      setSongProgress(0)
   }, [currentSong])
 
   // progress bar logic
@@ -92,21 +108,21 @@ const MusicPlayer: React.FC = () => {
       clearInterval(intervalRef.current)
     }
     intervalRef.current = window.setInterval(() => {
-      if(audioRef.current){
-        setSongProgress(audioRef.current.currentTime / audioRef.current.duration * 100)
-        setTimePlayed(DurationToString(audioRef.current.currentTime))
-        if(currentSong.song){
-          if(audioRef.current.currentTime === audioRef.current.duration){
-            if(repeat === 'repeat-all')
+      if (currentSong.audioRef) {
+        setSongProgress(currentSong.audioRef.currentTime / currentSong.audioRef.duration * 100)
+        setTimePlayed(DurationToString(currentSong.audioRef.currentTime))
+        if (currentSong.song) {
+          if (currentSong.audioRef.currentTime === currentSong.audioRef.duration) {
+            if (repeat === 'repeat-all')
               nextSong()
-            else if(repeat === 'no-repeat' && currentSong.index === queue.length - 1){
-              audioRef.current.pause()
+            else if (repeat === 'no-repeat' && currentSong.index === queue.length - 1) {
+              currentSong.audioRef.pause()
               togglePlay(false)
             }
-            else if(repeat === 'repeat-one'){
-              audioRef.current.currentTime = 0
-              audioRef.current.play()
-            }else{
+            else if (repeat === 'repeat-one') {
+              currentSong.audioRef.currentTime = 0
+              currentSong.audioRef.play()
+            } else {
               nextSong()
             }
           }
@@ -122,24 +138,24 @@ const MusicPlayer: React.FC = () => {
   // progress bar click logic
   const progressRef = useRef<HTMLDivElement|null>(null)
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (progressRef.current && audioRef.current) {
+    if (progressRef.current && currentSong.audioRef) {
       const width = progressRef.current.clientWidth
       const offset = e.nativeEvent.offsetX
       const divprogress = (offset / width) * 100
-      audioRef.current.currentTime = (divprogress / 100) * audioRef.current.duration
+      currentSong.audioRef.currentTime = (divprogress / 100) * currentSong.audioRef.duration
     }
   }
 
   return (
     <div className='musicPlayer'>
-      <audio src={currentSong.song?.src} ref={audioRef}></audio>
+      <audio src={currentSong.song?.src} ref={el => { currentSong.audioRef = el }}></audio>
       <div className="top">
         <div>
           <h5>{timePlayed}</h5>
         </div>
         <div className="custom_progress" onClick={handleProgressClick} ref={progressRef}>
           {
-            audioRef.current?
+            currentSong.audioRef ?
             <div className="progress_bar" style={{width: `${songProgress}%`}}>
                 <div className="progress_thumb"></div>
             </div>:
@@ -150,8 +166,8 @@ const MusicPlayer: React.FC = () => {
         </div>
         <div>
           {
-            currentSong.song && audioRef.current?
-            <h5>{DurationToString(audioRef.current?.duration)}</h5>:
+            currentSong.song && currentSong.audioRef ?
+            <h5>{DurationToString(currentSong.audioRef?.duration)}</h5> :
             <h5>00:00</h5>
           }
         </div>
