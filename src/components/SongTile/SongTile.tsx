@@ -65,7 +65,7 @@ const SongTile: React.FC<Props> = ({song, page, playlistName}) => {
   }
 
   const playSong = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song, index: 0})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song, index: 0, isPlaying: true})
     const allSongs: Array<Song> = getAllSongs()
     dispatch({type: 'SET_QUEUE', payload: allSongs, index: 0})
   }

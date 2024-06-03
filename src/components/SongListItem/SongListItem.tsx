@@ -13,10 +13,20 @@ interface Props {
   page?: string
 }
 
+const resetSongs: () => boolean = () => {
+  const pathname = location.pathname
+  console.log(pathname)
+  if(pathname === '/songs' || pathname === '/favorites'
+    || pathname.includes('/playlistView/') || pathname.includes('/albumView/')
+    || pathname.includes('/artistView/'))
+  return true
+  else return false
+}
 const SongListItem: React.FC<Props> = ({song, setQueueSongs, index, page = 'link'}) => {
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const playSong = (song: Song) => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song, index: index})
+    const playState = currentSong.song !== song ? true : resetSongs() ? true : currentSong.isPlaying ? false : true
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song, index: index, isPlaying: playState})
     setQueueSongs()
   }
 

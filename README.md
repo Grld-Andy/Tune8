@@ -20,3 +20,4 @@ Customizable Settings: Customize your music listening experience with adjustable
 # ***NB : Still in Development***
 
 fix: media player still plays if there is no song
+fix: remove song plays next song in clicked queue

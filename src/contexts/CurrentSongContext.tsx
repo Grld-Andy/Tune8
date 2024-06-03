@@ -7,15 +7,19 @@ interface Props{
 }
 export interface CurrentSongState{
     song: Song|null,
-    index: number
+    index: number,
+    isPlaying?: boolean,
+    // audioRef: HTMLAudioElement|null
 }
 const initialState: CurrentSongState = {
     song: null,
-    index: -1
+    index: -1,
+    isPlaying: false,
+    // audioRef: null
 }
 interface CurrentSongType{
     currentSong: CurrentSongState,
-    currentSongDispatch: React.Dispatch<{type: string, payload: Song|null, index: number}>
+    currentSongDispatch: React.Dispatch<{type: string, payload: Song|null, index: number, isPlaying?: boolean}>
 }
 export const CurrentSongContext = createContext<CurrentSongType>({
     currentSong: initialState,
@@ -30,6 +34,8 @@ const CurrentSongContextProvider: React.FC<Props> = (props) => {
         }
         catch { return initialState }
     })
+    if(currentSong.song)
+        // currentSong.audioRef = new Audio(src: currentSong.song.src)
 
     return(
     <CurrentSongContext.Provider value={{currentSong, currentSongDispatch: dispatch}}>

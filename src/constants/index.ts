@@ -2,7 +2,7 @@ import { Song } from "../data"
 
 export const alphabets : string[] = Array.from({length: 26}, (_, i) => String.fromCharCode(65 + i))
 
-const convertToSeconds: (t:string) => number = (time: string) => {
+export const convertToSeconds: (t:string) => number = (time: string) => {
     let [minutes, seconds]:number[] = time.split(':').map(Number)
     if(isNaN(minutes) || isNaN(seconds)){
         minutes = 0

@@ -32,6 +32,7 @@ const MusicPlayer: React.FC = () => {
     if(currentSongIndex === queue.length-1){
       currentSongIndex = -1
     }
+    if(audioRef.current)audioRef.current.currentTime = 0
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex + 1], index: currentSongIndex + 1})
   }
   const prevSong: () => void = () => {
@@ -39,6 +40,7 @@ const MusicPlayer: React.FC = () => {
     if(currentSongIndex === 0){
       currentSongIndex = queue.length
     }
+    if(audioRef.current)audioRef.current.currentTime = 0
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex - 1], index: currentSongIndex - 1})
   }
   const {dispatch} = useContext(QueueSongsContext)
@@ -47,9 +49,8 @@ const MusicPlayer: React.FC = () => {
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0})
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
-  const [isPlaying, setIsPlaying] = useState(false)
-  const togglePlay: () => void = () => {
-    setIsPlaying(!isPlaying)
+  const togglePlay: (val: boolean) => void = (val: boolean) => {
+    currentSongDispatch({type: 'TOGGLE_CURRENT_SONG_STATE', payload: null, index: 0, isPlaying: val})
   }
   
   // favorites logic
@@ -72,7 +73,7 @@ const MusicPlayer: React.FC = () => {
   }, [currentSong, favorites])
   useEffect(() => {
     if(currentSong){
-      if(isPlaying)
+      if(currentSong.isPlaying)
         audioRef.current?.play()
       else
         audioRef.current?.pause()
@@ -80,7 +81,7 @@ const MusicPlayer: React.FC = () => {
       if(audioRef.current)
         audioRef.current = null
     }
-  }, [isPlaying, currentSong])
+  }, [currentSong])
 
   // progress bar logic
   const [songProgress, setSongProgress] = useState<number>(0)
@@ -98,10 +99,15 @@ const MusicPlayer: React.FC = () => {
           if(audioRef.current.currentTime === audioRef.current.duration){
             if(repeat === 'repeat-all')
               nextSong()
-            else if(repeat === 'no-repeat')
+            else if(repeat === 'no-repeat' && currentSong.index === queue.length - 1){
               audioRef.current.pause()
+              togglePlay(false)
+            }
             else if(repeat === 'repeat-one'){
               audioRef.current.currentTime = 0
+              audioRef.current.play()
+            }else{
+              nextSong()
             }
           }
         }
@@ -113,19 +119,42 @@ const MusicPlayer: React.FC = () => {
       handleSongProgress()
   }, [currentSong, queue])
 
-  // next when done playing current
+  // progress bar click logic
+  const progressRef = useRef<HTMLDivElement|null>(null)
+  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (progressRef.current && audioRef.current) {
+      const width = progressRef.current.clientWidth
+      const offset = e.nativeEvent.offsetX
+      const divprogress = (offset / width) * 100
+      audioRef.current.currentTime = (divprogress / 100) * audioRef.current.duration
+    }
+  }
 
   return (
     <div className='musicPlayer'>
       <audio src={currentSong.song?.src} ref={audioRef}></audio>
       <div className="top">
-        <h5>{timePlayed}</h5>
-        <progress value={songProgress} max={100}></progress>
-        {
-          currentSong.song && audioRef.current?
-          <h5>{DurationToString(audioRef.current?.duration)}</h5>:
-          <h5>00:00</h5>
-        }
+        <div>
+          <h5>{timePlayed}</h5>
+        </div>
+        <div className="custom_progress" onClick={handleProgressClick} ref={progressRef}>
+          {
+            audioRef.current?
+            <div className="progress_bar" style={{width: `${songProgress}%`}}>
+                <div className="progress_thumb"></div>
+            </div>:
+            <div className="progress_bar" style={{width: '0%'}}>
+              <div className="progress_thumb"></div>
+            </div>
+          }
+        </div>
+        <div>
+          {
+            currentSong.song && audioRef.current?
+            <h5>{DurationToString(audioRef.current?.duration)}</h5>:
+            <h5>00:00</h5>
+          }
+        </div>
       </div>
       <div className="bottom">
         <div className="b-left">
@@ -160,9 +189,9 @@ const MusicPlayer: React.FC = () => {
           }
           <FaBackward className='icon prev_icon' onClick={prevSong}/>
           {
-            isPlaying?
-            <FaCirclePause className='icon pause_icon' size={40} onClick={togglePlay}/>:
-            <FaCirclePlay className='icon play_icon' size={40} onClick={togglePlay}/>
+            currentSong.isPlaying?
+            <FaCirclePause className='icon pause_icon' size={40} onClick={() => {togglePlay(false)}}/>:
+            <FaCirclePlay className='icon play_icon' size={40} onClick={() => {togglePlay(true)}}/>
           }
           <FaForward className='icon next_icon' onClick={nextSong}/>
           <HiMiniWindow className='icon mini_icon'/>

@@ -2,17 +2,47 @@
     height: 100%;
     color: var(--primary-text-color);
     .top{
-        display: flex;
         width: 100vw;
-        align-items: center;
+        overflow: hidden;
+        padding: 5px 10px;
+        display: flex;
         justify-content: space-between;
+        align-items: center;
         h5{
-            padding: 5px 10px;
             font-weight: 400;
             cursor: default;
         }
-        progress{
+        .custom_progress{
+            border: 1px solid var(--primary-text-color);
+            height: 8px;
             width: 100%;
+            border-radius: 10px;
+            position: relative;
+            margin: 0 20px;
+            padding: 1px;
+            .progress_bar{
+                background-color:  var(--primary-text-color);
+                height: calc(100% - 2px);
+                position: relative;
+                top: 1px;
+                margin: 0 2px;
+                left: -1px;
+                border-radius: 10px;
+                .progress_thumb{
+                    width: 18px;
+                    height: 18px;
+                    background-color:  var(--primary-text-color);
+                    box-shadow: inset 0 0 0 5px orange;
+                    position: absolute;
+                    left: calc(100% - 9px);
+                    top: -7px;
+                    border-radius: 50%;
+                    transition: .3s ease-in-out;
+                    &:hover{
+                        box-shadow: inset 0 0 0 3px var(--progress-thumb-color);
+                    }
+                }
+            }
         }
     }
     .bottom{
