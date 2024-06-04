@@ -32,10 +32,10 @@
                     width: 18px;
                     height: 18px;
                     background-color:  var(--primary-text-color);
-                    box-shadow: inset 0 0 0 5px orange;
+                    box-shadow: inset 0 0 0 5px var(--sidebar-link-color);
                     position: absolute;
-                    left: calc(100% - 9px);
-                    top: -7px;
+                    left: calc(100% - 12px);
+                    top: -8px;
                     border-radius: 50%;
                     transition: .3s ease-in-out;
                     &:hover{
