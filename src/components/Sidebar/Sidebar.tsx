@@ -8,8 +8,7 @@ import { profile } from '../../assets'
 import { useLocation } from 'react-router-dom'
 
 const Sidebar: React.FC = () => {
-  const location = useLocation();
-  console.log(location.pathname)
+  const location = useLocation()
   return (
     <div className='sidebar'>
       <div className="profile">

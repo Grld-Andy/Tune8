@@ -54,6 +54,7 @@
   align-items: center;
   gap: 10px;
   justify-content: space-between;
+  height: 69px;
 }
 .musicPlayer .bottom .b-left {
   display: flex;
@@ -61,6 +62,9 @@
   border-radius: 5px;
   transition: 0.3s ease-in-out;
   overflow: hidden;
+  height: 69px;
+  width: -moz-min-content;
+  width: min-content;
 }
 .musicPlayer .bottom .b-left:hover {
   background-color: gray;
@@ -80,15 +84,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  transition: 0.5s;
 }
 .musicPlayer .bottom .b-left .text {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   padding: 5px 0;
+  padding-right: 20px;
   cursor: default;
   width: 100%;
   overflow: hidden;
+  position: relative;
+  transition: 0.5s;
 }
 .musicPlayer .bottom .b-left .text h5 {
   font-size: 1.1em;
@@ -97,6 +106,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-wrap: nowrap;
+}
+.musicPlayer .bottom .lyrics-true img, .musicPlayer .bottom .lyrics-true .text {
+  transform: translateX(-70px);
+}
+.musicPlayer .bottom .lyrics-true img {
+  opacity: 0;
 }
 .musicPlayer .bottom .b-center {
   width: 220px;

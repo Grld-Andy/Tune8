@@ -101,7 +101,9 @@ const ContextMenu: React.FC = () => {
                 </div>
             </h2>
             {
-              location.pathname === '/songs'||
+              location.pathname === '/songs' || location.pathname === '/'
+              || location.pathname === '/albums' || location.pathname === '/artists'
+              || location.pathname.includes('/albumView') || location.pathname.includes('/artistView') ||
               <h2 onClick={remove}>Remove</h2>
             }
             <h2 className='to-sub'>View ...

@@ -1,0 +1,94 @@
+.lyrics-view{
+    display: grid;
+    grid-template-columns: 250px auto;
+    flex-direction: row;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 25;
+    background-color: var(--right-bg-color);
+    width: 100%;
+    height: calc(100% - 100px);
+    color: var(--primary-text-color);
+    padding: 10px;
+    gap: 20px;
+    transition: .5s;
+    overflow: hidden;
+    .info{
+        align-self: flex-end;
+        justify-self: flex-start;
+        border-radius: 10px;
+        overflow: hidden;
+        width: 250px;
+        height: 250px;
+        box-shadow: 0 0 5px black;
+        transform: translateX(-300px);
+        opacity: 0;
+        transition: .5s;
+        img{
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .lyrics{
+        overflow-y: scroll;
+        opacity: 0;
+        transition: .5s;
+        p{
+            font-size: 1.5em;
+        }
+        &::-webkit-scrollbar{
+            display: none;
+        }
+    }
+    @media (max-width: 700px) {
+        grid-template-columns: 120px auto;
+        .info{
+            width: 120px;
+            height: 120px;
+        }
+    }
+    @media (max-height: 400px) {
+        grid-template-columns: 120px auto;
+        .info{
+            width: 120px;
+            height: 120px;
+        }
+    }
+}
+.lyrics-view-false{
+    opacity: 0;
+    animation: hide .2s ease-in;
+    pointer-events: none;
+    .lyrics{
+        opacity: 1;
+        scale: .5
+    }
+}
+.lyrics-view-true{
+    animation: show .2s ease-in;
+    .info{
+        transform: translateX(0);
+        opacity: 1;
+    }
+    .lyrics{
+        opacity: 1;
+        scale: 1
+    }
+}
+@keyframes show {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+@keyframes hide {
+    from{
+        opacity: 1;
+    }
+    to{
+        opacity: 0;
+    }
+}

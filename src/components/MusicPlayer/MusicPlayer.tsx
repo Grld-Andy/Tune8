@@ -10,7 +10,12 @@ import './style.css'
 import FavoritesContext from '../../contexts/FavoritesContext'
 import { DurationToString, shuffleArray } from '../../constants'
 
-const MusicPlayer: React.FC = () => {
+interface Props{
+  displayLyrics: () => void,
+  showLyrics: boolean
+}
+
+const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
   // repeat logic
   const repeatTypes: Array<string> = ['repeat-all', 'no-repeat', 'repeat-one']
   const [repeat, setRepeat] = useState(localStorage.getItem('repeatType') ? localStorage.getItem('repeatType') : repeatTypes[0])
@@ -33,7 +38,7 @@ const MusicPlayer: React.FC = () => {
     }
     if (currentSong.audioRef) currentSong.audioRef.currentTime = 0
     currentSongDispatch({
-      type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex + 1], isPlaying: true,
+      type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex + 1], isPlaying: currentSong.isPlaying,
       index: currentSongIndex + 1, audioRef: new Audio(queue[currentSongIndex + 1].src)
     })
   }
@@ -44,7 +49,7 @@ const MusicPlayer: React.FC = () => {
     }
     if (currentSong.audioRef) currentSong.audioRef.currentTime = 0
     currentSongDispatch({
-      type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex - 1], isPlaying: true,
+      type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex - 1], isPlaying: currentSong.isPlaying,
       index: currentSongIndex - 1, audioRef: new Audio(queue[currentSongIndex - 1].src)
     })
   }
@@ -94,9 +99,10 @@ const MusicPlayer: React.FC = () => {
 
   // reset time played if no song playing
   useEffect(() => {
-    if(!currentSong)
+    if(!currentSong){
       setTimePlayed('00:00')
       setSongProgress(0)
+    }
   }, [currentSong])
 
   // progress bar logic
@@ -146,6 +152,11 @@ const MusicPlayer: React.FC = () => {
     }
   }
 
+  // handle lyrics
+  const toggleLyricsView = () => {
+    displayLyrics()
+  }
+
   return (
     <div className='musicPlayer'>
       <audio src={currentSong.song?.src} ref={el => { currentSong.audioRef = el }}></audio>
@@ -173,7 +184,7 @@ const MusicPlayer: React.FC = () => {
         </div>
       </div>
       <div className="bottom">
-        <div className="b-left">
+        <div className={`b-left lyrics-${showLyrics}`} onClick={toggleLyricsView}>
           {
             currentSong.song?
             <img src={currentSong.song.imageSrc} alt=''/>:
