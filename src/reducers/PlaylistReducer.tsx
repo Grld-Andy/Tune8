@@ -11,7 +11,7 @@ export const PlaylistReducer = (playlists: Array<PlaylistInterface>, action: {ty
             return playlists.filter(playlist => playlist.name !== action.payload.name)
         // case 'ADD_TO_PLAYLIST':
         //     return playlists.map(playlist => {
-        //         if(playlist.name === action.playlistName){
+        //         if(playlist.name === action.payload.name){
         //             return {...playlist, songs: [...playlist.songs, action.song]}
         //         }else{
         //             return playlist

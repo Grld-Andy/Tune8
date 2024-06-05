@@ -12,10 +12,13 @@ const PlaylistForm: React.FC = () => {
         setPlaylistName(val)
     }
     const handlePlaylistInteract = (val: string) => {
-        if(val === 'submit'){
-            playlistsDispatch({ type: 'CREATE_PLAYLIST', payload: {name:playlistName, songs: []} })
+        if(playlistName){
+            if(val === 'submit'){
+                playlistsDispatch({ type: 'CREATE_PLAYLIST', payload: {name:playlistName, songs: []} })
+            }
         }
         playlistFormDispatch({type: 'CLOSE_FORM'})
+        
     }
     
     return (

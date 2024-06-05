@@ -5,6 +5,7 @@ import SongTile from '../../components/SongTile/SongTile'
 import { SortedPlaylists, SortedSongs } from '../../data'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { placeholderSongImages } from '../../assets'
+import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
 
 const Playlists: React.FC = () => {
   const [showNav, setShowNav] = useState(false)
@@ -31,6 +32,12 @@ const Playlists: React.FC = () => {
     Allplaylists[firstLetter].add(playlist)
   })
 
+  // create playlist
+  const {playlistFormDispatch} = useContext(PlaylistFormContext)
+  const createPlaylist = () => {
+    playlistFormDispatch({type: 'OPEN_FORM'})
+  }
+
   return (
     <>
       <nav>
@@ -38,7 +45,7 @@ const Playlists: React.FC = () => {
           <h1>Playlists</h1>
         </div>
         <div className="nav-right">
-          <button>Create New</button>
+          <button onClick={createPlaylist}>Create New</button>
           <button>Sort by</button>
           <button>Add Files</button>
         </div>
