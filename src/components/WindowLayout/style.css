@@ -10,6 +10,11 @@
   --singles-nav-image-shadow: #000;
   --music-player-shadow: #0005;
   --sidebar-link-color: #f70;
+  --playlist-buttons-bg: #ccc;
+  --songs-nav-bg: #fff;
+  --songs-nav-open-links: #000;
+  --songs-nav-open-links-bg: #ddd;
+  --playlist-overlay-bg: #3339;
 }
 
 .dark {
@@ -24,6 +29,11 @@
   --singles-nav-image-shadow: #000;
   --music-player-shadow: #0003;
   --sidebar-link-color: #ff0;
+  --playlist-buttons-bg: #222;
+  --songs-nav-bg: #222;
+  --songs-nav-open-links: #fff;
+  --songs-nav-open-links-bg: #333;
+  --playlist-overlay-bg: #3339;
 }
 
 .context-overlay {
@@ -96,6 +106,28 @@
   border-radius: 10px;
 }
 
+.empty-window {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-text-color);
+  flex-direction: column;
+}
+.empty-window .cell button {
+  margin-top: 20px;
+  padding: 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  width: 100%;
+  background-color: var(--primary-button-bg-color);
+  color: var(--primary-text-color);
+  cursor: pointer;
+  transition: 0.3s ease-in;
+}
+.empty-window .cell button:hover {
+  background-color: var(--primary-button-bg-hover);
+}
+
 nav {
   height: 15vh;
   padding: 10px;
@@ -123,7 +155,7 @@ nav .nav-right button {
   background-color: var(--primary-button-bg-color);
   color: var(--primary-text-color);
   cursor: pointer;
-  transition: 0.3s ease-in;
+  transition: 0.1s;
 }
 nav .nav-right button:hover {
   background-color: var(--primary-button-bg-hover);

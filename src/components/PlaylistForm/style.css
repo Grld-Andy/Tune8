@@ -1,0 +1,60 @@
+.playlistForm {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--playlist-overlay-bg);
+  z-index: 21;
+  overflow: hidden;
+  position: fixed;
+}
+.playlistForm .container {
+  background-color: var(--music-player-bg-color);
+  border-radius: 5px;
+  border: 1px solid white;
+  box-shadow: 0 0 10px black;
+  color: var(--primary-text-color);
+  overflow: hidden;
+  width: 280px;
+}
+.playlistForm .container h1 {
+  margin-bottom: 50px;
+  margin: 10px;
+  font-size: 2em;
+}
+.playlistForm .container input {
+  background-color: var(--right-bg-color);
+  color: var(--primary-text-color);
+  width: calc(100% - 20px);
+  padding: 5px;
+  font-size: 1.2em;
+  text-decoration: none;
+  margin: 10px;
+  border: 1px solid var(--primary-text-color);
+  border-radius: 5px;
+}
+.playlistForm .container .buttons {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  justify-content: space-between;
+  background-color: var(--playlist-buttons-bg);
+}
+.playlistForm .container .buttons button {
+  padding: 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  width: 100%;
+  background-color: var(--primary-button-bg-color);
+  color: var(--primary-text-color);
+  cursor: pointer;
+  transition: 0.1s;
+  font-size: 1em;
+}
+.playlistForm .container .buttons button:hover {
+  background-color: var(--primary-button-bg-hover);
+}/*# sourceMappingURL=style.css.map */

@@ -15,7 +15,6 @@ const Albums: React.FC = () => {
   }
 
   const albums: SortedSongs = {}
-
   songs.forEach(song => {
     let firstLetter:string = song.tag.tags.album.charAt(0).toUpperCase()
     firstLetter = /^[A-Za-z]$/.test(firstLetter) ? firstLetter : '#'
@@ -42,7 +41,8 @@ const Albums: React.FC = () => {
       <div className="albums view">
             {
               showNav &&
-              <MusicNavigation toggleShowNav={toggleShowNav} object={albums} closeAndScroll={closeAndScroll}/>
+              <MusicNavigation toggleShowNav={toggleShowNav}
+              object={albums} closeAndScroll={closeAndScroll}/>
             }
             {
               Object.keys(albums).sort().map(letter => (
@@ -50,7 +50,7 @@ const Albums: React.FC = () => {
                   <h2 onClick={toggleShowNav}>{letter}</h2>
                   <div className="cards">
                     {
-                      Array.from(albums[letter]).map(song => (
+                      Array.from(albums[letter]).sort().map(song => (
                         <SongTile
                           song={song}
                           key={song.tag.tags.title}

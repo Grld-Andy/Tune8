@@ -42,8 +42,10 @@ const Playlists: React.FC = () => {
           <button>Sort by</button>
           <button>Add Files</button>
         </div>
-      </nav> 
-      <div className="albums view">
+      </nav>
+      {
+        playlists.length > 0?
+        <div className="albums view">
             {/* {
               showNav &&
               <MusicNavigation toggleShowNav={toggleShowNav} object={Allplaylists} closeAndScroll={closeAndScroll}/>
@@ -73,7 +75,15 @@ const Playlists: React.FC = () => {
                 </section>
               ))
             }
+      </div>:
+      <div className="empty-window view">
+        <div className="cell">
+          <h1>No playlist here</h1>
+          <button>Add +</button>
+        </div>
       </div>
+      }
+      
     </>
   )
 }

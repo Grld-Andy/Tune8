@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import './style.css'
 
@@ -8,6 +8,41 @@ interface Props{
 
 const LyricsView: React.FC<Props> = ({showLyrics}) => {
     const {currentSong} = useContext(CurrentSongContext)
+    const [lyrics, setLyrics] = useState<string>('')
+    
+    const getLyrics = async() => {
+        if(currentSong.song){
+            const getSavedLyrics = localStorage.getItem(currentSong.song.tag.tags.title)
+            if(getSavedLyrics){
+                console.log(getSavedLyrics)
+                setLyrics(getSavedLyrics)
+                return
+            }
+            try{
+                const response = await fetch(
+                    `https://api.lyrics.ovh/v1/${currentSong.song.tag.tags.artist}/${currentSong.song.tag.tags.title.split('|')[0].split('ft')[0]}`
+                )
+                const data = await response.json();
+                if (data.lyrics !== undefined) {
+                    let lyricsFileContent:string = data.lyrics;
+                    if(!lyricsFileContent){
+                        lyricsFileContent = "Not found"
+                    }
+                    setLyrics(lyricsFileContent)
+                    localStorage.setItem(currentSong.song.tag.tags.title, data.lyrics)
+                } else {
+                    setLyrics("Not found")
+                }
+            }catch{
+                setLyrics("Not found")
+            }
+        }
+    }
+
+    useEffect(() => {
+        setLyrics("Searching ...")
+        setTimeout(() => {getLyrics()}, 500)
+    }, [currentSong])
 
     return (
     <>
@@ -18,16 +53,7 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
                     <img src={currentSong.song?.imageSrc} />
                 </div>
                 <div className="lyrics">
-                    <p>
-                        [Neffex]<br/><br/>
-                        Lorem ipsum dolor, sit amet consectetur
-                        adipisicing elit.<br/> Voluptas sit obcaecati
-                        consectetur, placeat enim ab id illum
-                        molestiae.<br/><br/> Illo ipsam eius facilis quas,
-                        error recusandae similique nam dignissimos
-                        magni velit non ut soluta, qui aut quos.<br/><br/>
-                        Saepe, aliquam hic? Iusto.<br/>
-                    </p>
+                    <p dangerouslySetInnerHTML={{ __html: lyrics }} />
                 </div>
             </div>
         : <></>

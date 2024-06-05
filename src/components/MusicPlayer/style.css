@@ -63,8 +63,6 @@
   transition: 0.3s ease-in-out;
   overflow: hidden;
   height: 69px;
-  width: -moz-min-content;
-  width: min-content;
 }
 .musicPlayer .bottom .b-left:hover {
   background-color: gray;
@@ -94,7 +92,7 @@
   padding: 5px 0;
   padding-right: 20px;
   cursor: default;
-  width: 100%;
+  width: 600px;
   overflow: hidden;
   position: relative;
   transition: 0.5s;

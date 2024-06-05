@@ -19,7 +19,6 @@ const WindowLayout: React.FC = () => {
     if(currentSong.song)
       setShowLyrics(!showLyrics)
   }
-  
 
   return (
     <div className={`main ${theme}`}>
