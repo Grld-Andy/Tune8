@@ -35,7 +35,7 @@ const Playlists: React.FC = () => {
   // create playlist
   const {playlistFormDispatch} = useContext(PlaylistFormContext)
   const createPlaylist = () => {
-    playlistFormDispatch({type: 'OPEN_FORM'})
+    playlistFormDispatch({type: 'OPEN_FORM', payload: 'create'})
   }
 
   return (

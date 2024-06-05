@@ -14,7 +14,6 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
         if(currentSong.song){
             const getSavedLyrics = localStorage.getItem(currentSong.song.tag.tags.title)
             if(getSavedLyrics){
-                console.log(getSavedLyrics)
                 setLyrics(getSavedLyrics)
                 return
             }

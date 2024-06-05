@@ -4,14 +4,18 @@ import { PlaylistFormReducer } from '../reducers/PlaylistFormReducer'
 interface Props{
     children: ReactNode
 }
+export interface PlaylistFormState{
+    isOpen: boolean,
+    payload: string
+}
 interface PlaylistFormContextType{
-    playlistForm: {isOpen: boolean},
-    playlistFormDispatch: Dispatch<{ type: string }>
+    playlistForm: PlaylistFormState,
+    playlistFormDispatch: Dispatch<{ type: string, payload: string }>
 }
 const initialState = {
-    isOpen: false
+    isOpen: false,
+    payload: ''
 }
-
 export const PlaylistFormContext = createContext<PlaylistFormContextType>({
     playlistForm: initialState,
     playlistFormDispatch: () => null

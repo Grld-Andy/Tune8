@@ -1,9 +1,11 @@
-export const PlaylistFormReducer = (state: {isOpen: boolean}, action: {type: string}) => {
+import { PlaylistFormState } from "../contexts/PlaylistFormContext"
+
+export const PlaylistFormReducer = (state: PlaylistFormState, action: {type: string, payload: string}): PlaylistFormState  => {
     switch(action.type){
         case 'OPEN_FORM':
-            return {...state, isOpen: true}
+            return {payload: action.payload, isOpen: true}
         case 'CLOSE_FORM':
-            return {state, isOpen: false}
+            return {payload: '', isOpen: false}
         default:
             return state
     }

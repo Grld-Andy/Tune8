@@ -10,7 +10,7 @@ interface PlaylistContextType{
     playlists: Array<PlaylistInterface> | [],
     playlistsDispatch: React.Dispatch<{
         type: string;payload: PlaylistInterface;
-        song?: Song; playlistName?: string
+        songs?: Array<Song>; playlistName?: string
     }>
 }
 

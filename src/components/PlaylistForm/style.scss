@@ -1,3 +1,9 @@
+.light{
+    --songs-color: #444;
+}
+.dark{
+    --songs-color: #ddd;
+}
 .playlistForm{
     position: absolute;
     top: 0;
@@ -23,6 +29,37 @@
             margin-bottom: 50px;
             margin: 10px;
             font-size: 2em;
+        }
+        .playlist{
+            display: flex;
+            gap: 10px;
+            margin: 5px 10px;
+            padding: 2.5px;
+            border-radius: 5px;
+            border: 1px solid grey;
+            &:hover{
+                background-color: var(--subtitle-text-color);
+            }
+            img{
+                border-radius: 5px;
+                width: 50px;
+                height: 50px;
+            }
+            .p-info{
+                display: flex;
+                flex-direction: column;
+                color: var(--primary-text-color);
+                *{
+                    cursor: default;
+                }
+                h2{
+                    font-size: 1.2em;
+                }
+                h3{
+                    font-size: 1em;
+                    color: var(--songs-color);
+                }
+            }
         }
         input{
             background-color: var(--right-bg-color);

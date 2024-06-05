@@ -6,6 +6,7 @@ import { QueueSongsContext } from '../../contexts/QueueSongsContext';
 import { FavoritesContext } from '../../contexts/FavoritesContext';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { PlaylistContext } from '../../contexts/PlaylistsContext';
+import { PlaylistFormContext } from '../../contexts/PlaylistFormContext';
 
 const ContextMenu: React.FC = () => {
   const { contextMenu, contextMenuDispatch } = useContext(ContextMenuContext);
@@ -36,6 +37,10 @@ const ContextMenu: React.FC = () => {
     }
     const currentSongQueueID = queue.findIndex(item => item.tag.tags.title === currentSong.song?.tag.tags.title)
     dispatch({type: 'PLAY_NEXT', payload: contextMenu.lastClicked, index: currentSongQueueID})
+  }
+  const {playlistFormDispatch} = useContext(PlaylistFormContext)
+  const addToPlaylist = () => {
+    playlistFormDispatch({type: 'OPEN_FORM', payload: 'add'})
   }
   const addToQueue = () => {
     if(!currentSong.song){
@@ -93,7 +98,7 @@ const ContextMenu: React.FC = () => {
                 Add to...
                 <div className='submenu'>
                     <h2 onClick={addToQueue}>Queue</h2>
-                    <h2>Playlist</h2>
+                    <h2 onClick={addToPlaylist}>Playlist</h2>
                     {
                       location.pathname === '/favorites'||
                       <h2 onClick={addToFavorites}>Favorites</h2>
