@@ -12,8 +12,9 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
     
     const getLyrics = async() => {
         if(currentSong.song){
-            const getSavedLyrics = localStorage.getItem(currentSong.song.tag.tags.title)
+            let getSavedLyrics = localStorage.getItem(currentSong.song.tag.tags.title)
             if(getSavedLyrics){
+                getSavedLyrics = getSavedLyrics.replace(/\n/g, '<div></div>')
                 setLyrics(getSavedLyrics)
                 return
             }

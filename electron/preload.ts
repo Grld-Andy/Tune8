@@ -21,4 +21,12 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 
   // You can expose other APTs you need here.
   // ...
+
+  // make mini always on top
+  Minimize(){
+    ipcRenderer.send('minimize')
+  },
+  Maximize(){
+    ipcRenderer.send('maximize')
+  }
 })

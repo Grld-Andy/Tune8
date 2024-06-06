@@ -85,21 +85,15 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
     setIsFavorite(favorites.some(favSong => favSong.tag.tags.title === currentSong.song?.tag.tags.title))
   }, [currentSong, favorites])
   useEffect(() => {
-    // if (currentSong) {
       if (currentSong.isPlaying)
         currentSong.audioRef?.play()
       else
         currentSong.audioRef?.pause()
-    // } 
-    // else {
-    //   if (currentSong.audioRef)
-    //     currentSong.audioRef = null
-    // }
   }, [currentSong])
 
   // reset time played if no song playing
   useEffect(() => {
-    if(!currentSong){
+    if(!currentSong.song){
       setTimePlayed('00:00')
       setSongProgress(0)
     }
@@ -136,6 +130,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
       }
     }, 250)
   }
+
   useEffect(() => {
     if(currentSong.song)
       handleSongProgress()
@@ -155,6 +150,15 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
   // handle lyrics
   const toggleLyricsView = () => {
     displayLyrics()
+  }
+
+  // minimize
+  const minimize = () => {
+    window.ipcRenderer.Minimize()
+  }
+  // maximize
+  const maximize = () => {
+    window.ipcRenderer.Maximize()
   }
 
   return (
@@ -221,7 +225,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
             <FaCirclePlay className='icon play_icon' size={40} onClick={() => {togglePlay(true)}}/>
           }
           <FaForward className='icon next_icon' onClick={nextSong}/>
-          <HiMiniWindow className='icon mini_icon'/>
+          <HiMiniWindow className='icon mini_icon' onClick={minimize}/>
           {
             isFavorite ?
             <MdFavorite className='icon fav_icon' onClick={toggleFavorite}/>:
@@ -229,7 +233,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
           }
         </div>
         <div className="b-right">
-          <ImEnlarge className='icon enlarge_icon'/>
+          <ImEnlarge className='icon enlarge_icon' onClick={maximize}/>
           <HiMiniEllipsisHorizontal className='icon'/>
         </div>
       </div>

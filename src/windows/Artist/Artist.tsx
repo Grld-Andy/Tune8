@@ -22,12 +22,12 @@ const Artist: React.FC = () => {
     dispatch({type: 'SET_QUEUE', payload: artistSongs, index: 0})
   }
   const playAllSongs = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: artistSongs[0], index: 0, audioRef: new Audio(artistSongs[0].src), reset: true})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', isPlaying: true, payload: artistSongs[0], index: 0, audioRef: new Audio(artistSongs[0].src), reset: true})
     setQueueSongs()
   }
   const shuffleSongs: () => void = () => {
     const newQueue = shuffleArray(artistSongs)
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0, audioRef: new Audio(artistSongs[0].src), reset: true})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', isPlaying: true, payload: newQueue[0], index: 0, audioRef: new Audio(artistSongs[0].src), reset: true})
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
 

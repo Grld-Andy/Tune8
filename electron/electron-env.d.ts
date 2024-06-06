@@ -21,7 +21,13 @@ declare namespace NodeJS {
   }
 }
 
+// IpcRendererInterface
+interface IpcRendererCustom extends Electron.IpcRenderer {
+  Minimize: () => void;
+  Maximize: () => void;
+}
+
 // Used in Renderer process, expose in `preload.ts`
 interface Window {
-  ipcRenderer: import('electron').IpcRenderer
+  ipcRenderer: IpcRendererCustom;
 }
