@@ -82,24 +82,26 @@ const PlaylistForm: React.FC = () => {
                 <div className='playlistForm'>
                     <div className="container">
                         <h1>Add to playlist</h1>
-                        <div className="playlist" onClick={addNew}>
-                            <img src={placeholderSongImages[0]}/>
-                            <div className="p-info">
-                                <h2>New Playlist</h2>
-                                <h3></h3>
-                            </div>
-                        </div>
-                        {
-                            playlists.map((playlist, index) => (
-                                <div className="playlist" key={index} onClick={() => {addToPlaylist(playlist.name)}}>
-                                    <img src={playlist.songs.length > 0 ? playlist.songs[0].imageSrc : playlist.defaultImage}/>
-                                    <div className="p-info">
-                                        <h2>{playlist.name}</h2>
-                                        <h3>{playlist.songs.length} songs</h3>
-                                    </div>
+                        <div className="all-playlists">
+                            <div className="playlist" onClick={addNew}>
+                                <img src={placeholderSongImages[0]}/>
+                                <div className="p-info">
+                                    <h4>New Playlist</h4>
+                                    <h5></h5>
                                 </div>
-                            ))
-                        }
+                            </div>
+                            {
+                                playlists.map((playlist, index) => (
+                                    <div className="playlist" key={index} onClick={() => {addToPlaylist(playlist.name)}}>
+                                        <img src={playlist.songs.length > 0 ? playlist.songs[0].imageSrc : playlist.defaultImage}/>
+                                        <div className="p-info">
+                                            <h4>{playlist.name}</h4>
+                                            <h5>{playlist.songs.length} songs</h5>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
                         <div className="buttons">
                             <button onClick={closeForm}>Cancel</button>
                         </div>

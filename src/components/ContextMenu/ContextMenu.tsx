@@ -89,14 +89,20 @@ const ContextMenu: React.FC = () => {
     <>
     <div className="context-overlay" onContextMenu={closeMenu} onClick={closeMenu}></div>
     <div className='context-menu'
-    style={{ top: contextMenu.position.y, left: contextMenu.position.x }}
+    style={{ 
+      top: window.innerHeight > contextMenu.position.y + 153 ? contextMenu.position.y: contextMenu.position.y - 118 ,
+      left: window.innerWidth/2 > contextMenu.position.x ? contextMenu.position.x : contextMenu.position.x - 130
+    }}
     onClick={closeMenu}>
         <div className="labels">
             <h2 onClick={playSong}>Play Now</h2>
             <h2 onClick={playNextInQueue}>Play Next</h2>
             <h2 className='to-sub'>
                 Add to...
-                <div className='submenu'>
+                <div className='submenu'
+                style={{
+                  right: window.innerWidth > contextMenu.position.x + 150 ? -130 : 128
+                }}>
                     <h2 onClick={addToQueue}>Queue</h2>
                     <h2 onClick={addToPlaylist}>Playlist</h2>
                     {
@@ -112,14 +118,17 @@ const ContextMenu: React.FC = () => {
               <h2 onClick={remove}>Remove</h2>
             }
             <h2 className='to-sub'>View ...
-                <div className='submenu'>
-                    <h2>
-                      <Link to={`/artistView/${contextMenu.lastClicked[0].tag.tags.artist}`}>Artist</Link>
-                    </h2>
-                    <h2>
-                      <Link to={`/albumView/${contextMenu.lastClicked[0].tag.tags.album}`}>Album</Link>
-                    </h2>
-                </div>
+              <div className='submenu'
+              style={{
+                right: window.innerWidth > contextMenu.position.x + 150 ? -130 : 128
+              }}>
+                <h2>
+                  <Link to={`/artistView/${contextMenu.lastClicked[0].tag.tags.artist}`}>Artist</Link>
+                </h2>
+                <h2>
+                  <Link to={`/albumView/${contextMenu.lastClicked[0].tag.tags.album}`}>Album</Link>
+                </h2>
+              </div>
             </h2>
         </div>
     </div>

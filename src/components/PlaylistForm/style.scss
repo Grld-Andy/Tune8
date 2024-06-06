@@ -30,13 +30,19 @@
             margin: 10px;
             font-size: 2em;
         }
+        .all-playlists{
+            max-height: 350px;
+            overflow-y: scroll;
+            &::-webkit-scrollbar{
+                display: none;
+            }
+        }
         .playlist{
             display: flex;
             gap: 10px;
             margin: 5px 10px;
             padding: 2.5px;
             border-radius: 5px;
-            border: 1px solid grey;
             &:hover{
                 background-color: var(--subtitle-text-color);
             }
@@ -58,6 +64,15 @@
                 h3{
                     font-size: 1em;
                     color: var(--songs-color);
+                }
+                h4{
+                    font-size: 1.2em;
+                    font-variant: small-caps;
+                    font-weight: 500;
+                }
+                h5{
+                    font-size: 1em;
+                    font-weight: 400;
                 }
             }
         }
