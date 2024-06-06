@@ -7,6 +7,7 @@ import SongListItem from '../../components/SongListItem/SongListItem'
 import { shuffleArray, TotalDuration } from '../../constants'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
+import AddTo from '../../components/AddTo/AddTo'
 
 const Artist: React.FC = () => {
   const {artist} = useParams<string>()
@@ -51,7 +52,7 @@ const Artist: React.FC = () => {
           <div className="buttons">
             <button className="play" onClick={playAllSongs}>Play All</button>
             <button className="shuffle" onClick={shuffleSongs}>Shuffle and Play</button>
-            <button className="add">Add to</button>
+            <AddTo/>
           </div>
         </div>
       </div>

@@ -15,7 +15,9 @@ export const contextMenuReducer = (contextMenu: ContextMenuState, action: {type:
     case 'CLOSE_MENU':
       return {
         ...contextMenu,
-        isOpen: false
+        isOpen: false,
+        lastClicked: action.payload.lastClicked,
+        nameClicked: action.payload.nameClicked
       }
     default:
       return contextMenu

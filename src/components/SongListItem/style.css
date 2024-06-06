@@ -45,7 +45,8 @@
   cursor: pointer;
 }
 .song .link:hover {
-  color: var(--songlist-text-hover);
+  font-weight: 600;
+  color: var(--current-song-color);
 }
 .song:hover {
   background-color: var(--songlist-bg-hover);

@@ -7,6 +7,7 @@ import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { PlaylistInterface } from '../../data'
+import AddTo from '../../components/AddTo/AddTo'
 
 const Playlist: React.FC = () => {
   const {playlist} = useParams<string>()
@@ -53,7 +54,7 @@ const Playlist: React.FC = () => {
             <button className="play" onClick={playAllSongs}>Play All</button>
             <button className="shuffle" onClick={shuffleSongs}>Shuffle and Play</button>
             <button className="shuffle" onClick={clearPlaylist}>Clear</button>
-            <button className="add">Add to</button>
+            <AddTo/>
           </div>
         </div>
       </div>

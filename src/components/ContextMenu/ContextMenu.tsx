@@ -22,6 +22,8 @@ const ContextMenu: React.FC = () => {
   const {playlistsDispatch} = useContext(PlaylistContext)
   const location = useLocation()
   const {playlist} = useParams()
+
+  // play song
   const playSong = () => {
     if(location.pathname === '/queue'){
       if(contextMenu.indexClicked)
@@ -31,6 +33,8 @@ const ContextMenu: React.FC = () => {
       dispatch({type: 'SET_QUEUE', payload: contextMenu.lastClicked, index: 0})
     }
   }
+
+  // play next
   const playNextInQueue = () => {
     if(!currentSong.song){
         currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
@@ -38,20 +42,28 @@ const ContextMenu: React.FC = () => {
     const currentSongQueueID = queue.findIndex(item => item.tag.tags.title === currentSong.song?.tag.tags.title)
     dispatch({type: 'PLAY_NEXT', payload: contextMenu.lastClicked, index: currentSongQueueID})
   }
+
+  // add to playlist
   const {playlistFormDispatch} = useContext(PlaylistFormContext)
   const addToPlaylist = () => {
     playlistFormDispatch({type: 'OPEN_FORM', payload: 'add'})
   }
+
+  // add to queue
   const addToQueue = () => {
     if(!currentSong.song){
         currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
     }
     dispatch({type: 'ADD_TO_QUEUE', payload: contextMenu.lastClicked, index: currentSong.index})
   }
+
+  // add to favorites
   const {favoritesDispatch} = useContext(FavoritesContext)
   const addToFavorites = () => {
     favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: contextMenu.lastClicked})
   }
+
+  // remove options
   const remove = () => {
     switch(location.pathname){
       case '/queue':
