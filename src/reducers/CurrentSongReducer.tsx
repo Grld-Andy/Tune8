@@ -9,9 +9,9 @@ export const currentSongReducer = (currentSong: CurrentSongState,
       localStorage.setItem('lastPlayed', JSON.stringify({song: action.payload, index: action.index}))
       if (currentSong.audioRef && action.reset) {
         currentSong.audioRef.currentTime = 0
-        return { ...currentSong, song: action.payload, index: action.index, audioRef: action.audioRef ?? currentSong.audioRef, isPlaying: action.isPlaying }
+        return { ...currentSong, song: action.payload, index: action.index, audioRef: action.audioRef ?? currentSong.audioRef, isPlaying: action.isPlaying ?? currentSong.isPlaying }
       }else{
-        return { ...currentSong, song: action.payload, index: action.index, isPlaying: action.isPlaying}
+        return { ...currentSong, song: action.payload, index: action.index, isPlaying: action.isPlaying ?? currentSong.isPlaying}
       }
     case 'TOGGLE_CURRENT_SONG_STATE':
       return {...currentSong, isPlaying: action.isPlaying}

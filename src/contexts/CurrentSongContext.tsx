@@ -39,7 +39,7 @@ const CurrentSongContextProvider: React.FC<Props> = (props) => {
         } catch {
             return initialState;
         }
-    });
+    })
 
     return (
         <CurrentSongContext.Provider value={{ currentSong, currentSongDispatch: dispatch }}>

@@ -1,18 +1,21 @@
 import React, { useContext } from 'react'
 import './style.css'
-import { songs } from '../../assets'
 import { useParams } from 'react-router-dom'
 import { Song } from '../../data'
 import SongListItem from '../../components/SongListItem/SongListItem'
-import { shuffleArray, TotalDuration } from '../../constants'
+import { shuffleArray, TotalDuration } from '../../utilities'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
+import AddTo from '../../components/AddTo/AddTo'
+import { AllSongsContext } from '../../contexts/AllSongsContext'
 
 const Artist: React.FC = () => {
   const {artist} = useParams<string>()
+  const {songs} = useContext(AllSongsContext)
 
   const currentArtist : Song|undefined = songs.find(song => song.tag.tags.artist === artist)
   const artistSongs: Song[] = songs.filter(song => song.tag.tags.artist === artist)
+    .sort((a,b) => a.tag.tags.album.localeCompare(b.tag.tags.album))
   const uniqueAlbums = artistSongs.map(song => song.tag.tags.album)
   
   const {dispatch} = useContext(QueueSongsContext)
@@ -22,12 +25,12 @@ const Artist: React.FC = () => {
     dispatch({type: 'SET_QUEUE', payload: artistSongs, index: 0})
   }
   const playAllSongs = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: artistSongs[0], index: 0, audioRef: new Audio(artistSongs[0].src), reset: true})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', isPlaying: true, payload: artistSongs[0], index: 0, audioRef: new Audio(artistSongs[0].src), reset: true})
     setQueueSongs()
   }
   const shuffleSongs: () => void = () => {
     const newQueue = shuffleArray(artistSongs)
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0, audioRef: new Audio(artistSongs[0].src), reset: true})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', isPlaying: true, payload: newQueue[0], index: 0, audioRef: new Audio(artistSongs[0].src), reset: true})
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
 
@@ -43,7 +46,7 @@ const Artist: React.FC = () => {
           </h1>
           <ul className='h2'>
             <li>{uniqueAlbums.length} Albums</li><br/>
-            <li>{artistSongs.length} Songs</li>
+            <li>{artistSongs.length} {artistSongs.length === 1 ? 'Song' : 'Songs'}</li>
           </ul>
           <div className="others">
             <h4>{TotalDuration(artistSongs)}</h4>
@@ -51,7 +54,7 @@ const Artist: React.FC = () => {
           <div className="buttons">
             <button className="play" onClick={playAllSongs}>Play All</button>
             <button className="shuffle" onClick={shuffleSongs}>Shuffle and Play</button>
-            <button className="add">Add to</button>
+            <AddTo/>
           </div>
         </div>
       </div>

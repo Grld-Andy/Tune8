@@ -12,9 +12,8 @@
     border: 1px solid black;
     border-radius: 5px;
     top: 0;
-    // overflow: hidden;
     width: 130px;
-    height: min-content;
+    max-height: 147px;
     background-color: transparent;
     backdrop-filter: blur(10px);
     background-image: linear-gradient(120deg,#fff3,#0002);

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { BsPlayCircle } from 'react-icons/bs'
+import { BsPlayCircle, BsPauseCircle } from 'react-icons/bs'
 import './style.css'
 import { Song } from '../../data'
 import { Link } from 'react-router-dom'
@@ -21,6 +21,8 @@ const resetSongs: (index1: number, index2: number) => boolean = (index1, index2)
   return true
   else return false
 }
+
+// SONGLISTITEM : REACT:COMPONENT
 const SongListItem: React.FC<Props> = ({song, setQueueSongs, index, page = 'link'}) => {
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const playSong = (song: Song) => {
@@ -42,7 +44,11 @@ const SongListItem: React.FC<Props> = ({song, setQueueSongs, index, page = 'link
       && currentSong.song?.tag.tags.album === song.tag.tags.album ? `song currentSong`:
     'song'}
     onContextMenu={showContextMenu}>
-      <BsPlayCircle className='icon' onClick={() => {playSong(song)}}/>
+      {
+        page === 'queue' && currentSong.isPlaying && currentSong.index === index?
+        <BsPauseCircle className='icon' onClick={() => {playSong(song)}}/>:
+        <BsPlayCircle className='icon' onClick={() => {playSong(song)}}/>
+      }
       <h3>{song.tag.tags.title}</h3>
       <Link to={`/artistView/${song.tag.tags.artist}`}>
         <h3 className='link'>{song.tag.tags.artist}</h3>

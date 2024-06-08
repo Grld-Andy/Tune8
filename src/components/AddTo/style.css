@@ -1,0 +1,32 @@
+.light {
+  --add-to-bg: #fff;
+}
+
+.dark {
+  --add-to-bg: #555;
+}
+
+.addto-container {
+  display: none;
+  position: relative;
+}
+.addto-container .single_add_to {
+  border-radius: 5px;
+  border: 1px solid gray;
+  bottom: 0px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  background-color: var(--add-to-bg);
+}
+.addto-container .single_add_to div {
+  padding: 1px;
+  color: var(--primary-text-color);
+  font-size: 1em;
+  cursor: default;
+}
+.addto-container .single_add_to div:hover {
+  background-color: var(--songlist-bg-hover);
+}/*# sourceMappingURL=style.css.map */

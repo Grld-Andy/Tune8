@@ -2,11 +2,12 @@ import React, { useContext } from 'react'
 import './style.css'
 import { useParams } from 'react-router-dom'
 import SongListItem from '../../components/SongListItem/SongListItem'
-import { shuffleArray, TotalDuration } from '../../constants'
+import { shuffleArray, TotalDuration } from '../../utilities'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { PlaylistInterface } from '../../data'
+import AddTo from '../../components/AddTo/AddTo'
 
 const Playlist: React.FC = () => {
   const {playlist} = useParams<string>()
@@ -20,12 +21,12 @@ const Playlist: React.FC = () => {
     dispatch({type: 'SET_QUEUE', payload: playlistSongs.songs, index: 0})
   }
   const playAllSongs = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: playlistSongs.songs[0], index: 0, audioRef: new Audio(playlistSongs.songs[0].src), reset: true})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: playlistSongs.songs[0], index: 0, audioRef: new Audio(playlistSongs.songs[0].src), reset: true, isPlaying: true})
     setQueueSongs()
   }
   const shuffleSongs: () => void = () => {
     const newQueue = shuffleArray(playlistSongs.songs)
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0, audioRef: new Audio(playlistSongs.songs[0].src), reset: true})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0, audioRef: new Audio(playlistSongs.songs[0].src), reset: true, isPlaying: true})
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
   const clearPlaylist: () => void = () => {
@@ -44,7 +45,7 @@ const Playlist: React.FC = () => {
             {playlistSongs.name}
           </h1>
           <ul className='h2'>
-            <li>{playlistSongs.songs.length} Songs</li>
+            <li>{playlistSongs.songs.length} {playlistSongs.songs.length === 1 ? 'Song' : 'Songs'}</li>
           </ul>
           <div className="others">
             <h4>{TotalDuration(playlistSongs.songs)}</h4>
@@ -53,7 +54,7 @@ const Playlist: React.FC = () => {
             <button className="play" onClick={playAllSongs}>Play All</button>
             <button className="shuffle" onClick={shuffleSongs}>Shuffle and Play</button>
             <button className="shuffle" onClick={clearPlaylist}>Clear</button>
-            <button className="add">Add to</button>
+            <AddTo/>
           </div>
         </div>
       </div>

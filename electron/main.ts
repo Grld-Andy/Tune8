@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 // import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
@@ -72,3 +72,30 @@ app.on('activate', () => {
 })
 
 app.whenReady().then(createWindow)
+
+//  minimize
+let prevSize: number[] = [500, 500]
+ipcMain.on('minimize', () => {
+  const win = BrowserWindow.getFocusedWindow()
+  if (win && !win.isMaximized()) {
+      const windowOnTop = !win.isAlwaysOnTop()
+      win.setAlwaysOnTop(windowOnTop, 'floating')
+      if(windowOnTop){
+        prevSize = win.getSize()
+      }
+      win.setSize(windowOnTop ? 300 : prevSize[0], windowOnTop ? 250 : prevSize[1])
+      win.setResizable(windowOnTop ? false : true)
+  }
+})
+ipcMain.on('maximize', () => {
+  const win = BrowserWindow.getFocusedWindow()
+  if (win) {
+    if (win.isMaximized()) {
+      win.unmaximize()
+      win.setResizable(true)
+    } else {
+      win.maximize()
+      win.setResizable(true)
+    }
+  }
+})

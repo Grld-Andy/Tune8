@@ -1,6 +1,21 @@
 .songs{
     display: flex;
     flex-direction: column;
-    padding: 10px;
     color: var(--primary-text-color);
+    section{
+        padding-right: 10px;
+        .listItem{
+            display: flex;
+            flex-direction: column;
+        }
+        h2{
+            cursor: pointer;
+            transition: .2s ease-in;
+            margin: 10px 0 0 5px;
+            width: min-content;
+            &:hover{
+                color: green;
+            }
+        }
+    }
 }

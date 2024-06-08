@@ -41,7 +41,8 @@
         transition: .1s ease-out;
         cursor: pointer;
         &:hover{
-            color: var(--songlist-text-hover);
+            font-weight: 600;
+            color: var(--current-song-color);
         }
     }
     &:hover{

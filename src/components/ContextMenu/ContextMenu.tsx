@@ -22,6 +22,8 @@ const ContextMenu: React.FC = () => {
   const {playlistsDispatch} = useContext(PlaylistContext)
   const location = useLocation()
   const {playlist} = useParams()
+
+  // play song
   const playSong = () => {
     if(location.pathname === '/queue'){
       if(contextMenu.indexClicked)
@@ -31,6 +33,8 @@ const ContextMenu: React.FC = () => {
       dispatch({type: 'SET_QUEUE', payload: contextMenu.lastClicked, index: 0})
     }
   }
+
+  // play next
   const playNextInQueue = () => {
     if(!currentSong.song){
         currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
@@ -38,20 +42,28 @@ const ContextMenu: React.FC = () => {
     const currentSongQueueID = queue.findIndex(item => item.tag.tags.title === currentSong.song?.tag.tags.title)
     dispatch({type: 'PLAY_NEXT', payload: contextMenu.lastClicked, index: currentSongQueueID})
   }
+
+  // add to playlist
   const {playlistFormDispatch} = useContext(PlaylistFormContext)
   const addToPlaylist = () => {
     playlistFormDispatch({type: 'OPEN_FORM', payload: 'add'})
   }
+
+  // add to queue
   const addToQueue = () => {
     if(!currentSong.song){
         currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
     }
     dispatch({type: 'ADD_TO_QUEUE', payload: contextMenu.lastClicked, index: currentSong.index})
   }
+
+  // add to favorites
   const {favoritesDispatch} = useContext(FavoritesContext)
   const addToFavorites = () => {
     favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: contextMenu.lastClicked})
   }
+
+  // remove options
   const remove = () => {
     switch(location.pathname){
       case '/queue':
@@ -59,7 +71,7 @@ const ContextMenu: React.FC = () => {
           if(queue.length > 1){
             let nextIndex = contextMenu.indexClicked + 1
             if(nextIndex >= queue.length) nextIndex = 0
-            currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[nextIndex], index: nextIndex!==0 ? nextIndex-1 : 0, isPlaying: currentSong.isPlaying})
+            currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[nextIndex], index: nextIndex!==0 ? nextIndex-1 : 0, isPlaying: currentSong.isPlaying, reset: true})
           }
           else {
             currentSongDispatch({type: 'CLEAR_CURRENT_SONG', payload: null, index: -1, audioRef: null, isPlaying: false})
@@ -89,14 +101,20 @@ const ContextMenu: React.FC = () => {
     <>
     <div className="context-overlay" onContextMenu={closeMenu} onClick={closeMenu}></div>
     <div className='context-menu'
-    style={{ top: contextMenu.position.y, left: contextMenu.position.x }}
+    style={{
+      top: window.innerHeight > contextMenu.position.y + 167 ? contextMenu.position.y: contextMenu.position.y - 118 ,
+      left: window.innerWidth/2 > contextMenu.position.x ? contextMenu.position.x : contextMenu.position.x - 130
+    }}
     onClick={closeMenu}>
         <div className="labels">
             <h2 onClick={playSong}>Play Now</h2>
             <h2 onClick={playNextInQueue}>Play Next</h2>
             <h2 className='to-sub'>
                 Add to...
-                <div className='submenu'>
+                <div className='submenu'
+                style={{
+                  right: window.innerWidth > contextMenu.position.x + 150 ? -130 : 128
+                }}>
                     <h2 onClick={addToQueue}>Queue</h2>
                     <h2 onClick={addToPlaylist}>Playlist</h2>
                     {
@@ -112,14 +130,17 @@ const ContextMenu: React.FC = () => {
               <h2 onClick={remove}>Remove</h2>
             }
             <h2 className='to-sub'>View ...
-                <div className='submenu'>
-                    <h2>
-                      <Link to={`/artistView/${contextMenu.lastClicked[0].tag.tags.artist}`}>Artist</Link>
-                    </h2>
-                    <h2>
-                      <Link to={`/albumView/${contextMenu.lastClicked[0].tag.tags.album}`}>Album</Link>
-                    </h2>
-                </div>
+              <div className='submenu'
+              style={{
+                right: window.innerWidth > contextMenu.position.x + 150 ? -130 : 128
+              }}>
+                <h2>
+                  <Link to={`/artistView/${contextMenu.lastClicked[0].tag.tags.artist}`}>Artist</Link>
+                </h2>
+                <h2>
+                  <Link to={`/albumView/${contextMenu.lastClicked[0].tag.tags.album}`}>Album</Link>
+                </h2>
+              </div>
             </h2>
         </div>
     </div>

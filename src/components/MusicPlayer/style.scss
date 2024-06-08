@@ -129,6 +129,61 @@
             display: flex;
             gap: 10px;
             justify-self: end;
+            position: relative;
+            .b-right-menu{
+                z-index: 5;
+                position: absolute;
+                bottom: 30px;
+                width: max-content;
+                border: 1px solid black;
+                background-color: var(--songlist-bg);
+                border-radius: 5px;
+                right: 0;
+                .first{
+                    border-top-left-radius: 5px;
+                    border-top-right-radius: 5px;
+                }
+                .last{
+                    border-bottom-left-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                }
+                li{
+                    cursor: default;
+                    list-style-type: none;
+                    padding: 5px;
+                    font-size: 1em;
+                    color: var(--primary-text-color);
+                    a{
+                        color: var(--primary-text-color);
+                        cursor: default;
+                    }
+                    &:hover{
+                        background-color: var(--songlist-bg-hover);
+                    }
+                }
+            }
+            .sub{
+                position: relative;
+                .sub-menu{
+                    position: absolute;
+                    bottom: 0;
+                    left: -140px;
+                    border: 1px solid black;
+                    background-color: var(--songlist-bg);
+                    border-radius: 5px;
+                    overflow: hidden;
+                    width: 140px;
+                    display: none;
+                    li{
+                        padding-left: 10px;
+                    }
+                }
+                &:hover{
+                    .sub-menu{
+                        display: block;
+                    }
+                }
+            }
         }
     }
     .icon{
@@ -144,6 +199,73 @@
             grid-template-columns: 1fr 100px 1fr;
             .b-center{
                 width: 100px;
+            }
+        }
+    }
+    .options-overlay{
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+        background-color: rgba(0,0,0,.05);
+    }
+    .song-details{
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+        display: flex;
+        color: var(--primary-text-color);
+        background-color: rgba(0, 0, 0, 0.2);
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        overflow: hidden;
+        .details-container{
+            background-color: var(--songlist-bg);
+            pointer-events: all;
+            width: 400px;
+            border: 1px solid black;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: default;
+        }
+        h1{
+            border-bottom: 1px solid black;
+            background-color: var(--music-player-bg-color);
+            padding: 10px;
+            font-weight: 500;
+        }
+        .main-info{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 10px;
+            .tile{
+                h3{
+                    font-weight: 400
+                }
+                h4{
+                    font-weight: 300;
+                }
+            }
+        }
+        .source{
+            padding: 10px;
+            overflow: hidden;
+            border-top: 1px solid black;
+            color: var(--primary-text-color);
+            background-color: var(--music-player-bg-color);
+            h2{
+                font-size: 0.9em;
+                font-weight: 400;
+                text-wrap: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     }

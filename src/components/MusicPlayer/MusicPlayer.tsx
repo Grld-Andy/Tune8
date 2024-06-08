@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import {FaCirclePause, FaCirclePlay, FaShuffle, FaForward, FaBackward} from 'react-icons/fa6'
+import {FaCirclePause, FaVolumeHigh, FaVolumeOff, FaCirclePlay, FaShuffle, FaForward, FaBackward} from 'react-icons/fa6'
 import {ImEnlarge} from 'react-icons/im'
 import {TbRepeat, TbRepeatOnce, TbRepeatOff} from 'react-icons/tb'
 import {HiMiniWindow, HiMiniEllipsisHorizontal} from 'react-icons/hi2'
@@ -8,7 +8,8 @@ import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import './style.css'
 import FavoritesContext from '../../contexts/FavoritesContext'
-import { DurationToString, shuffleArray } from '../../constants'
+import { DurationToString, shuffleArray } from '../../utilities'
+import { Link } from 'react-router-dom'
 
 interface Props{
   displayLyrics: () => void,
@@ -16,6 +17,7 @@ interface Props{
 }
 
 const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
+
   // repeat logic
   const repeatTypes: Array<string> = ['repeat-all', 'no-repeat', 'repeat-one']
   const [repeat, setRepeat] = useState(localStorage.getItem('repeatType') ? localStorage.getItem('repeatType') : repeatTypes[0])
@@ -85,21 +87,15 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
     setIsFavorite(favorites.some(favSong => favSong.tag.tags.title === currentSong.song?.tag.tags.title))
   }, [currentSong, favorites])
   useEffect(() => {
-    // if (currentSong) {
       if (currentSong.isPlaying)
         currentSong.audioRef?.play()
       else
         currentSong.audioRef?.pause()
-    // } 
-    // else {
-    //   if (currentSong.audioRef)
-    //     currentSong.audioRef = null
-    // }
   }, [currentSong])
 
   // reset time played if no song playing
   useEffect(() => {
-    if(!currentSong){
+    if(!currentSong.song){
       setTimePlayed('00:00')
       setSongProgress(0)
     }
@@ -113,9 +109,16 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
     if(intervalRef.current){
       clearInterval(intervalRef.current)
     }
+    if(currentSong.audioRef)
+      currentSong.audioRef.playbackRate = Number.parseInt(sessionStorage.getItem('playbackSpeed') ?? '1')
     intervalRef.current = window.setInterval(() => {
       if (currentSong.audioRef) {
         setSongProgress(currentSong.audioRef.currentTime / currentSong.audioRef.duration * 100)
+        if(currentSong.audioRef.paused){
+          togglePlay(false)
+        }else{
+          togglePlay(true)
+        }
         setTimePlayed(DurationToString(currentSong.audioRef.currentTime))
         if (currentSong.song) {
           if (currentSong.audioRef.currentTime === currentSong.audioRef.duration) {
@@ -136,10 +139,11 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
       }
     }, 250)
   }
+
   useEffect(() => {
     if(currentSong.song)
       handleSongProgress()
-  }, [currentSong, queue])
+  }, [currentSong, repeat, queue])
 
   // progress bar click logic
   const progressRef = useRef<HTMLDivElement|null>(null)
@@ -156,6 +160,55 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
   const toggleLyricsView = () => {
     displayLyrics()
   }
+
+  // minimize
+  const minimize = () => {
+    window.ipcRenderer.Minimize()
+  }
+  // maximize
+  const maximize = () => {
+    window.ipcRenderer.Maximize()
+  }
+
+  // options
+  const [showOptions, setShowOptions] = useState<string>('')
+  const handlePlaybackSpeed = (speed: number) => {
+    console.log(speed)
+  }
+  // const handlePlaybackSpeed = (speed: number) => {
+  //   if(!currentSong.audioRef)return
+  //   if(speed === 1){
+  //     currentSong.audioRef.playbackRate = 1
+  //     handleShowOptions('')
+  //   }
+  //   else if(speed < 0){
+  //     currentSong.audioRef.playbackRate *= Math.abs(speed)
+  //   }
+  //   else{
+  //     currentSong.audioRef.playbackRate += speed
+  //     handleShowOptions('')
+  //   }
+  //   sessionStorage.setItem('playbackSpeed', currentSong.audioRef.playbackRate.toString())
+  // }
+  const handleShowOptions = (val: string) => {
+    setShowOptions(val)
+  }
+
+  // song volume
+  const [mute, setMute] = useState<boolean>(false)
+  const handleMuteSong = (val: boolean) => {
+    if(currentSong.audioRef)
+    currentSong.audioRef.muted = val
+  }
+  useEffect(() => {
+    if(!currentSong.audioRef)return
+    if(currentSong.audioRef.muted){
+      setMute(true)
+    }else{
+      setMute(false)
+    }
+  }, [currentSong])
+
 
   return (
     <div className='musicPlayer'>
@@ -221,18 +274,89 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
             <FaCirclePlay className='icon play_icon' size={40} onClick={() => {togglePlay(true)}}/>
           }
           <FaForward className='icon next_icon' onClick={nextSong}/>
-          <HiMiniWindow className='icon mini_icon'/>
+          <HiMiniWindow className='icon mini_icon' onClick={minimize}/>
           {
             isFavorite ?
             <MdFavorite className='icon fav_icon' onClick={toggleFavorite}/>:
             <MdFavoriteBorder className='icon fav_icon' onClick={toggleFavorite}/>
           }
         </div>
-        <div className="b-right">
-          <ImEnlarge className='icon enlarge_icon'/>
-          <HiMiniEllipsisHorizontal className='icon'/>
+        <div  className={currentSong.song ? 'b-right' : 'b-right locked'}>
+          {
+            mute ?
+            <FaVolumeOff className='icon' onClick={() => {handleMuteSong(false)}}/>:
+            <FaVolumeHigh className='icon' onClick={() => {handleMuteSong(true)}}/>
+          }
+          <ImEnlarge className='icon enlarge_icon' onClick={maximize}/>
+          <HiMiniEllipsisHorizontal className='icon' onClick={() => {handleShowOptions('options')}}/>
+          {
+            showOptions === 'options' &&
+            <ul className="b-right-menu">
+              <li  onClick={() => {handleShowOptions('details')}}
+              className='first'>Details</li>
+              <li onClick={() => {handleShowOptions('')}}>
+                <Link to={`albumView/${currentSong.song?.tag.tags.album}`}>
+                  View Album
+                </Link>
+              </li>
+              <li onClick={() => {handleShowOptions('')}}>
+                <Link to={`artistView/${currentSong.song?.tag.tags.artist}`}>
+                  View Artist
+                </Link>
+              </li>
+              <li className='sub'>Playback Speed
+                <div className="sub-menu">
+                  <li onClick={() => {handlePlaybackSpeed(-0.5)}}>Slower (1/2)</li>
+                  <li onClick={() => {handlePlaybackSpeed(-0.25)}}>Slow (1/4)</li>
+                  <li onClick={() => {handlePlaybackSpeed(1)}}>Nomal (x 1)</li>
+                  <li onClick={() => {handlePlaybackSpeed(0.25)}}>Fast (+ 0.25)</li>
+                  <li onClick={() => {handlePlaybackSpeed(0.5)}}>Faster (+ 0.5)</li>
+                </div>
+              </li>
+              <li className='last' onClick={() => {handleShowOptions('')}}>
+                Mute
+              </li>
+            </ul>
+          }
         </div>
       </div>
+      {
+        currentSong.song && showOptions &&
+        <div className="options-overlay" onClick={() => {handleShowOptions('')}}></div>
+      }
+      {
+        showOptions === 'details' &&
+        <div className="song-details">
+          <div className="details-container">
+            <h1>Song details</h1>
+            <div className="main-info">
+              <div className="tile">
+                <h3>Title</h3>
+                <h4>{currentSong.song?.tag.tags.title}</h4>
+              </div>
+              <div className="tile">
+                <h3>Album</h3>
+                <h4>{currentSong.song?.tag.tags.album}</h4>
+              </div>
+              <div className="tile">
+                <h3>Artist</h3>
+                <h4>{currentSong.song?.tag.tags.artist}</h4>
+              </div>
+              <div className="tile">
+                <h3>Year Released</h3>
+                <h4>{currentSong.song?.tag.tags.year}</h4>
+              </div>
+              <div className="tile">
+                <h3>Song Duration</h3>
+                <h4>{currentSong.song?.duration}</h4>
+              </div>
+            </div>
+            <div className="source">
+              <h2>{currentSong.song?.src}</h2>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   )
 }

@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './style.css'
-import { songs } from '../../assets'
 import SongTile from '../../components/SongTile/SongTile'
 import { SortedSongs } from '../../data'
 import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
+import { AllSongsContext } from '../../contexts/AllSongsContext'
 
 const Albums: React.FC = () => {
+  useEffect(() => {
+  console.log('albums page')
+})
+
   const [showNav, setShowNav] = useState(false)
   const toggleShowNav: () => void = () => {
     setShowNav(!showNav)
@@ -14,6 +18,7 @@ const Albums: React.FC = () => {
     setShowNav(false)
   }
 
+  const {songs} = useContext(AllSongsContext)
   const albums: SortedSongs = {}
   songs.forEach(song => {
     let firstLetter:string = song.tag.tags.album.charAt(0).toUpperCase()
