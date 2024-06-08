@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import {FaCirclePause, FaCirclePlay, FaShuffle, FaForward, FaBackward} from 'react-icons/fa6'
+import {FaCirclePause, FaVolumeOff, FaCirclePlay, FaShuffle, FaForward, FaBackward, FaVolumeHigh} from 'react-icons/fa6'
 import {ImEnlarge} from 'react-icons/im'
 import {TbRepeat, TbRepeatOnce, TbRepeatOff} from 'react-icons/tb'
 import {HiMiniWindow, HiMiniEllipsisHorizontal} from 'react-icons/hi2'
 import {MdFavoriteBorder, MdFavorite} from 'react-icons/md'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
-import './style.css'
 import FavoritesContext from '../../contexts/FavoritesContext'
 import { DurationToString, shuffleArray } from '../../constants'
+import { Link } from 'react-router-dom'
+import './style.css'
 
 interface Props{
   displayLyrics: () => void,
@@ -161,6 +162,38 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
     window.ipcRenderer.Maximize()
   }
 
+  // options
+  const [showOptions, setShowOptions] = useState<string>('')
+  const handleShowOptions = (val: string) => {
+    setShowOptions(val)
+  }
+
+  // playback speed
+  const handlePlaybackSpeed = (speed: number) => {
+    if(!currentSong.audioRef)return
+    if(speed === 1){
+      currentSong.audioRef.playbackRate = 1
+      handleShowOptions('')
+    }
+    else if(speed < 0){
+      currentSong.audioRef.playbackRate *= Math.abs(speed)
+    }
+    else{
+      currentSong.audioRef.playbackRate += speed
+      handleShowOptions('')
+    }
+    sessionStorage.setItem('playbackSpeed', currentSong.audioRef.playbackRate.toString())
+  }
+
+  // song volume
+  const [mute, setMute] = useState<boolean>(false)
+  const handleMuteSong = (val: boolean) => {
+    if(currentSong.audioRef){
+      currentSong.audioRef.muted = val
+      setMute(val)
+    }
+  }
+
   return (
     <div className='musicPlayer'>
       <audio src={currentSong.song?.src} ref={el => { currentSong.audioRef = el }}></audio>
@@ -232,11 +265,82 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
             <MdFavoriteBorder className='icon fav_icon' onClick={toggleFavorite}/>
           }
         </div>
-        <div className="b-right">
+        <div  className={currentSong.song ? 'b-right' : 'b-right locked'}>
+          {
+            mute ?
+            <FaVolumeOff className='icon' onClick={() => {handleMuteSong(false)}}/>:
+            <FaVolumeHigh className='icon' onClick={() => {handleMuteSong(true)}}/>
+          }
           <ImEnlarge className='icon enlarge_icon' onClick={maximize}/>
-          <HiMiniEllipsisHorizontal className='icon'/>
+          <HiMiniEllipsisHorizontal className='icon' onClick={() => {handleShowOptions('options')}}/>
+          {
+            showOptions === 'options' &&
+            <ul className="b-right-menu">
+              <li  onClick={() => {handleShowOptions('details')}}
+              className='first'>Details</li>
+              <li onClick={() => {handleShowOptions('')}}>
+                <Link to={`albumView/${currentSong.song?.tag.tags.album}`}>
+                  View Album
+                </Link>
+              </li>
+              <li onClick={() => {handleShowOptions('')}}>
+                <Link to={`artistView/${currentSong.song?.tag.tags.artist}`}>
+                  View Artist
+                </Link>
+              </li>
+              <li className='sub'>Playback Speed
+                <div className="sub-menu">
+                  <li onClick={() => {handlePlaybackSpeed(-0.5)}}>Slower (1/2)</li>
+                  <li onClick={() => {handlePlaybackSpeed(-0.25)}}>Slow (1/4)</li>
+                  <li onClick={() => {handlePlaybackSpeed(1)}}>Nomal (x 1)</li>
+                  <li onClick={() => {handlePlaybackSpeed(0.25)}}>Fast (+ 0.25)</li>
+                  <li onClick={() => {handlePlaybackSpeed(0.5)}}>Faster (+ 0.5)</li>
+                </div>
+              </li>
+              <li className='last' onClick={() => {handleShowOptions('')}}>
+                Mute
+              </li>
+            </ul>
+          }
         </div>
       </div>
+      {
+        currentSong.song && showOptions &&
+        <div className="options-overlay" onClick={() => {handleShowOptions('')}}></div>
+      }
+      {
+        showOptions === 'details' &&
+        <div className="song-details">
+          <div className="details-container">
+            <h1>Song details</h1>
+            <div className="main-info">
+              <div className="tile">
+                <h3>Title</h3>
+                <h4>{currentSong.song?.tag.tags.title}</h4>
+              </div>
+              <div className="tile">
+                <h3>Album</h3>
+                <h4>{currentSong.song?.tag.tags.album}</h4>
+              </div>
+              <div className="tile">
+                <h3>Artist</h3>
+                <h4>{currentSong.song?.tag.tags.artist}</h4>
+              </div>
+              <div className="tile">
+                <h3>Year Released</h3>
+                <h4>{currentSong.song?.tag.tags.year}</h4>
+              </div>
+              <div className="tile">
+                <h3>Song Duration</h3>
+                <h4>{currentSong.song?.duration}</h4>
+              </div>
+            </div>
+            <div className="source">
+              <h2>{currentSong.song?.src}</h2>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   )
 }
