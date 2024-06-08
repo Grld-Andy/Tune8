@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import './style.css'
 import { useParams } from 'react-router-dom'
 import SongListItem from '../../components/SongListItem/SongListItem'
-import { shuffleArray, TotalDuration } from '../../utilities'
+import { shuffleArray, TotalDuration } from '../../constants'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
@@ -45,7 +45,7 @@ const Playlist: React.FC = () => {
             {playlistSongs.name}
           </h1>
           <ul className='h2'>
-            <li>{playlistSongs.songs.length} {playlistSongs.songs.length === 1 ? 'Song' : 'Songs'}</li>
+            <li>{playlistSongs.songs.length} Songs</li>
           </ul>
           <div className="others">
             <h4>{TotalDuration(playlistSongs.songs)}</h4>

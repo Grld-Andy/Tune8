@@ -1,22 +1,6 @@
 .songs {
   display: flex;
   flex-direction: column;
+  padding: 10px;
   color: var(--primary-text-color);
-}
-.songs section {
-  padding-right: 10px;
-}
-.songs section .listItem {
-  display: flex;
-  flex-direction: column;
-}
-.songs section h2 {
-  cursor: pointer;
-  transition: 0.2s ease-in;
-  margin: 10px 0 0 5px;
-  width: -moz-min-content;
-  width: min-content;
-}
-.songs section h2:hover {
-  color: green;
 }/*# sourceMappingURL=style.css.map */

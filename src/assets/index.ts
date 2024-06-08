@@ -160,4 +160,4 @@ const playlist3: PlaylistInterface = {
 }
 export const currentPlaylists: Array<PlaylistInterface> = [playlist1, playlist2, playlist3]
 
-export const currentSongs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9]
+export const songs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9]

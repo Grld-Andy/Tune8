@@ -1,14 +1,11 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import './style.css'
 import SongListItem from '../../components/SongListItem/SongListItem';
 import { QueueSongsContext } from '../../contexts/QueueSongsContext';
 import { CurrentSongContext } from '../../contexts/CurrentSongContext';
-import { shuffleArray } from '../../utilities';
+import { shuffleArray } from '../../constants';
 
 const Queue: React.FC = () => {
-  useEffect(() => {
-    console.log('queue')
-  })
   const {queue, dispatch} = useContext(QueueSongsContext)
   const {currentSongDispatch} = useContext(CurrentSongContext)
 

@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import './style.css'
+import { songs } from '../../assets'
 import SongTile from '../../components/SongTile/SongTile'
 import { SortedSongs } from '../../data'
 import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
-import { AllSongsContext } from '../../contexts/AllSongsContext'
 
 const Artists: React.FC = () => {
   const [showNav, setShowNav] = useState(false)
@@ -17,7 +17,6 @@ const Artists: React.FC = () => {
 
   const artists: SortedSongs = {}
 
-  const {songs} = useContext(AllSongsContext)
   songs.forEach(song => {
     let firstLetter:string = song.tag.tags.artist.charAt(0).toUpperCase()
     firstLetter = /^[A-Za-z]$/.test(firstLetter) ? firstLetter : '#'

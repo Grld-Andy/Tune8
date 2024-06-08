@@ -1,11 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import './style.css'
+import { songs } from '../../assets'
 import SongTile from '../../components/SongTile/SongTile'
-import { AllSongsContext } from '../../contexts/AllSongsContext'
 
 const Home: React.FC = () => {
-  const {songs} = useContext(AllSongsContext)
-  
   return (
     <>
       <nav>
