@@ -4,10 +4,10 @@ import './style.css'
 import { Song } from '../../data'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
-import { songs } from '../../assets'
 import { Link } from 'react-router-dom'
 import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
+import { AllSongsContext } from '../../contexts/AllSongsContext'
 
 interface Props{
     song: Song,
@@ -36,6 +36,8 @@ const SongTileDetails: React.FC<Props> = ({song, page, playlistName}) => {
 }
 
 const SongTile: React.FC<Props> = ({song, page, playlistName}) => {
+  const {songs} = useContext(AllSongsContext)
+
   const {currentSongDispatch} = useContext(CurrentSongContext)
   const {dispatch} = useContext(QueueSongsContext)
   const linkTo: string|undefined = page === 'album' ? song.tag.tags.album : page === 'artist' ? song.tag.tags.artist : page === 'playlist' ? playlistName : ''

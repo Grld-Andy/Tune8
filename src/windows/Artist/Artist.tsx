@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import './style.css'
-import { songs } from '../../assets'
 import { useParams } from 'react-router-dom'
 import { Song } from '../../data'
 import SongListItem from '../../components/SongListItem/SongListItem'
@@ -8,8 +7,11 @@ import { shuffleArray, TotalDuration } from '../../constants'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import AddTo from '../../components/AddTo/AddTo'
+import { AllSongsContext } from '../../contexts/AllSongsContext'
 
 const Artist: React.FC = () => {
+  const {songs} = useContext(AllSongsContext)
+
   const {artist} = useParams<string>()
 
   const currentArtist : Song|undefined = songs.find(song => song.tag.tags.artist === artist)

@@ -2,14 +2,16 @@ import React, { useContext, useRef } from 'react'
 import './style.css'
 import { useLocation, useParams } from 'react-router-dom'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
-import { songs } from '../../assets'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
 import FavoritesContext from '../../contexts/FavoritesContext'
 import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
+import { AllSongsContext } from '../../contexts/AllSongsContext'
 
 const AddTo: React.FC = () => {
+  const {songs} = useContext(AllSongsContext)
+
     // add to view
   const addRef = useRef<HTMLDivElement|null>(null)
   const showAddTo = () => {

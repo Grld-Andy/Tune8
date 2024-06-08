@@ -42,7 +42,7 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
     useEffect(() => {
         setLyrics("Searching ...")
         setTimeout(() => {getLyrics()}, 500)
-    }, [currentSong])
+    }, [currentSong.song])
 
     return (
     <>

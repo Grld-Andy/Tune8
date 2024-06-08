@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './style.css'
-import { songs } from '../../assets'
 import SongTile from '../../components/SongTile/SongTile'
 import { SortedSongs } from '../../data'
 import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
+import {AllSongsContext} from '../../contexts/AllSongsContext'
 
 const Albums: React.FC = () => {
+  const {songs} = useContext(AllSongsContext)
+
   const [showNav, setShowNav] = useState(false)
   const toggleShowNav: () => void = () => {
     setShowNav(!showNav)
