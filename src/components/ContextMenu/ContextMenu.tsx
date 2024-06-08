@@ -71,7 +71,7 @@ const ContextMenu: React.FC = () => {
           if(queue.length > 1){
             let nextIndex = contextMenu.indexClicked + 1
             if(nextIndex >= queue.length) nextIndex = 0
-            currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[nextIndex], index: nextIndex!==0 ? nextIndex-1 : 0, isPlaying: currentSong.isPlaying, reset: true})
+            currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[nextIndex], index: nextIndex!==0 ? nextIndex-1 : 0, isPlaying: currentSong.isPlaying})
           }
           else {
             currentSongDispatch({type: 'CLEAR_CURRENT_SONG', payload: null, index: -1, audioRef: null, isPlaying: false})
@@ -101,8 +101,8 @@ const ContextMenu: React.FC = () => {
     <>
     <div className="context-overlay" onContextMenu={closeMenu} onClick={closeMenu}></div>
     <div className='context-menu'
-    style={{
-      top: window.innerHeight > contextMenu.position.y + 167 ? contextMenu.position.y: contextMenu.position.y - 118 ,
+    style={{ 
+      top: window.innerHeight > contextMenu.position.y + 153 ? contextMenu.position.y: contextMenu.position.y - 118 ,
       left: window.innerWidth/2 > contextMenu.position.x ? contextMenu.position.x : contextMenu.position.x - 130
     }}
     onClick={closeMenu}>

@@ -1,17 +1,16 @@
 import React, { useContext } from 'react'
 import './style.css'
+import { songs } from '../../assets'
 import { useParams } from 'react-router-dom'
 import { Song } from '../../data'
 import SongListItem from '../../components/SongListItem/SongListItem'
-import { shuffleArray, TotalDuration } from '../../utilities'
+import { shuffleArray, TotalDuration } from '../../constants'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import AddTo from '../../components/AddTo/AddTo'
-import { AllSongsContext } from '../../contexts/AllSongsContext'
 
 const Album: React.FC = () => {
   const {album} = useParams<string>()
-  const {songs} = useContext(AllSongsContext)
 
   const currentAlbum : Song|undefined = songs.find(song => song.tag.tags.album === album)
   const albumSongs: Song[] = songs.filter(song => song.tag.tags.album === album)
@@ -46,7 +45,7 @@ const Album: React.FC = () => {
           </h2>
           <div className="others">
             <li>{currentAlbum?.tag.tags.year}</li>
-            <li>{albumSongs.length} {albumSongs.length === 1 ? 'Song' : 'Songs'}</li>
+            <li>{albumSongs.length} Songs</li>
             <li>{TotalDuration(albumSongs)} duration</li>
           </div>
           <div className="buttons">

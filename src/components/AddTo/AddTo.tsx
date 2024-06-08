@@ -2,12 +2,12 @@ import React, { useContext, useRef } from 'react'
 import './style.css'
 import { useLocation, useParams } from 'react-router-dom'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
+import { songs } from '../../assets'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
 import FavoritesContext from '../../contexts/FavoritesContext'
 import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
-import { AllSongsContext } from '../../contexts/AllSongsContext'
 
 const AddTo: React.FC = () => {
     // add to view
@@ -31,7 +31,6 @@ const AddTo: React.FC = () => {
   const {playlists} = useContext(PlaylistContext)
   const {favoritesDispatch} = useContext(FavoritesContext)
   const {contextMenuDispatch} = useContext(ContextMenuContext)
-  const {songs} = useContext(AllSongsContext)
 
   // helper function
   const getSongs = () => {

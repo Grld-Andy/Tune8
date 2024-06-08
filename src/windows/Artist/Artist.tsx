@@ -1,21 +1,19 @@
 import React, { useContext } from 'react'
 import './style.css'
+import { songs } from '../../assets'
 import { useParams } from 'react-router-dom'
 import { Song } from '../../data'
 import SongListItem from '../../components/SongListItem/SongListItem'
-import { shuffleArray, TotalDuration } from '../../utilities'
+import { shuffleArray, TotalDuration } from '../../constants'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import AddTo from '../../components/AddTo/AddTo'
-import { AllSongsContext } from '../../contexts/AllSongsContext'
 
 const Artist: React.FC = () => {
   const {artist} = useParams<string>()
-  const {songs} = useContext(AllSongsContext)
 
   const currentArtist : Song|undefined = songs.find(song => song.tag.tags.artist === artist)
   const artistSongs: Song[] = songs.filter(song => song.tag.tags.artist === artist)
-    .sort((a,b) => a.tag.tags.album.localeCompare(b.tag.tags.album))
   const uniqueAlbums = artistSongs.map(song => song.tag.tags.album)
   
   const {dispatch} = useContext(QueueSongsContext)
@@ -46,7 +44,7 @@ const Artist: React.FC = () => {
           </h1>
           <ul className='h2'>
             <li>{uniqueAlbums.length} Albums</li><br/>
-            <li>{artistSongs.length} {artistSongs.length === 1 ? 'Song' : 'Songs'}</li>
+            <li>{artistSongs.length} Songs</li>
           </ul>
           <div className="others">
             <h4>{TotalDuration(artistSongs)}</h4>

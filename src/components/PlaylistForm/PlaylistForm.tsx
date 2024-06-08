@@ -96,7 +96,7 @@ const PlaylistForm: React.FC = () => {
                                         <img src={playlist.songs.length > 0 ? playlist.songs[0].imageSrc : playlist.defaultImage}/>
                                         <div className="p-info">
                                             <h4>{playlist.name}</h4>
-                                            <h5>{playlist.songs.length} {playlist.songs.length === 1 ? 'song' : 'songs'}</h5>
+                                            <h5>{playlist.songs.length} songs</h5>
                                         </div>
                                     </div>
                                 ))
