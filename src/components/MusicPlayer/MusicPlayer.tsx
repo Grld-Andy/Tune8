@@ -7,7 +7,7 @@ import {MdFavoriteBorder, MdFavorite} from 'react-icons/md'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import FavoritesContext from '../../contexts/FavoritesContext'
-import { DurationToString, shuffleArray } from '../../constants'
+import { DurationToString, shuffleArray } from '../../utilities'
 import { Link } from 'react-router-dom'
 import './style.css'
 

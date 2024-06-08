@@ -234,6 +234,37 @@ nav{
         }
     }
 }
+.sort-button{
+    position: relative;
+    color: var(--primary-text-color);
+    .sort-options{
+        position: absolute;
+        border: 1px solid rgb(63, 63, 63);
+        left: 0;
+        border-radius: 5px;
+        overflow: hidden;
+        top: 26px;
+        display: none;
+        li{
+            list-style-type: none;
+            padding: 5px;
+            font-size: 1.1em;
+            background-color: var(--primary-button-bg-color);
+            font-weight: 400;
+            &:hover{
+                background-color: var(--primary-button-bg-hover);
+            }
+        }
+        .active{
+            background-color: var(--music-player-bg-color);
+        }
+    }
+    &:hover{
+        .sort-options{
+            display: block;
+        }
+    }
+}
 @media (max-width: 700px) {
     $sidebar-width: 55px;
     .main{

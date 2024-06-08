@@ -3,7 +3,7 @@ import './style.css'
 import SongListItem from '../../components/SongListItem/SongListItem';
 import { QueueSongsContext } from '../../contexts/QueueSongsContext';
 import { CurrentSongContext } from '../../contexts/CurrentSongContext';
-import { shuffleArray } from '../../constants';
+import { shuffleArray } from '../../utilities';
 
 const Queue: React.FC = () => {
   const {queue, dispatch} = useContext(QueueSongsContext)
@@ -35,7 +35,7 @@ const Queue: React.FC = () => {
           <button>Add Files</button>
         </div>
       </nav>
-        <div className="songs view">
+        <div className="queue view">
           {
             queue.map((song, index) => (
               <SongListItem key={index} song={song}

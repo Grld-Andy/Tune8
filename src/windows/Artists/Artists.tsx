@@ -38,7 +38,6 @@ const Artists: React.FC = () => {
           <h1>Artists</h1>
         </div>
         <div className="nav-right">
-          <button>Sort by</button>
           <button>Add Files</button>
         </div>
       </nav> 
