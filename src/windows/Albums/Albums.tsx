@@ -1,9 +1,11 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './style.css'
 import SongTile from '../../components/SongTile/SongTile'
 import { SortedSongs } from '../../data'
 import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
 import {AllSongsContext} from '../../contexts/AllSongsContext'
+import SortButton from '../../components/SortButton/SortButton'
+import { getSortedSongs } from '../../utilities'
 
 const Albums: React.FC = () => {
   const {songs} = useContext(AllSongsContext)
@@ -16,18 +18,13 @@ const Albums: React.FC = () => {
     setShowNav(false)
   }
 
-  const albums: SortedSongs = {}
-  songs.forEach(song => {
-    let firstLetter:string = song.tag.tags.album.charAt(0).toUpperCase()
-    firstLetter = /^[A-Za-z]$/.test(firstLetter) ? firstLetter : '#'
-    // initialize to store empty array before pushing
-    if (!albums[firstLetter]) {
-      albums[firstLetter] = new Set()
-    }
-    if(!Array.from(albums[firstLetter]).some(elem => elem.tag.tags.album === song.tag.tags.album)){
-      albums[firstLetter].add(song)
-    }
-  })
+  // sort albums
+  const [sortOrder, setSortOrder] = useState<string>(localStorage.getItem('albumsSortOrder') ?? 'albums')
+  const [albums, setAlbums] = useState<SortedSongs>(getSortedSongs(songs, sortOrder, 'albums'))
+  useEffect(() => {
+    localStorage.setItem('albumsSortOrder', sortOrder)
+    setAlbums(getSortedSongs(songs, sortOrder, 'albums'))
+  }, [sortOrder, songs])
 
   return (
     <>
@@ -36,7 +33,8 @@ const Albums: React.FC = () => {
           <h1>Albums</h1>
         </div>
         <div className="nav-right">
-          <button>Sort by</button>
+          <SortButton sortOrder={sortOrder} page={'albums'}
+            setSortOrder={setSortOrder} showNav={showNav}/>
           <button>Add Files</button>
         </div>
       </nav> 
@@ -44,6 +42,7 @@ const Albums: React.FC = () => {
             {
               showNav &&
               <MusicNavigation toggleShowNav={toggleShowNav}
+              sortOrder={sortOrder}
               object={albums} closeAndScroll={closeAndScroll}/>
             }
             {

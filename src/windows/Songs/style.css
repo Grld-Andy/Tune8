@@ -18,5 +18,5 @@
   width: min-content;
 }
 .songs section h2:hover {
-  color: green;
+  color: var(--sidebar-link-color);
 }/*# sourceMappingURL=style.css.map */

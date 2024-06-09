@@ -15,7 +15,8 @@
   border-radius: 5px;
   top: 0;
   width: 130px;
-  height: 118px;
+  min-height: -moz-min-content;
+  min-height: min-content;
   max-height: 147px;
   background-color: transparent;
   -webkit-backdrop-filter: blur(10px);
@@ -34,6 +35,14 @@
   color: var(--primary-text-color);
   text-shadow: 0 0 5px white;
   position: relative;
+}
+.context-menu .labels h2:first-child {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.context-menu .labels h2:last-child {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 .context-menu .labels h2:hover {
   background-color: var(--item-hover-bg);

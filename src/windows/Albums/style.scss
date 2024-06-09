@@ -9,7 +9,7 @@
             margin-bottom: 5px;
             width: min-content;
             &:hover{
-                color: green;
+                color: var(--sidebar-link-color);
             }
         }
         .cards{

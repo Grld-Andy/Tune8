@@ -35,9 +35,10 @@ export function shuffleArray(array: Array<Song>): Array<Song> {
 }
 
 // get sorted songs
-export const getSortedSongs = (songs: Array<Song>, sortOrder: string): SortedSongs => {
+export const getSortedSongs = (songs: Array<Song>, sortOrder: string, page: string = ''): SortedSongs => {
     const sortedSongs: SortedSongs = {}
     songs.forEach(song => {
+      // sort by title
         if(sortOrder === 'title'){
           let firstLetter:string = song.tag.tags.title.charAt(0).toUpperCase()
           firstLetter = /^[A-Za-z]$/.test(firstLetter) ? firstLetter : '#'
@@ -45,26 +46,47 @@ export const getSortedSongs = (songs: Array<Song>, sortOrder: string): SortedSon
             sortedSongs[firstLetter] = new Set()
           }
           sortedSongs[firstLetter].add(song)
-        }else if(sortOrder === 'album'){
+        }
+        // sort by album
+        else if(sortOrder === 'album'){
           let firstLetter:string = song.tag.tags.album.charAt(0).toUpperCase()
           firstLetter = /^[A-Za-z]$/.test(firstLetter) ? firstLetter : '#'
           if (!sortedSongs[firstLetter]) {
             sortedSongs[firstLetter] = new Set()
           }
-          sortedSongs[firstLetter].add(song)
-        }else if(sortOrder === 'artist'){
+          if(page === 'albums' && !Array.from(sortedSongs[firstLetter]).some(elem => elem.tag.tags.album === song.tag.tags.album)){
+            sortedSongs[firstLetter].add(song)
+          }
+          else if(page === ''){
+            sortedSongs[firstLetter].add(song)
+          }
+        }
+        // sort by artist
+        else if(sortOrder === 'artist'){
           let firstLetter:string = song.tag.tags.artist.charAt(0).toUpperCase()
           firstLetter = /^[A-Za-z]$/.test(firstLetter) ? firstLetter : '#'
           if (!sortedSongs[firstLetter]) {
             sortedSongs[firstLetter] = new Set()
           }
+          if(page === 'albums' && !Array.from(sortedSongs[firstLetter]).some(elem => elem.tag.tags.album === song.tag.tags.album)){
             sortedSongs[firstLetter].add(song)
-        }else if(sortOrder === 'year'){
+          }
+          else if(page === ''){
+            sortedSongs[firstLetter].add(song)
+          }
+        }
+        // sort by year
+        else if(sortOrder === 'year'){
           const year: string = song.tag.tags.year.toString()
           if (!sortedSongs[year]) {
             sortedSongs[year] = new Set()
           }
-          sortedSongs[year].add(song)
+          if(page === 'albums' && !Array.from(sortedSongs[year]).some(elem => elem.tag.tags.album === song.tag.tags.album)){
+            sortedSongs[year].add(song)
+          }
+          else if(page === ''){
+            sortedSongs[year].add(song)
+          }
         }
     })
     return sortedSongs

@@ -13,7 +13,7 @@
   width: min-content;
 }
 .albums section h2:hover {
-  color: green;
+  color: var(--sidebar-link-color);
 }
 .albums section .cards {
   display: flex;

@@ -1,3 +1,4 @@
+import { v1 } from "uuid"
 import { PlaylistInterface, Song } from "../data"
 
 // profile placeholder
@@ -21,6 +22,7 @@ export const the_search : string = '/my_images/music_cover/the_search.jpg'
 export const when_i_grow_up : string = '/my_images/music_cover/when_i_grow_up.jpg'
 
 export const song1: Song = {
+    id: v1(),
     tag: {
         tags: {
             title: 'Crown',
@@ -35,6 +37,7 @@ export const song1: Song = {
     src: '/tune 8/NEFFEX_Crown_Copyright_Free.m4a'
 }
 const song2: Song = {
+    id: v1(),
     tag: {
         tags: {
             title: 'Fearless',
@@ -49,6 +52,7 @@ const song2: Song = {
     src: '/tune 8/Fearless-Lost_Sky.mp3'
 }
 const song3: Song = {
+    id: v1(),
     tag: {
         tags: {
             title: 'Giants',
@@ -63,6 +67,7 @@ const song3: Song = {
     src: '/tune 8/League Of Legends (ft. Becky G, Keke Palmer, SOYEON, DUCKWRT.mp3'
 }
 const song4: Song = {
+    id: v1(),
     tag: {
         tags: {
             title: 'Kami',
@@ -77,6 +82,7 @@ const song4: Song = {
     src: '/tune 8/Rustage - Kami.m4a'
 }
 const song5: Song = {
+    id: v1(),
     tag: {
         tags: {
             title: 'Rare',
@@ -91,12 +97,13 @@ const song5: Song = {
     src: '/tune 8/neffex-rare.m4a'
 }
 const song6: Song = {
+    id: v1(),
     tag: {
         tags: {
             title: 'Light of the Sun',
             artist: 'Rustage',
             album: 'Rustage 1',
-            year: 2024,
+            year: 2023,
         },
     },
     imageSrc: light_of_the_sun,
@@ -105,6 +112,7 @@ const song6: Song = {
     src: '/tune 8/rustage-sun-wukong-rap-light-of-the-sun-rustage-ft-johnald.m4a'
 }
 const song7: Song = {
+    id: v1(),
     tag: {
         tags: {
             title: 'The Search',
@@ -119,6 +127,7 @@ const song7: Song = {
     src: '/tune 8/The search.mp3'
 }
 const song8: Song = {
+    id: v1(),
     tag: {
         tags: {
             title: 'When I Grow Up',
@@ -133,6 +142,7 @@ const song8: Song = {
     src: '/tune 8/when i grow up.mp3'
 }
 const song9: Song = {
+    id: v1(),
     tag: {
         tags: {
             title: 'Headspace',

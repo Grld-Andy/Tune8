@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react'
 import './style.css'
 import SongTile from '../../components/SongTile/SongTile'
-// import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
 import { SortedPlaylists, SortedSongs } from '../../data'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { placeholderSongImages } from '../../assets'
@@ -12,9 +11,6 @@ const Playlists: React.FC = () => {
   const toggleShowNav: () => void = () => {
     setShowNav(!showNav)
   }
-  // const closeAndScroll: () => void = () => {
-  //   setShowNav(false)
-  // }
 
   const {playlists} = useContext(PlaylistContext)
   
@@ -53,10 +49,6 @@ const Playlists: React.FC = () => {
       {
         playlists.length > 0?
         <div className="albums view">
-            {/* {
-              showNav &&
-              <MusicNavigation toggleShowNav={toggleShowNav} object={Allplaylists} closeAndScroll={closeAndScroll}/>
-            } */}
             {
               Object.keys(Allplaylists).sort().map(letter => (
                 <section key={letter} id={letter}>

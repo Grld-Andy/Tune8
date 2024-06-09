@@ -1,10 +1,12 @@
 import React, { useContext } from 'react'
-import { BsPlayCircle } from 'react-icons/bs'
+import { BsPauseCircle, BsPlayCircle } from 'react-icons/bs'
 import './style.css'
 import { Song } from '../../data'
 import { Link } from 'react-router-dom'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { ContextMenuContext } from '../../contexts/ContextMenuContext'
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface Props {
   song: Song
@@ -35,14 +37,28 @@ const SongListItem: React.FC<Props> = ({song, setQueueSongs, index, page = 'link
     contextMenuDispatch({type: 'OPEN_MENU', payload: {x: e.clientX, y: e.clientY, lastClicked: [song], indexClicked: index}})
   }
 
+  // drag and drop
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: song.tag.tags.title })
+
+  const style = {
+    transition: transition,
+    transform: CSS.Transform.toString(transform),
+  }
+
+
   return (
     <div
+    ref={setNodeRef} {...attributes} {...listeners} style={style}
     className={currentSong.index === index && page === 'queue' ? `song currentSong` :
     page !== 'queue' && currentSong.song?.tag.tags.title === song.tag.tags.title
       && currentSong.song?.tag.tags.album === song.tag.tags.album ? `song currentSong`:
     'song'}
     onContextMenu={showContextMenu}>
-      <BsPlayCircle className='icon' onClick={() => {playSong(song)}}/>
+      {
+        page === 'queue' && currentSong.isPlaying && currentSong.index === index?
+        <BsPauseCircle className='icon' onClick={() => {playSong(song)}}/>:
+        <BsPlayCircle className='icon' onClick={() => {playSong(song)}}/>
+      }
       <h3>{song.tag.tags.title}</h3>
       <Link to={`/artistView/${song.tag.tags.artist}`}>
         <h3 className='link'>{song.tag.tags.artist}</h3>

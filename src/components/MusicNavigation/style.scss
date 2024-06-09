@@ -8,7 +8,7 @@
     width: calc(100% - 200px);
     height: calc(100% - 195px);
     background-color: var(--songs-nav-bg);
-    z-index: 15;
+    z-index: 9;
     &::-webkit-scrollbar{
         display: none;
     }

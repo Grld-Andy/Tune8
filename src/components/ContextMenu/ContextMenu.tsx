@@ -107,41 +107,51 @@ const ContextMenu: React.FC = () => {
     }}
     onClick={closeMenu}>
         <div className="labels">
-            <h2 onClick={playSong}>Play Now</h2>
-            <h2 onClick={playNextInQueue}>Play Next</h2>
-            <h2 className='to-sub'>
-                Add to...
-                <div className='submenu'
-                style={{
-                  right: window.innerWidth > contextMenu.position.x + 150 ? -130 : 128
-                }}>
-                    <h2 onClick={addToQueue}>Queue</h2>
-                    <h2 onClick={addToPlaylist}>Playlist</h2>
-                    {
-                      location.pathname === '/favorites'||
-                      <h2 onClick={addToFavorites}>Favorites</h2>
-                    }
-                </div>
-            </h2>
+          {
+            contextMenu.lastClicked[0] &&
+            <>
+              <h2 onClick={playSong}>Play Now</h2>
+              <h2 onClick={playNextInQueue}>Play Next</h2>
+              <h2 className='to-sub'>
+                  Add to...
+                  <div className='submenu'
+                  style={{
+                    right: window.innerWidth > contextMenu.position.x + 150 ? -130 : 128
+                  }}>
+                      <h2 onClick={addToQueue}>Queue</h2>
+                      <h2 onClick={addToPlaylist}>Playlist</h2>
+                      {
+                        location.pathname === '/favorites'||
+                        <h2 onClick={addToFavorites}>Favorites</h2>
+                      }
+                  </div>
+              </h2>
+            </>
+          }
             {
               location.pathname === '/songs' || location.pathname === '/'
               || location.pathname === '/albums' || location.pathname === '/artists'
               || location.pathname.includes('/albumView') || location.pathname.includes('/artistView') ||
               <h2 onClick={remove}>Remove</h2>
             }
-            <h2 className='to-sub'>View ...
-              <div className='submenu'
-              style={{
-                right: window.innerWidth > contextMenu.position.x + 150 ? -130 : 128
-              }}>
-                <h2>
-                  <Link to={`/artistView/${contextMenu.lastClicked[0].tag.tags.artist}`}>Artist</Link>
-                </h2>
-                <h2>
-                  <Link to={`/albumView/${contextMenu.lastClicked[0].tag.tags.album}`}>Album</Link>
-                </h2>
-              </div>
-            </h2>
+            {
+              contextMenu.lastClicked[0] && location.pathname !== '/playlists' &&
+              <h2 className='to-sub'>View ...
+                <div className='submenu'
+                style={{
+                  right: window.innerWidth > contextMenu.position.x + 150 ? -130 : 128
+                }}>
+                  <>
+                    <h2>
+                      <Link to={`/artistView/${contextMenu.lastClicked[0].tag.tags.artist}`}>Artist</Link>
+                    </h2>
+                    <h2>
+                      <Link to={`/albumView/${contextMenu.lastClicked[0].tag.tags.album}`}>Album</Link>
+                    </h2>
+                  </>
+                </div>
+              </h2>
+            }
         </div>
     </div>
     </>

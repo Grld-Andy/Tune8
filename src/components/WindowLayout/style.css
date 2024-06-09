@@ -238,36 +238,6 @@ nav .nav-right button:hover {
   color: black;
 }
 
-.sort-button {
-  position: relative;
-  color: var(--primary-text-color);
-}
-.sort-button .sort-options {
-  position: absolute;
-  border: 1px solid rgb(63, 63, 63);
-  left: 0;
-  border-radius: 5px;
-  overflow: hidden;
-  top: 26px;
-  display: none;
-}
-.sort-button .sort-options li {
-  list-style-type: none;
-  padding: 5px;
-  font-size: 1.1em;
-  background-color: var(--primary-button-bg-color);
-  font-weight: 400;
-}
-.sort-button .sort-options li:hover {
-  background-color: var(--primary-button-bg-hover);
-}
-.sort-button .sort-options .active {
-  background-color: var(--music-player-bg-color);
-}
-.sort-button:hover .sort-options {
-  display: block;
-}
-
 @media (max-width: 700px) {
   .main .left__ {
     width: 55px;

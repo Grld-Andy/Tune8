@@ -1,0 +1,31 @@
+.sort-button{
+    color: var(--primary-text-color);
+    &:hover{
+        .sort-options{
+            display: block;
+        }
+    }
+}
+.sort-options{
+    position: absolute;
+    border: 1px solid rgb(63, 63, 63);
+    right: 83px;
+    border-radius: 5px;
+    overflow: hidden;
+    top: 62px;
+    cursor: default;
+    // display: none;
+    li{
+        list-style-type: none;
+        padding: 2px;
+        font-size: 1em;
+        background-color: var(--primary-button-bg-color);
+        font-weight: 400;
+        &:hover{
+            background-color: var(--primary-button-bg-hover);
+        }
+    }
+    .active{
+        background-color: var(--music-player-bg-color);
+    }
+}

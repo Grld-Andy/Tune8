@@ -56,7 +56,8 @@ const Songs: React.FC = () => {
         <div className="nav-right">
           <button onClick={playAllSongs}>Play All</button>
           <button onClick={shuffleSongs}>Shuffle and Play</button>
-          <SortButton sortOrder={sortOrder} setSortOrder={setSortOrder}/>
+          <SortButton sortOrder={sortOrder} setSortOrder={setSortOrder}
+            showNav={showNav}/>
           <button>Add Files</button>
         </div>
       </nav>

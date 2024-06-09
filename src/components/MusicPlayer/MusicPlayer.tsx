@@ -111,6 +111,11 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
     intervalRef.current = window.setInterval(() => {
       if (currentSong.audioRef) {
         setSongProgress(currentSong.audioRef.currentTime / currentSong.audioRef.duration * 100)
+        if(currentSong.audioRef.paused){
+          togglePlay(false)
+        }else{
+          togglePlay(true)
+        }
         setTimePlayed(DurationToString(currentSong.audioRef.currentTime))
         if (currentSong.song) {
           if (currentSong.audioRef.currentTime === currentSong.audioRef.duration) {
@@ -173,14 +178,14 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
     if(!currentSong.audioRef)return
     if(speed === 1){
       currentSong.audioRef.playbackRate = 1
-      handleShowOptions('')
+      // handleShowOptions('')
     }
     else if(speed < 0){
       currentSong.audioRef.playbackRate *= Math.abs(speed)
     }
     else{
       currentSong.audioRef.playbackRate += speed
-      handleShowOptions('')
+      // handleShowOptions('')
     }
     sessionStorage.setItem('playbackSpeed', currentSong.audioRef.playbackRate.toString())
   }
@@ -297,8 +302,10 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
                   <li onClick={() => {handlePlaybackSpeed(0.5)}}>Faster (+ 0.5)</li>
                 </div>
               </li>
-              <li className='last' onClick={() => {handleShowOptions('')}}>
-                Mute
+              <li className='last' onClick={() => {handleMuteSong(!mute)}}>
+                {
+                  mute ? "Unmute" : "Mute"
+                }
               </li>
             </ul>
           }
