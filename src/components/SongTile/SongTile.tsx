@@ -13,6 +13,7 @@ interface Props{
     song: Song,
     page: string,
     playlistName?: string
+    addToSelected: (songs: Array<Song>) => void
 }
 
 const SongTileDetails: React.FC<Props> = ({song, page, playlistName}) => {
@@ -35,13 +36,14 @@ const SongTileDetails: React.FC<Props> = ({song, page, playlistName}) => {
   )
 }
 
-const SongTile: React.FC<Props> = ({song, page, playlistName}) => {
+const SongTile: React.FC<Props> = ({song, page, playlistName, addToSelected}) => {
   const {songs} = useContext(AllSongsContext)
 
   const {currentSongDispatch} = useContext(CurrentSongContext)
   const {dispatch} = useContext(QueueSongsContext)
   const linkTo: string|undefined = page === 'album' ? song.tag.tags.album : page === 'artist' ? song.tag.tags.artist : page === 'playlist' ? playlistName : ''
 
+  // helper function to get all songs
   const {playlists} = useContext(PlaylistContext)
   const getAllSongs: () => Array<Song> = () => {
     if(page === 'album'){
@@ -80,6 +82,9 @@ const SongTile: React.FC<Props> = ({song, page, playlistName}) => {
       <div className={`tile-icons drop_up ${page}`} onClick={openContextMenu}>
         <IoMdArrowDropup size={40}/>
       </div>
+      <div className="select-tile"
+        onClick={() => {addToSelected(getAllSongs())}}>
+      </div>
       <div className={`pic ${page}-page`}>
         {
           page === 'home'
@@ -90,9 +95,9 @@ const SongTile: React.FC<Props> = ({song, page, playlistName}) => {
       </div>
       {
           page === 'home'
-          ?<SongTileDetails song={song} page={page}/>
+          ?<SongTileDetails song={song} page={page} addToSelected={addToSelected}/>
           :<Link to={`/${page}View/${linkTo}`}>
-            <SongTileDetails song={song} page={page} playlistName={playlistName}/>
+            <SongTileDetails song={song} page={page} playlistName={playlistName} addToSelected={addToSelected}/>
           </Link>
         }
     </div>

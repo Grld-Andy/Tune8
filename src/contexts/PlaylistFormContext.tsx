@@ -6,15 +6,17 @@ interface Props{
 }
 export interface PlaylistFormState{
     isOpen: boolean,
-    payload: string
+    payload: string,
+    name?: string
 }
 interface PlaylistFormContextType{
     playlistForm: PlaylistFormState,
-    playlistFormDispatch: Dispatch<{ type: string, payload: string }>
+    playlistFormDispatch: Dispatch<{ type: string, payload: string, name?: string }>
 }
 const initialState = {
     isOpen: false,
-    payload: ''
+    payload: '',
+    name: ''
 }
 export const PlaylistFormContext = createContext<PlaylistFormContextType>({
     playlistForm: initialState,

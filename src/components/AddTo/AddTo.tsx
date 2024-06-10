@@ -80,7 +80,7 @@ const AddTo: React.FC = () => {
   
   return (
     <>
-        <button className="add" onClick={showAddTo}>Add to</button>
+        <button className="add" onClick={showAddTo}>Add To</button>
         <div className="addto-container" ref={addRef} onMouseLeave={closeAddTo}>
             <div className="single_add_to">
                 <div onClick={addToQueue}>Queue</div>

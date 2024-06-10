@@ -52,7 +52,7 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
   }
 
   // drag and drop
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: song.tag.tags.title })
+  const { attributes, listeners, setNodeRef, transform } = useSortable({ id: song.tag.tags.title })
 
   const style = {
     transition: 'transform 150ms linear',

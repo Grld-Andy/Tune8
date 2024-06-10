@@ -17,11 +17,17 @@ const PlaylistForm: React.FC = () => {
     const closeForm = () => {
         playlistFormDispatch({type: 'CLOSE_FORM', payload: ''})
     }
+
+    // handle creation and editing of playlist
     const handlePlaylistInteract = (val: string) => {
         if(playlistName){
             if(val === 'submit'){
                 playlistsDispatch({ type: 'CREATE_PLAYLIST', payload: {name:playlistName, songs: []} })
                 setPlaylistName('')
+            }
+            if(val === 'edit' && playlistForm.name){
+                playlistsDispatch({type: 'EDIT_PLAYLIST', payload: {name: playlistForm.name, songs: []}, newName: playlistName})
+                setPlaylistName("")
             }
         }
         closeForm()
@@ -36,6 +42,13 @@ const PlaylistForm: React.FC = () => {
         playlistsDispatch({ type: 'ADD_TO_PLAYLIST', payload: {name:name, songs: contextMenu.lastClicked} })
         closeForm()
     }
+
+    // edit existing playlist name on render
+    useEffect(() => {
+        if(playlistForm.payload === 'edit' && playlistForm.name){
+            setPlaylistName(playlistForm.name)
+        }
+    }, [playlistForm.name, playlistForm.payload])
 
     // focus on input
     useEffect(() => {
@@ -67,8 +80,8 @@ const PlaylistForm: React.FC = () => {
                 playlistForm.payload === 'edit'?
                 <div className='playlistForm'>
                     <div className="container">
-                        <h1>Edit to playlist</h1>
-                        <form onSubmit={() => {handlePlaylistInteract('submit')}}>
+                        <h1>Edit Name</h1>
+                        <form onSubmit={() => {handlePlaylistInteract('edit')}}>
                             <input ref={inputRef} value={playlistName} type='text'
                             placeholder='Playlist name' onChange={(e) => {handlePlaylistName(e.target.value)}}/>
                             <div className="buttons">

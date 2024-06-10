@@ -1,7 +1,7 @@
 import { placeholderSongImages } from "../assets";
 import { PlaylistInterface, Song } from "../data";
 
-export const PlaylistReducer = (playlists: Array<PlaylistInterface>, action: {type: string, payload: PlaylistInterface, songs?: Array<Song>}) : Array<PlaylistInterface> => {
+export const PlaylistReducer = (playlists: Array<PlaylistInterface>, action: {type: string, payload: PlaylistInterface, songs?: Array<Song>, newName?: string}) : Array<PlaylistInterface> => {
     switch(action.type){
         case 'CREATE_PLAYLIST':
             if(!playlists.some(playlist => playlist.name === action.payload.name)){
@@ -9,8 +9,6 @@ export const PlaylistReducer = (playlists: Array<PlaylistInterface>, action: {ty
                 return [...playlists, action.payload]
             }
             else return Array.from(new Set(playlists))
-        case 'REMOVE_PLAYLIST':
-            return playlists.filter(playlist => playlist.name !== action.payload.name)
         case 'ADD_TO_PLAYLIST':
             return playlists.map(playlist => {
                 if(playlist.name === action.payload.name && action.payload.songs.length > 0){
@@ -19,6 +17,16 @@ export const PlaylistReducer = (playlists: Array<PlaylistInterface>, action: {ty
                     return playlist
                 }
             })
+        case 'EDIT_PLAYLIST':
+            return playlists.map(playlist => {
+                if(playlist.name === action.payload.name && action.newName){
+                    return {...playlist, name: action.newName}
+                }else{
+                    return playlist
+                }
+            })
+        case 'REMOVE_PLAYLIST':
+            return playlists.filter(playlist => playlist.name !== action.payload.name)
         case 'REMOVE_FROM_PLAYLIST':
             return playlists.map(playlist => {
                 if(playlist.name === action.payload.name){

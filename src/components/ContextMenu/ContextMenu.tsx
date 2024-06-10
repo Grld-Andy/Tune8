@@ -66,7 +66,7 @@ const ContextMenu: React.FC = () => {
   // Edit
   const edit = () => {
     if(location.pathname === '/playlists'){
-      playlistFormDispatch({type: 'OPEN_FORM', payload: 'edit'})
+      playlistFormDispatch({type: 'OPEN_FORM', payload: 'edit', name: contextMenu.nameClicked})
     }
   }
 

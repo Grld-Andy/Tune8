@@ -5,6 +5,7 @@ import { SortedPlaylists, SortedSongs } from '../../data'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { placeholderSongImages } from '../../assets'
 import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
+import { v1 } from 'uuid'
 
 const Playlists: React.FC = () => {
   const [showNav, setShowNav] = useState(false)
@@ -57,6 +58,7 @@ const Playlists: React.FC = () => {
                     {
                       Array.from(Allplaylists[letter]).map((playlist, index) => {
                         const newEmpty = {
+                          id: v1(),
                           tag: {tags: {title: '',artist: '',album: '',year: 0}},
                           imageSrc: playlist.defaultImage ? playlist.defaultImage : placeholderSongImages[Math.floor(Math.random() * 4)],
                           duration: '', isFavorite: false, src: ''

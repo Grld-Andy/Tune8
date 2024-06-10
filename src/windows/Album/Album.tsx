@@ -51,8 +51,8 @@ const Album: React.FC = () => {
             <li>{TotalDuration(albumSongs)} duration</li>
           </div>
           <div className="buttons">
-            <button className="play" onClick={playAllSongs}>Play All</button>
-            <button className="shuffle" onClick={shuffleSongs}>Shuffle and Play</button>
+            <button className="play" onClick={playAllSongs}>Play</button>
+            <button className="shuffle" onClick={shuffleSongs}>Shuffle</button>
             <AddTo/>
           </div>
         </div>

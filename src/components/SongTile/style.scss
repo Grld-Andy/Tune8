@@ -43,6 +43,22 @@
             background-color: var(--songtile-icon-bg-hover);
         }
     }
+    .select-tile{
+        position: absolute;
+        border: 1px solid var(--primary-text-color);
+        z-index: 10;
+        top: 10px;
+        display: flex;
+        left: 10px;
+        border-radius: 5px;
+        height: 25px;
+        width: 25px;
+        overflow: hidden;
+        background-color: var(--sidebar-link-color);
+        &:hover{
+            background-color: var(--sidebar-link-color);
+        }
+    }
     .play_icon{
         left: 10px;
     }

@@ -8,10 +8,12 @@ import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { PlaylistInterface } from '../../data'
 import AddTo from '../../components/AddTo/AddTo'
+import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
 
 const Playlist: React.FC = () => {
   const {playlist} = useParams<string>()
   const {playlists, playlistsDispatch} = useContext(PlaylistContext)
+  const {playlistFormDispatch} = useContext(PlaylistFormContext)
   const playlistSongs: PlaylistInterface = playlists.filter(item => item.name === playlist)[0]
   
   const {dispatch} = useContext(QueueSongsContext)
@@ -33,6 +35,11 @@ const Playlist: React.FC = () => {
     if(playlist)
     playlistsDispatch({type: 'CLEAR_PLAYLIST', payload: {name: playlist, songs: []}})
   }
+  const edit = () => {
+    if(location.pathname.includes('/playlistView/')){
+      playlistFormDispatch({type: 'OPEN_FORM', payload: 'edit', name: playlist})
+    }
+  }
 
   return (
     <>
@@ -51,8 +58,9 @@ const Playlist: React.FC = () => {
             <h4>{TotalDuration(playlistSongs.songs)}</h4>
           </div>
           <div className="buttons">
-            <button className="play" onClick={playAllSongs}>Play All</button>
-            <button className="shuffle" onClick={shuffleSongs}>Shuffle and Play</button>
+            <button className="play" onClick={playAllSongs}>Play</button>
+            <button className="shuffle" onClick={shuffleSongs}>Shuffle</button>
+            <button className="shuffle" onClick={edit}>Edit</button>
             <button className="shuffle" onClick={clearPlaylist}>Clear</button>
             <AddTo/>
           </div>
