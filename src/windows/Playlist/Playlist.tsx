@@ -45,7 +45,7 @@ const Playlist: React.FC = () => {
             {playlistSongs.name}
           </h1>
           <ul className='h2'>
-            <li>{playlistSongs.songs.length} Songs</li>
+            <li>{playlistSongs.songs.length} {playlistSongs.songs.length === 1 ? 'Song' : "Songs"}</li>
           </ul>
           <div className="others">
             <h4>{TotalDuration(playlistSongs.songs)}</h4>

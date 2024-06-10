@@ -47,7 +47,7 @@ const Album: React.FC = () => {
           </h2>
           <div className="others">
             <li>{currentAlbum?.tag.tags.year}</li>
-            <li>{albumSongs.length} Songs</li>
+            <li>{albumSongs.length} {albumSongs.length === 1 ? 'Song' : "Songs"}</li>
             <li>{TotalDuration(albumSongs)} duration</li>
           </div>
           <div className="buttons">

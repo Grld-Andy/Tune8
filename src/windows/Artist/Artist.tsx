@@ -45,11 +45,11 @@ const Artist: React.FC = () => {
             {currentArtist?.tag.tags.artist}
           </h1>
           <ul className='h2'>
-            <li>{uniqueAlbums.length} Albums</li><br/>
-            <li>{artistSongs.length} Songs</li>
+            <li>{uniqueAlbums.length} {uniqueAlbums.length === 1 ? 'Album' : "Albums"}</li><br/>
+            <li>{artistSongs.length} {artistSongs.length === 1 ? 'Song' : "Songs"}</li>
           </ul>
           <div className="others">
-            <h4>{TotalDuration(artistSongs)}</h4>
+            <h4>{TotalDuration(artistSongs)} duration</h4>
           </div>
           <div className="buttons">
             <button className="play" onClick={playAllSongs}>Play All</button>

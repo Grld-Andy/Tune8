@@ -63,6 +63,13 @@ const ContextMenu: React.FC = () => {
     favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: contextMenu.lastClicked})
   }
 
+  // Edit
+  const edit = () => {
+    if(location.pathname === '/playlists'){
+      playlistFormDispatch({type: 'OPEN_FORM', payload: 'edit'})
+    }
+  }
+
   // remove options
   const remove = () => {
     switch(location.pathname){
@@ -128,6 +135,7 @@ const ContextMenu: React.FC = () => {
               </h2>
             </>
           }
+          <h2 onClick={edit}>Edit</h2>
             {
               location.pathname === '/songs' || location.pathname === '/'
               || location.pathname === '/albums' || location.pathname === '/artists'

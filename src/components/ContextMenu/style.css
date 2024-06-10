@@ -10,7 +10,7 @@
 
 .context-menu {
   position: absolute;
-  z-index: 25;
+  z-index: 26;
   border: 1px solid black;
   border-radius: 5px;
   top: 0;
