@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react'
 import './style.css'
 import SongTile from '../../components/SongTile/SongTile'
-import { SortedPlaylists, SortedSongs } from '../../data'
+import { PlaylistInterface, Song, SortedPlaylists, SortedSongs } from '../../data'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { placeholderSongImages } from '../../assets'
 import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
 import { v1 } from 'uuid'
+import Buttons from '../../components/DynamicViews/Buttons/Buttons'
 
 const Playlists: React.FC = () => {
   const [showNav, setShowNav] = useState(false)
@@ -35,6 +36,25 @@ const Playlists: React.FC = () => {
     playlistFormDispatch({type: 'OPEN_FORM', payload: 'create'})
   }
 
+  // mulit select
+  const [selected, setSelected] = useState<Array<string>>([])
+  const addToSelected = (Group: string) => {
+    setSelected([...selected, Group])
+  }
+  const removeFromSelected = (Group: string) => {
+    setSelected(selected.filter(item => item!== Group))
+  }
+  const clearSelected = () => {
+    setSelected([])
+  }
+  // helper function to get selected songs
+  const getSelectedSongs: () => Array<Song> = () => {
+    const selectedPlaylists: Array<PlaylistInterface> = selected.flatMap(playlistName => {
+      return playlists.filter(item => item.name === playlistName)
+    })
+    return selectedPlaylists.flatMap(playlist => playlist.songs)
+  }
+
   return (
     <>
       <nav>
@@ -42,9 +62,18 @@ const Playlists: React.FC = () => {
           <h1>Playlists</h1>
         </div>
         <div className="nav-right">
-          <button onClick={createPlaylist}>Create New</button>
-          <button>Sort by</button>
-          <button>Add Files</button>
+          {
+            selected.length > 0 &&
+            <Buttons selectedSongs={getSelectedSongs()}
+            clearSelected={clearSelected}/>
+          }
+          {
+            selected.length > 0 ||
+            <>
+              <button onClick={createPlaylist}>Create New</button>
+              <button>Add Files</button>
+            </>
+          }
         </div>
       </nav>
       {
@@ -64,12 +93,15 @@ const Playlists: React.FC = () => {
                           duration: '', isFavorite: false, src: ''
                         }
                         return(
-                        <SongTile
-                          song={playlist.songs.length > 0 ? playlist.songs[0] : newEmpty}
-                          key={index}
-                          page={'playlist'}
-                          playlistName={playlist.name}
-                        />
+                          <SongTile
+                            song={playlist.songs.length > 0 ? playlist.songs[0] : newEmpty}
+                            key={index}
+                            page={'playlist'}
+                            playlistName={playlist.name}
+                            addToSelected={addToSelected}
+                            selected={selected}
+                            removeFromSelected={removeFromSelected}
+                          />
                       )})
                     }
                   </div>

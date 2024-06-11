@@ -6,7 +6,7 @@ import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
 import {AllSongsContext} from '../../contexts/AllSongsContext'
 import SortButton from '../../components/SortButton/SortButton'
 import { getSortedSongs } from '../../utilities'
-import AddTo from '../../components/AddTo/AddTo'
+import Buttons from '../../components/DynamicViews/Buttons/Buttons'
 
 const Albums: React.FC = () => {
   const {songs} = useContext(AllSongsContext)
@@ -20,14 +20,24 @@ const Albums: React.FC = () => {
   }
 
   // mulit select
-  const [selected, setSelected] = useState<Array<Song>>([])
-  const addToSelected = (songs: Array<Song>) => {
-    setSelected([...selected, ...songs])
+  const [selected, setSelected] = useState<Array<string>>([])
+  const addToSelected = (Group: string) => {
+    setSelected([...selected, Group])
+  }
+  const removeFromSelected = (Group: string) => {
+    setSelected(selected.filter(item => item!== Group))
   }
   const clearSelected = () => {
     setSelected([])
   }
-
+  // helper function to get selected songs
+  const getSelectedSongs: () => Array<Song> = () => {
+    const selectedSongs: Array<Song> = selected.flatMap(selectedAlbum => {
+      return songs.filter(item => item.tag.tags.album === selectedAlbum)
+    })
+    return selectedSongs
+  }
+  
   // sort albums
   const [sortOrder, setSortOrder] = useState<string>(localStorage.getItem('albumsSortOrder') ?? 'albums')
   const [albums, setAlbums] = useState<SortedSongs>(getSortedSongs(songs, sortOrder, 'albums'))
@@ -45,12 +55,8 @@ const Albums: React.FC = () => {
         <div className="nav-right">
           {
             selected.length > 0 &&
-            <>
-              <button>Play All</button>
-              <button>Play Next</button>
-              <AddTo/>
-              <button onClick={clearSelected}>Clear All</button>
-            </>
+            <Buttons selectedSongs={getSelectedSongs()}
+            clearSelected={clearSelected}/>
           }
           {
             selected.length > 0 ||
@@ -81,6 +87,8 @@ const Albums: React.FC = () => {
                           key={song.tag.tags.title}
                           page={'album'}
                           addToSelected={addToSelected}
+                          selected={selected}
+                          removeFromSelected={removeFromSelected}
                         />
                       ))
                     }

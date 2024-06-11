@@ -51,16 +51,21 @@
   border: 1px solid var(--primary-text-color);
   z-index: 10;
   top: 10px;
-  display: flex;
+  display: none;
   left: 10px;
   border-radius: 5px;
   height: 25px;
   width: 25px;
   overflow: hidden;
-  background-color: var(--sidebar-link-color);
+  align-content: center;
+  justify-content: center;
 }
 .card .select-tile:hover {
+  background-color: var(--songtile-icon-bg-hover);
+}
+.card .selected {
   background-color: var(--sidebar-link-color);
+  display: flex;
 }
 .card .play_icon {
   left: 10px;
@@ -128,7 +133,7 @@
   background-color: var(--songtile-card-bg-hover);
   box-shadow: 0 0 5px 2px var(--songtile-shadow);
 }
-.card:hover .tile-icons {
+.card:hover .tile-icons, .card:hover .select-tile {
   display: flex;
 }
 .card:hover .pic .song-tile-overlay {

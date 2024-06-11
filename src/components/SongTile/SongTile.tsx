@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {IoMdArrowDropup, IoMdArrowDropright} from 'react-icons/io'
 import './style.css'
 import { Song } from '../../data'
@@ -8,12 +8,15 @@ import { Link } from 'react-router-dom'
 import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { AllSongsContext } from '../../contexts/AllSongsContext'
+import { IoMdCheckmark } from 'react-icons/io'
 
 interface Props{
     song: Song,
     page: string,
     playlistName?: string
-    addToSelected: (songs: Array<Song>) => void
+    addToSelected: (songs: string) => void
+    removeFromSelected: (songs: string) => void
+    selected: Array<string>
 }
 
 const SongTileDetails: React.FC<Props> = ({song, page, playlistName}) => {
@@ -36,7 +39,9 @@ const SongTileDetails: React.FC<Props> = ({song, page, playlistName}) => {
   )
 }
 
-const SongTile: React.FC<Props> = ({song, page, playlistName, addToSelected}) => {
+const SongTile: React.FC<Props> = (
+    {song, page, playlistName, addToSelected, selected, removeFromSelected}
+  ) => {
   const {songs} = useContext(AllSongsContext)
 
   const {currentSongDispatch} = useContext(CurrentSongContext)
@@ -74,6 +79,45 @@ const SongTile: React.FC<Props> = ({song, page, playlistName, addToSelected}) =>
     dispatch({type: 'SET_QUEUE', payload: allSongs, index: 0})
   }
 
+  // helper function to make song easily accessible with title and album
+  const formatSongTitle: () => string = () => {
+    return `${song.tag.tags.title}&_?${song.tag.tags.album}`
+  }
+
+  // select song logic
+  const [isSelected, setIsSelected] = useState<boolean>(false)
+  const handleIsSelected = (val: boolean) => {
+    setIsSelected(val)
+    if(val){
+      if(page === 'album'){
+        addToSelected(song.tag.tags.album)
+      }else if(page === 'artist'){
+        addToSelected(song.tag.tags.artist)
+      }else if(page === 'home'){
+        addToSelected(formatSongTitle())
+      }else if(page === 'playlist' && playlistName){
+        addToSelected(playlistName)
+      }
+    }else{
+      if(page === 'album'){
+        removeFromSelected(song.tag.tags.album)
+      }else if(page === 'artist'){
+        removeFromSelected(song.tag.tags.artist)
+      }else if(page === 'home'){
+        removeFromSelected(formatSongTitle())
+      }else if(page === 'playlist' && playlistName){
+        removeFromSelected(playlistName)
+      }
+    }
+  }
+
+  // reset if selected is cleared
+  useEffect(() => {
+    if(selected.length < 1){
+      setIsSelected(false)
+    }
+  }, [selected])
+
   return (
     <div className="card" onContextMenu={openContextMenu}>
       <div className={`tile-icons play_icon ${page}`}>
@@ -82,9 +126,13 @@ const SongTile: React.FC<Props> = ({song, page, playlistName, addToSelected}) =>
       <div className={`tile-icons drop_up ${page}`} onClick={openContextMenu}>
         <IoMdArrowDropup size={40}/>
       </div>
-      <div className="select-tile"
-        onClick={() => {addToSelected(getAllSongs())}}>
-      </div>
+        <div className={isSelected ? `select-tile selected` : `select-tile`}
+        onClick={() => {handleIsSelected(!isSelected)}}>
+          {
+            isSelected &&
+            <IoMdCheckmark size={22}/>
+          }
+        </div>
       <div className={`pic ${page}-page`}>
         {
           page === 'home'
@@ -95,9 +143,14 @@ const SongTile: React.FC<Props> = ({song, page, playlistName, addToSelected}) =>
       </div>
       {
           page === 'home'
-          ?<SongTileDetails song={song} page={page} addToSelected={addToSelected}/>
+          ?<SongTileDetails song={song} page={page}
+            removeFromSelected={removeFromSelected}
+            addToSelected={addToSelected} selected={selected}/>
           :<Link to={`/${page}View/${linkTo}`}>
-            <SongTileDetails song={song} page={page} playlistName={playlistName} addToSelected={addToSelected}/>
+            <SongTileDetails song={song} page={page}
+            playlistName={playlistName} selected={selected}
+            removeFromSelected={removeFromSelected}
+            addToSelected={addToSelected}/>
           </Link>
         }
     </div>

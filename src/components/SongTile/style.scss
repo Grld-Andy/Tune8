@@ -48,16 +48,21 @@
         border: 1px solid var(--primary-text-color);
         z-index: 10;
         top: 10px;
-        display: flex;
+        display: none;
         left: 10px;
         border-radius: 5px;
         height: 25px;
         width: 25px;
         overflow: hidden;
-        background-color: var(--sidebar-link-color);
+        align-content: center;
+        justify-content: center;
         &:hover{
-            background-color: var(--sidebar-link-color);
+            background-color: var(--songtile-icon-bg-hover);
         }
+    }
+    .selected{
+        background-color: var(--sidebar-link-color);
+        display: flex;
     }
     .play_icon{
         left: 10px;
@@ -124,7 +129,7 @@
     &:hover{
         background-color: var(--songtile-card-bg-hover);
         box-shadow: 0 0 5px 2px var(--songtile-shadow);
-        .tile-icons{
+        .tile-icons, .select-tile{
             display: flex;
         }
         .pic{

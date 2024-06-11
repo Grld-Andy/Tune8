@@ -1,15 +1,15 @@
 import React, { useContext, useState } from 'react'
 import './style.css'
 import SongTile from '../../components/SongTile/SongTile'
-import { SortedSongs } from '../../data'
+import { Song, SortedSongs } from '../../data'
 import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
 import { AllSongsContext } from '../../contexts/AllSongsContext'
+import Buttons from '../../components/DynamicViews/Buttons/Buttons'
 
 const Artists: React.FC = () => {
   const {songs} = useContext(AllSongsContext)
 
   const [showNav, setShowNav] = useState(false)
-
   const toggleShowNav: () => void = () => {
     setShowNav(!showNav)
   }
@@ -17,8 +17,27 @@ const Artists: React.FC = () => {
     setShowNav(false)
   }
 
-  const artists: SortedSongs = {}
+  // mulit select
+  const [selected, setSelected] = useState<Array<string>>([])
+  const addToSelected = (Group: string) => {
+    setSelected([...selected, Group])
+  }
+  const removeFromSelected = (Group: string) => {
+    setSelected(selected.filter(item => item!== Group))
+  }
+  const clearSelected = () => {
+    setSelected([])
+  }
+  // helper function to get selected songs
+  const getSelectedSongs: () => Array<Song> = () => {
+    const selectedSongs: Array<Song> = selected.flatMap(selectedArtist => {
+      return songs.filter(item => item.tag.tags.artist === selectedArtist)
+    })
+    return selectedSongs
+  }
 
+  // get artists
+  const artists: SortedSongs = {}
   songs.forEach(song => {
     let firstLetter:string = song.tag.tags.artist.charAt(0).toUpperCase()
     firstLetter = /^[A-Za-z]$/.test(firstLetter) ? firstLetter : '#'
@@ -38,7 +57,15 @@ const Artists: React.FC = () => {
           <h1>Artists</h1>
         </div>
         <div className="nav-right">
-          <button>Add Files</button>
+          {
+            selected.length > 0 &&
+            <Buttons selectedSongs={getSelectedSongs()}
+            clearSelected={clearSelected}/>
+          }
+          {
+            selected.length > 0 ||
+            <button>Add Files</button>
+          }
         </div>
       </nav> 
       <div className="artists view">
@@ -55,8 +82,11 @@ const Artists: React.FC = () => {
                       Array.from(artists[letter]).map(song => (
                         <SongTile
                           song={song}
-                          page={'artist'}
                           key={song.tag.tags.title}
+                          page={'artist'}
+                          addToSelected={addToSelected}
+                          selected={selected}
+                          removeFromSelected={removeFromSelected}
                         />
                       ))
                     }
