@@ -33,7 +33,8 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.mjs'),
     },
     show: false,
-    maximizable: true
+    maximizable: true,
+    autoHideMenuBar: true
   })
   
   // Show the window once it is ready to be shown

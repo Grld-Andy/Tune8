@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import './style.css'
+import { useNavigate } from 'react-router-dom'
 import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { placeholderSongImages } from '../../assets'
@@ -19,6 +20,7 @@ const PlaylistForm: React.FC = () => {
     }
 
     // handle creation and editing of playlist
+    const navigate = useNavigate()
     const handlePlaylistInteract = (val: string) => {
         if(playlistName){
             if(val === 'submit'){
@@ -27,7 +29,8 @@ const PlaylistForm: React.FC = () => {
             }
             if(val === 'edit' && playlistForm.name){
                 playlistsDispatch({type: 'EDIT_PLAYLIST', payload: {name: playlistForm.name, songs: []}, newName: playlistName})
-                setPlaylistName("")
+                navigate(`/playlistView/${playlistName}`)
+                setPlaylistName('')
             }
         }
         closeForm()
