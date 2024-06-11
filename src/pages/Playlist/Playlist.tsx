@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import './style.css'
 import { useParams } from 'react-router-dom'
 import SongListItem from '../../components/SongListItem/SongListItem'
@@ -6,9 +6,10 @@ import { shuffleArray, TotalDuration } from '../../utilities'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
-import { PlaylistInterface } from '../../data'
-import AddTo from '../../components/DynamicViews/Buttons/AddTo/AddTo'
+import { PlaylistInterface, Song } from '../../data'
+import AddTo from '../../components/Buttons/AddTo/AddTo'
 import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
+import Buttons from '../../components/Buttons/Buttons'
 
 const Playlist: React.FC = () => {
   const {playlist} = useParams<string>()
@@ -41,6 +42,25 @@ const Playlist: React.FC = () => {
     }
   }
 
+  // mulit select
+  const [selected, setSelected] = useState<Array<string>>([])
+  const addToSelected = (Group: string) => {
+    setSelected([...selected, Group])
+  }
+  const removeFromSelected = (Group: string) => {
+    setSelected(selected.filter(item => item!== Group))
+  }
+  const clearSelected = () => {
+    setSelected([])
+  }
+  // helper function to get selected songs
+  const getSelectedSongs: () => Array<Song> = () => {
+    const selectedSongs: Array<Song> = selected.flatMap(songId => {
+      return playlistSongs.songs.filter(item => item.id === songId)
+    })
+    return selectedSongs
+  }
+
   return (
     <>
       <div className="singles-nav">
@@ -58,11 +78,21 @@ const Playlist: React.FC = () => {
             <h4>{TotalDuration(playlistSongs.songs)}</h4>
           </div>
           <div className="buttons">
-            <button className="play" onClick={playAllSongs}>Play</button>
-            <button className="shuffle" onClick={shuffleSongs}>Shuffle</button>
-            <button className="shuffle" onClick={edit}>Edit</button>
-            <button className="shuffle" onClick={clearPlaylist}>Clear</button>
-            <AddTo selectedSongs={[]} clearSelected={() => {}}/>
+            {
+              selected.length > 0 &&
+              <Buttons selectedSongs={getSelectedSongs()}
+              clearSelected={clearSelected}/>
+            }
+            {
+              selected.length > 0 ||
+              <>
+                <button className="play" onClick={playAllSongs}>Play</button>
+                <button className="shuffle" onClick={shuffleSongs}>Shuffle</button>
+                <button className="shuffle" onClick={edit}>Edit</button>
+                <button className="shuffle" onClick={clearPlaylist}>Clear</button>
+                <AddTo selectedSongs={getSelectedSongs()} clearSelected={clearSelected}/>
+              </>
+            }
           </div>
         </div>
       </div>
@@ -71,8 +101,13 @@ const Playlist: React.FC = () => {
           <div className="cards">
             {
               playlistSongs.songs.map((song, index) => (
-                <SongListItem key={index} song={song}
-                setQueueSongs={setQueueSongs} index={index}/>
+                <SongListItem
+                key={index} song={song}
+                addToSelected={addToSelected}
+                selected={selected}
+                removeFromSelected={removeFromSelected}
+                setQueueSongs={setQueueSongs}
+                index={index}/>
               ))
             }
           </div>

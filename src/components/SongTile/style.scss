@@ -4,6 +4,7 @@
     --songtile-shadow: #bbb;
     --songtile-icon-bg-hover: #2225;
     --songtile-overlay-color: #fff5;
+    --checkbox-bg: var(--sidebar-link-color);
 }
 .dark{
     --subtitle-text-color: #aaa;
@@ -11,6 +12,7 @@
     --songtile-shadow: #000;
     --songtile-icon-bg-hover: #ddd5;
     --songtile-overlay-color: #0009;
+    --checkbox-bg: #770;
 }
 .card{
     display: flex;
@@ -48,8 +50,9 @@
         border: 1px solid var(--primary-text-color);
         z-index: 10;
         top: 10px;
-        display: none;
+        opacity: 0;
         left: 10px;
+        display: flex;
         border-radius: 5px;
         height: 25px;
         width: 25px;
@@ -61,8 +64,10 @@
         }
     }
     .selected{
-        background-color: var(--sidebar-link-color);
-        display: flex;
+        background-color: var(--checkbox-bg);
+    }
+    .show-true{
+        opacity: 1;
     }
     .play_icon{
         left: 10px;
@@ -130,6 +135,7 @@
         background-color: var(--songtile-card-bg-hover);
         box-shadow: 0 0 5px 2px var(--songtile-shadow);
         .tile-icons, .select-tile{
+            opacity: 1;
             display: flex;
         }
         .pic{

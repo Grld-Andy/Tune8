@@ -4,6 +4,7 @@
   --songlist-bg-hover: #bbb;
   --songlist-bg-even: #0003;
   --current-song-color: #f70;
+  --checkbox-bg: var(--sidebar-link-color);
 }
 
 .dark {
@@ -12,12 +13,13 @@
   --songlist-bg-hover: #777;
   --songlist-bg-even: #fff1;
   --current-song-color: #ff0;
+  --checkbox-bg: #770;
 }
 
 .song {
   background-color: var(--songlist-bg);
   display: grid;
-  grid-template-columns: 20px 1fr 1fr 1fr auto;
+  grid-template-columns: 25px 20px 1fr 1fr 1fr auto;
   margin: 5px;
   gap: 20px;
   padding: 10px;
@@ -27,6 +29,28 @@
   width: 100%;
   z-index: 5;
   position: relative;
+}
+.song .select-tile {
+  border: 1px solid var(--primary-text-color);
+  z-index: 10;
+  opacity: 0;
+  border-radius: 5px;
+  height: 25px;
+  width: 25px;
+  overflow: hidden;
+  align-content: center;
+  justify-content: center;
+}
+.song .select-tile:hover {
+  background-color: var(--songtile-icon-bg-hover);
+}
+.song .selected {
+  background-color: var(--checkbox-bg);
+  display: flex;
+  opacity: 1;
+}
+.song .show-true {
+  opacity: 1;
 }
 .song .draggable {
   display: grid;
@@ -39,7 +63,7 @@
 }
 .song .icon {
   cursor: pointer;
-  scale: 1.2;
+  scale: 1.4;
   z-index: 5;
 }
 .song .text {
@@ -68,6 +92,9 @@
 }
 .song:hover {
   background-color: var(--songlist-bg-hover);
+}
+.song:hover .select-tile {
+  opacity: 1;
 }
 
 .song:nth-child(2n) {

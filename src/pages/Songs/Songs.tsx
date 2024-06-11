@@ -8,6 +8,7 @@ import { AllSongsContext } from '../../contexts/AllSongsContext'
 import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
 import SortButton from '../../components/SortButton/SortButton'
 import { Song, SortedSongs } from '../../data'
+import Buttons from '../../components/Buttons/Buttons'
 
 const Songs: React.FC = () => {
   const {dispatch} = useContext(QueueSongsContext)
@@ -55,6 +56,25 @@ const Songs: React.FC = () => {
     }, [] as Array<Song>)
   }
 
+  // mulit select
+  const [selected, setSelected] = useState<Array<string>>([])
+  const addToSelected = (Group: string) => {
+    setSelected([...selected, Group])
+  }
+  const removeFromSelected = (Group: string) => {
+    setSelected(selected.filter(item => item!== Group))
+  }
+  const clearSelected = () => {
+    setSelected([])
+  }
+  // helper function to get selected songs
+  const getSelectedSongs: () => Array<Song> = () => {
+    const selectedSongs: Array<Song> = selected.flatMap(songId => {
+      return songs.filter(item => item.id === songId)
+    })
+    return selectedSongs
+  }
+
   // Logic to generate the list of songs with continuous indexing
   let songIndex = 0
   const sortedSongSections = Object.keys(sortedSongs).sort().map(letter => (
@@ -65,7 +85,14 @@ const Songs: React.FC = () => {
           Array.from(sortedSongs[letter])
           .sort((a, b) => a.tag.tags.album.localeCompare(b.tag.tags.album))
           .map((song) => (
-            <SongListItem key={songIndex} song={song} setQueueSongs={setQueueSongs} index={songIndex++} />
+            <SongListItem
+            key={songIndex}
+            song={song} setQueueSongs={setQueueSongs}
+            index={songIndex++}
+            addToSelected={addToSelected}
+            selected={selected}
+            removeFromSelected={removeFromSelected}
+            />
           ))
         }
       </div>
@@ -79,11 +106,21 @@ const Songs: React.FC = () => {
           <h1>Songs</h1>
         </div>
         <div className="nav-right">
-          <button onClick={playAllSongs}>Play All</button>
-          <button onClick={shuffleSongs}>Shuffle and Play</button>
-          <SortButton sortOrder={sortOrder} setSortOrder={setSortOrder}
-            showNav={showNav}/>
-          <button>Add Files</button>
+          {
+            selected.length > 0 &&
+            <Buttons selectedSongs={getSelectedSongs()}
+            clearSelected={clearSelected}/>
+          }
+          {
+            selected.length > 0 ||
+            <>
+              <button onClick={playAllSongs}>Play All</button>
+              <button onClick={shuffleSongs}>Shuffle and Play</button>
+              <SortButton sortOrder={sortOrder} setSortOrder={setSortOrder}
+                showNav={showNav}/>
+              <button>Add Files</button>
+            </>
+          }
         </div>
       </nav>
         <div className="songs view">

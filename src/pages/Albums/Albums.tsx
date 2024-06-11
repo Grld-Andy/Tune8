@@ -1,12 +1,14 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './style.css'
 import SongTile from '../../components/SongTile/SongTile'
 import { Song, SortedSongs } from '../../data'
 import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
-import { AllSongsContext } from '../../contexts/AllSongsContext'
-import Buttons from '../../components/DynamicViews/Buttons/Buttons'
+import {AllSongsContext} from '../../contexts/AllSongsContext'
+import SortButton from '../../components/SortButton/SortButton'
+import { getSortedSongs } from '../../utilities'
+import Buttons from '../../components/Buttons/Buttons'
 
-const Artists: React.FC = () => {
+const Albums: React.FC = () => {
   const {songs} = useContext(AllSongsContext)
 
   const [showNav, setShowNav] = useState(false)
@@ -30,31 +32,25 @@ const Artists: React.FC = () => {
   }
   // helper function to get selected songs
   const getSelectedSongs: () => Array<Song> = () => {
-    const selectedSongs: Array<Song> = selected.flatMap(selectedArtist => {
-      return songs.filter(item => item.tag.tags.artist === selectedArtist)
+    const selectedSongs: Array<Song> = selected.flatMap(selectedAlbum => {
+      return songs.filter(item => item.tag.tags.album === selectedAlbum)
     })
     return selectedSongs
   }
-
-  // get artists
-  const artists: SortedSongs = {}
-  songs.forEach(song => {
-    let firstLetter:string = song.tag.tags.artist.charAt(0).toUpperCase()
-    firstLetter = /^[A-Za-z]$/.test(firstLetter) ? firstLetter : '#'
-    // initialize to store empty array before pushing
-    if (!artists[firstLetter]) {
-      artists[firstLetter] = new Set()
-    }
-    if(!Array.from(artists[firstLetter]).some(elem => elem.tag.tags.artist === song.tag.tags.artist)){
-      artists[firstLetter].add(song)
-    }
-  })
+  
+  // sort albums
+  const [sortOrder, setSortOrder] = useState<string>(localStorage.getItem('albumsSortOrder') ?? 'albums')
+  const [albums, setAlbums] = useState<SortedSongs>(getSortedSongs(songs, sortOrder, 'albums'))
+  useEffect(() => {
+    localStorage.setItem('albumsSortOrder', sortOrder)
+    setAlbums(getSortedSongs(songs, sortOrder, 'albums'))
+  }, [sortOrder, songs])
 
   return (
     <>
       <nav>
         <div className="nav-left">
-          <h1>Artists</h1>
+          <h1>Albums</h1>
         </div>
         <div className="nav-right">
           {
@@ -64,26 +60,32 @@ const Artists: React.FC = () => {
           }
           {
             selected.length > 0 ||
-            <button>Add Files</button>
+            <>
+              <SortButton sortOrder={sortOrder} page={'albums'}
+              setSortOrder={setSortOrder} showNav={showNav}/>
+              <button>Add Files</button>
+            </>
           }
         </div>
       </nav> 
-      <div className="artists view">
+      <div className="albums view">
             {
               showNav &&
-              <MusicNavigation toggleShowNav={toggleShowNav} object={artists} closeAndScroll={closeAndScroll}/>
+              <MusicNavigation toggleShowNav={toggleShowNav}
+              sortOrder={sortOrder}
+              object={albums} closeAndScroll={closeAndScroll}/>
             }
             {
-              Object.keys(artists).sort().map(letter => (
+              Object.keys(albums).sort().map(letter => (
                 <section key={letter} id={letter}>
                   <h2 onClick={toggleShowNav}>{letter}</h2>
                   <div className="cards">
                     {
-                      Array.from(artists[letter]).map(song => (
+                      Array.from(albums[letter]).sort().map(song => (
                         <SongTile
                           song={song}
                           key={song.tag.tags.title}
-                          page={'artist'}
+                          page={'album'}
                           addToSelected={addToSelected}
                           selected={selected}
                           removeFromSelected={removeFromSelected}
@@ -99,4 +101,4 @@ const Artists: React.FC = () => {
   )
 }
 
-export default Artists
+export default Albums

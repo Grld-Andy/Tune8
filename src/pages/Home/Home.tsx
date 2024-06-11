@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import './style.css'
 import SongTile from '../../components/SongTile/SongTile'
 import {AllSongsContext} from '../../contexts/AllSongsContext'
-import Buttons from '../../components/DynamicViews/Buttons/Buttons'
+import Buttons from '../../components/Buttons/Buttons'
 import { Song } from '../../data'
 
 const Home: React.FC = () => {

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import AddTo from './AddTo/AddTo'
-import { Song } from '../../../data'
-import {CurrentSongContext} from '../../../contexts/CurrentSongContext'
-import {QueueSongsContext} from '../../../contexts/QueueSongsContext'
+import { Song } from '../../data'
+import {CurrentSongContext} from '../../contexts/CurrentSongContext'
+import {QueueSongsContext} from '../../contexts/QueueSongsContext'
 
 interface Props{
     selectedSongs: Array<Song>
@@ -15,7 +15,7 @@ const Buttons:React.FC<Props> = ({selectedSongs, clearSelected}) => {
   const { queue, dispatch } = useContext(QueueSongsContext)
   
   const playAll: () => void = () => {
-    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: selectedSongs[0], index: 0})
+    currentSongDispatch({type: 'SET_CURRENT_SONG', payload: selectedSongs[0], index: 0, isPlaying: true})
     dispatch({type: 'SET_QUEUE', payload: selectedSongs, index: 0})
     clearSelected()
   }

@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { BsPauseCircle, BsPlayCircle } from 'react-icons/bs'
 import './style.css'
 import { Song } from '../../data'
@@ -7,26 +7,32 @@ import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { IoMdCheckmark } from 'react-icons/io'
 
 interface Props {
   song: Song
   setQueueSongs: () => void
   index: number
   page?: string
+  addToSelected: (songs: string) => void
+  removeFromSelected: (songs: string) => void
+  selected: Array<string>
 }
 
-const resetSongs: (index1: number, index2: number) => boolean = (index1, index2) => {
-  const pathname = location.pathname
-  if (
-    pathname === '/songs' || pathname === '/favorites' ||
-    pathname.includes('/playlistView/') || pathname.includes('/albumView/') ||
-    pathname.includes('/artistView/') || index1 !== index2
-  )
-    return true
-  else return false
-}
+const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'link', addToSelected, selected, removeFromSelected }) => {
 
-const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'link' }) => {
+  // helper function to reset songs
+  const resetSongs: (index1: number, index2: number) => boolean = (index1, index2) => {
+    const pathname = location.pathname
+    if (
+      pathname === '/songs' || pathname === '/favorites' ||
+      pathname.includes('/playlistView/') || pathname.includes('/albumView/') ||
+      pathname.includes('/artistView/') || index1 !== index2
+    )
+      return true
+    else return false
+  }
+
   const { currentSong, currentSongDispatch } = useContext(CurrentSongContext)
   const clickTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const dragging = useRef(false)
@@ -44,6 +50,7 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
     setQueueSongs()
   }
 
+  // show context menu
   const { contextMenuDispatch } = useContext(ContextMenuContext)
   const showContextMenu = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -52,16 +59,13 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
 
   // drag and drop
   const { attributes, listeners, setNodeRef, transform } = useSortable({ id: index })
-
   const style = {
     transition: 'transform 150ms linear',
     transform: CSS.Transform.toString(transform),
   }
-
   const handleDragStart = () => {
     dragging.current = true
   }
-
   const handleDragEnd = () => {
     dragging.current = false
     if (clickTimeout.current) {
@@ -69,6 +73,23 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
       clickTimeout.current = null
     }
   }
+
+  // select songs logic
+  const [isSelected, setIsSelected] = useState<boolean>(false)
+  const handleIsSelected = (val: boolean) => {
+    setIsSelected(val)
+    if(val){
+      addToSelected(song.id)
+    }else{
+      removeFromSelected(song.id)
+    }
+  }
+  // reset if selected is cleared
+  useEffect(() => {
+    if(selected.length < 1){
+      setIsSelected(false)
+    }
+  }, [selected])
 
   return (
       <div
@@ -91,6 +112,13 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
           >
           </div>
         }
+        <div className={isSelected ? `select-tile selected show-${selected.length > 0}` : `select-tile show-${selected.length > 0}`}
+        onClick={() => {handleIsSelected(!isSelected)}}>
+          {
+            isSelected &&
+            <IoMdCheckmark size={22}/>
+          }
+        </div>
         {
           page === 'queue' && currentSong.isPlaying && currentSong.index === index ?
             <BsPauseCircle className='icon' onClick={() => { playSong(song) }} /> :

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import './style.css'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
@@ -6,6 +6,8 @@ import { shuffleArray } from '../../utilities'
 import { closestCorners, DndContext, DragEndEvent } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import SongListItem from '../../components/SongListItem/SongListItem'
+import { Song } from '../../data'
+import Buttons from '../../components/Buttons/Buttons'
 
 const Queue: React.FC = () => {
   const { queue, dispatch } = useContext(QueueSongsContext)
@@ -50,6 +52,25 @@ const Queue: React.FC = () => {
     }
   }
 
+  // mulit select
+  const [selected, setSelected] = useState<Array<string>>([])
+  const addToSelected = (Group: string) => {
+    setSelected([...selected, Group])
+  }
+  const removeFromSelected = (Group: string) => {
+    setSelected(selected.filter(item => item!== Group))
+  }
+  const clearSelected = () => {
+    setSelected([])
+  }
+  // helper function to get selected songs
+  const getSelectedSongs: () => Array<Song> = () => {
+    const selectedSongs: Array<Song> = selected.flatMap(songId => {
+      return queue.filter(item => item.id === songId)
+    })
+    return selectedSongs
+  }
+
   return (
     <>
       <nav>
@@ -57,9 +78,19 @@ const Queue: React.FC = () => {
           <h1>Queue</h1>
         </div>
         <div className="nav-right">
-          <button onClick={clearQueue}>Clear Queue</button>
-          <button onClick={shuffleSongs}>Shuffle and Play</button>
-          <button>Add Files</button>
+          {
+            selected.length > 0 &&
+            <Buttons selectedSongs={getSelectedSongs()}
+            clearSelected={clearSelected}/>
+          }
+          {
+            selected.length > 0 ||
+            <>
+              <button onClick={clearQueue}>Clear Queue</button>
+              <button onClick={shuffleSongs}>Shuffle and Play</button>
+              <button>Add Files</button>
+            </>
+          }
         </div>
       </nav>
       <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
@@ -71,6 +102,9 @@ const Queue: React.FC = () => {
               song={song}
               setQueueSongs={setQueueSongs}
               index={index}
+              addToSelected={addToSelected}
+              selected={selected}
+              removeFromSelected={removeFromSelected}
               page={'queue'} />
             ))}
           </SortableContext>

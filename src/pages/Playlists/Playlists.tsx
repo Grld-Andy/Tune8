@@ -6,7 +6,7 @@ import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { placeholderSongImages } from '../../assets'
 import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
 import { v1 } from 'uuid'
-import Buttons from '../../components/DynamicViews/Buttons/Buttons'
+import Buttons from '../../components/Buttons/Buttons'
 
 const Playlists: React.FC = () => {
   const [showNav, setShowNav] = useState(false)

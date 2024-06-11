@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import './style.css'
 import { useParams } from 'react-router-dom'
 import { Song } from '../../data'
@@ -6,8 +6,9 @@ import SongListItem from '../../components/SongListItem/SongListItem'
 import { shuffleArray, TotalDuration } from '../../utilities'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
-import AddTo from '../../components/DynamicViews/Buttons/AddTo/AddTo'
+import AddTo from '../../components/Buttons/AddTo/AddTo'
 import { AllSongsContext } from '../../contexts/AllSongsContext'
+import Buttons from '../../components/Buttons/Buttons'
 
 const Album: React.FC = () => {
   const {songs} = useContext(AllSongsContext)
@@ -32,6 +33,25 @@ const Album: React.FC = () => {
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
 
+  // mulit select
+  const [selected, setSelected] = useState<Array<string>>([])
+  const addToSelected = (Group: string) => {
+    setSelected([...selected, Group])
+  }
+  const removeFromSelected = (Group: string) => {
+    setSelected(selected.filter(item => item!== Group))
+  }
+  const clearSelected = () => {
+    setSelected([])
+  }
+  // helper function to get selected songs
+  const getSelectedSongs: () => Array<Song> = () => {
+    const selectedSongs: Array<Song> = selected.flatMap(songId => {
+      return albumSongs.filter(item => item.id === songId)
+    })
+    return selectedSongs
+  }
+
   return (
     <>
       <div className="singles-nav">
@@ -51,9 +71,19 @@ const Album: React.FC = () => {
             <li>{TotalDuration(albumSongs)} duration</li>
           </div>
           <div className="buttons">
-            <button className="play" onClick={playAllSongs}>Play</button>
-            <button className="shuffle" onClick={shuffleSongs}>Shuffle</button>
-            <AddTo selectedSongs={[]}  clearSelected={() => {}}/>
+            {
+              selected.length > 0 &&
+              <Buttons selectedSongs={getSelectedSongs()}
+              clearSelected={clearSelected}/>
+            }
+            {
+              selected.length > 0 ||
+              <>
+                <button className="play" onClick={playAllSongs}>Play</button>
+                <button className="shuffle" onClick={shuffleSongs}>Shuffle</button>
+                <AddTo selectedSongs={getSelectedSongs()} clearSelected={clearSelected}/>
+              </>
+            }
           </div>
         </div>
       </div>
@@ -62,8 +92,13 @@ const Album: React.FC = () => {
           <div className="cards">
             {
               albumSongs.map((song, index) => (
-                <SongListItem key={index} song={song}
-                setQueueSongs={setQueueSongs} index={index}/>
+                <SongListItem
+                key={index} song={song}
+                addToSelected={addToSelected}
+                selected={selected}
+                removeFromSelected={removeFromSelected}
+                setQueueSongs={setQueueSongs}
+                index={index}/>
               ))
             }
           </div>

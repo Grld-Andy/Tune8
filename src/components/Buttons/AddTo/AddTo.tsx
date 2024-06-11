@@ -1,14 +1,14 @@
 import React, { useContext, useRef } from 'react'
 import './style.css'
 import { useLocation, useParams } from 'react-router-dom'
-import { CurrentSongContext } from '../../../../contexts/CurrentSongContext'
-import { QueueSongsContext } from '../../../../contexts/QueueSongsContext'
-import { PlaylistFormContext } from '../../../../contexts/PlaylistFormContext'
-import FavoritesContext from '../../../../contexts/FavoritesContext'
-import { ContextMenuContext } from '../../../../contexts/ContextMenuContext'
-import { PlaylistContext } from '../../../../contexts/PlaylistsContext'
-import { AllSongsContext } from '../../../../contexts/AllSongsContext'
-import { Song } from '../../../../data'
+import { CurrentSongContext } from '../../../contexts/CurrentSongContext'
+import { QueueSongsContext } from '../../../contexts/QueueSongsContext'
+import { PlaylistFormContext } from '../../../contexts/PlaylistFormContext'
+import FavoritesContext from '../../../contexts/FavoritesContext'
+import { ContextMenuContext } from '../../../contexts/ContextMenuContext'
+import { PlaylistContext } from '../../../contexts/PlaylistsContext'
+import { AllSongsContext } from '../../../contexts/AllSongsContext'
+import { Song } from '../../../data'
 
 interface Props{
   selectedSongs: Array<Song>;
@@ -39,15 +39,17 @@ const AddTo: React.FC<Props> = ({selectedSongs, clearSelected}) => {
   const {favoritesDispatch} = useContext(FavoritesContext)
   const {contextMenuDispatch} = useContext(ContextMenuContext)
 
-  const onStaticPage: () => boolean = () => {
-    return (location.pathname === '/' ||
-    location.pathname === '/albums' ||
-    location.pathname === '/artists' ||
-    location.pathname === '/playlists')
+  const onDynamicPage: () => boolean = () => {
+    return (location.pathname.includes('/albumView/') ||
+    location.pathname.includes('/artistView/') ||
+    location.pathname.includes('/playlistView/'))
   }
   // helper function
   const getSongs = () => {
-    if(location.pathname.includes('/artistView/')){
+    if(onDynamicPage()  && selectedSongs.length > 0){
+      return selectedSongs
+    }
+    else if(location.pathname.includes('/artistView/')){
       return songs.filter(song => song.tag.tags.artist === artist)
     }
     else if(location.pathname.includes('/albumView/')){
@@ -55,7 +57,7 @@ const AddTo: React.FC<Props> = ({selectedSongs, clearSelected}) => {
     }
     else if(location.pathname.includes('/playlistView/')){
       return playlists.filter(item => item.name === playlist)[0].songs
-    }else if(onStaticPage()){
+    }else if(!onDynamicPage()){
       return selectedSongs
     }
   }
@@ -98,7 +100,7 @@ const AddTo: React.FC<Props> = ({selectedSongs, clearSelected}) => {
     <>
         <button className="add" onClick={showAddTo}>Add To</button>
         <div className='addto-container' ref={addRef} onMouseLeave={closeAddTo}>
-            <div className={onStaticPage() ? `single_add_to move-down` : `single_add_to`}>
+            <div className={!onDynamicPage() ? `single_add_to move-down` : `single_add_to`}>
                 <div onClick={addToQueue}>Queue</div>
                 <div onClick={addToPlaylist}>Playlist</div>
                 <div onClick={addToFavorites}>Favorites</div>

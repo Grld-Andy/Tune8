@@ -121,7 +121,7 @@ const SongTile: React.FC<Props> = (
       <div className={`tile-icons drop_up ${page}`} onClick={openContextMenu}>
         <IoMdArrowDropup size={40}/>
       </div>
-        <div className={isSelected ? `select-tile selected` : `select-tile`}
+      <div className={isSelected ? `select-tile selected show-${selected.length > 0}` : `select-tile show-${selected.length > 0}`}
         onClick={() => {handleIsSelected(!isSelected)}}>
           {
             isSelected &&
