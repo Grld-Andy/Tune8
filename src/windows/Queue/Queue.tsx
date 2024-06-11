@@ -28,24 +28,24 @@ const Queue: React.FC = () => {
   }
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+    const { active, over } = event
     if (active.id !== over?.id) {
-      const oldIndex = queue.findIndex((song) => song.tag.tags.title === active.id);
-      const newIndex = queue.findIndex((song) => song.tag.tags.title === over?.id);
-      const newQueue = arrayMove(queue, oldIndex, newIndex);
-      dispatch({ type: 'SET_QUEUE', payload: newQueue, index: currentSong.index });
+      const oldIndex = Number(active.id)
+      const newIndex = Number(over?.id)
+      const newQueue = arrayMove(queue, oldIndex, newIndex)
+      dispatch({ type: 'SET_QUEUE', payload: newQueue, index: currentSong.index })
 
       // Update the current song index if it was moved
       if (currentSong.index === oldIndex) {
-        currentSongDispatch({ type: 'SET_CURRENT_SONG', payload: newQueue[newIndex], index: newIndex });
+        currentSongDispatch({ type: 'SET_CURRENT_SONG', payload: newQueue[newIndex], index: newIndex })
       } else if (currentSong.index > oldIndex && currentSong.index <= newIndex) {
         // If the current song index is after the old index and before the new index, it should decrement by 1
-        const updatedIndex = currentSong.index - 1;
-        currentSongDispatch({ type: 'SET_CURRENT_SONG', payload: newQueue[updatedIndex], index: updatedIndex });
+        const updatedIndex = currentSong.index - 1
+        currentSongDispatch({ type: 'SET_CURRENT_SONG', payload: newQueue[updatedIndex], index: updatedIndex })
       } else if (currentSong.index < oldIndex && currentSong.index >= newIndex) {
         // If the current song index is before the old index and after the new index, it should increment by 1
-        const updatedIndex = currentSong.index + 1;
-        currentSongDispatch({ type: 'SET_CURRENT_SONG', payload: newQueue[updatedIndex], index: updatedIndex });
+        const updatedIndex = currentSong.index + 1
+        currentSongDispatch({ type: 'SET_CURRENT_SONG', payload: newQueue[updatedIndex], index: updatedIndex })
       }
     }
   }
@@ -64,9 +64,14 @@ const Queue: React.FC = () => {
       </nav>
       <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
         <div className="queue view">
-          <SortableContext items={queue.map(song => song.tag.tags.title)} strategy={verticalListSortingStrategy}>
+          <SortableContext items={queue.map((_, index) => index)} strategy={verticalListSortingStrategy}>
             {queue.map((song, index) => (
-              <SongListItem key={song.tag.tags.title} song={song} setQueueSongs={setQueueSongs} index={index} page={'queue'} />
+              <SongListItem
+              key={index}
+              song={song}
+              setQueueSongs={setQueueSongs}
+              index={index}
+              page={'queue'} />
             ))}
           </SortableContext>
         </div>

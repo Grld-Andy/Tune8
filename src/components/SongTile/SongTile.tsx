@@ -79,11 +79,6 @@ const SongTile: React.FC<Props> = (
     dispatch({type: 'SET_QUEUE', payload: allSongs, index: 0})
   }
 
-  // helper function to make song easily accessible with title and album
-  const formatSongTitle: () => string = () => {
-    return `${song.tag.tags.title}&_?${song.tag.tags.album}`
-  }
-
   // select song logic
   const [isSelected, setIsSelected] = useState<boolean>(false)
   const handleIsSelected = (val: boolean) => {
@@ -94,7 +89,7 @@ const SongTile: React.FC<Props> = (
       }else if(page === 'artist'){
         addToSelected(song.tag.tags.artist)
       }else if(page === 'home'){
-        addToSelected(formatSongTitle())
+        addToSelected(song.id)
       }else if(page === 'playlist' && playlistName){
         addToSelected(playlistName)
       }
@@ -104,7 +99,7 @@ const SongTile: React.FC<Props> = (
       }else if(page === 'artist'){
         removeFromSelected(song.tag.tags.artist)
       }else if(page === 'home'){
-        removeFromSelected(formatSongTitle())
+        removeFromSelected(song.id)
       }else if(page === 'playlist' && playlistName){
         removeFromSelected(playlistName)
       }

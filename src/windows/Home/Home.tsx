@@ -19,18 +19,9 @@ const Home: React.FC = () => {
   const clearSelected = () => {
     setSelected([])
   }
-  // helper function to get selected songs
-  const deconstructSongTitle = (titlePlusAlbum:string) => {
-    const songInfo = titlePlusAlbum.split('&_?')
-    return {title: songInfo[0], album: songInfo[1]}
-  }
   const getSelectedSongs: () => Array<Song> = () => {
     const selectedSongs: Array<Song> = selected.flatMap(selectedSong => {
-      const songInfo = deconstructSongTitle(selectedSong)
-      return songs.filter(item => 
-        item.tag.tags.album === songInfo.album &&
-        item.tag.tags.title === songInfo.title
-      )
+      return songs.filter(item => item.id === selectedSong)
     })
     return selectedSongs
   }

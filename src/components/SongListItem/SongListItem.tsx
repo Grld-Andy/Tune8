@@ -52,7 +52,7 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
   }
 
   // drag and drop
-  const { attributes, listeners, setNodeRef, transform } = useSortable({ id: song.tag.tags.title })
+  const { attributes, listeners, setNodeRef, transform } = useSortable({ id: index })
 
   const style = {
     transition: 'transform 150ms linear',
@@ -86,29 +86,47 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
   }
 
   return (
-    <div
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
+      <div
+      onContextMenu={showContextMenu}
       style={style}
       className={currentSong.index === index && page === 'queue' ? `song currentSong` :
-        page !== 'queue' && currentSong.song?.tag.tags.title === song.tag.tags.title
-          && currentSong.song?.tag.tags.album === song.tag.tags.album ? `song currentSong` :
-          'song'}
-      onContextMenu={showContextMenu}
-      onMouseDown={handleDragStart}
-      onMouseUp={handleDragEnd}
-    >
-      {
-        page === 'queue' && currentSong.isPlaying && currentSong.index === index ?
-          <BsPauseCircle className='icon' onClick={() => { playSong(song) }} /> :
-          <BsPlayCircle className='icon' onClick={() => { playSong(song) }} />
-      }
-      <h3>{song.tag.tags.title}</h3>
-      <h3 className='link' onClick={handleArtistClick}>{song.tag.tags.artist}</h3>
-      <h3 className='link' onClick={handleAlbumClick}>{song.tag.tags.album}</h3>
-      <h3>{song.duration}</h3>
-    </div>
+      page !== 'queue' && currentSong.song?.tag.tags.title === song.tag.tags.title
+      && currentSong.song?.tag.tags.album === song.tag.tags.album ? `song currentSong` :
+      'song'}>
+        {
+          page === 'queue' ?
+          <div
+          ref={setNodeRef}
+          {...attributes}
+          {...listeners}
+          style={style}
+          onMouseDown={handleDragStart}
+          onMouseUp={handleDragEnd}
+          className='draggable'
+          >
+          </div>:
+          <div className="draggable">
+            <h1>{index}</h1>
+          </div>
+        }
+        {
+          page === 'queue' && currentSong.isPlaying && currentSong.index === index ?
+            <BsPauseCircle className='icon' onClick={() => { playSong(song) }} /> :
+            <BsPlayCircle className='icon' onClick={() => { playSong(song) }} />
+        }
+        <div className='text'>
+          <h3>{song.tag.tags.title}</h3>
+        </div>
+        <div className='text'>
+          <h3 className='link' onClick={handleArtistClick}>{song.tag.tags.artist}</h3>
+        </div>
+        <div className='text'>
+          <h3 className='link' onClick={handleAlbumClick}>{song.tag.tags.album}</h3>
+        </div>
+        <div className='text'>
+          <h3>{song.duration}</h3>
+        </div>
+      </div>
   )
 }
 

@@ -12,52 +12,73 @@
     --songlist-bg-even: #fff1;
     --current-song-color: #ff0;
 }
-.song{
-    background-color: var(--songlist-bg);
-    display: grid;
-    grid-template-columns: 20px 1fr 1fr 1fr auto;
-    margin: 5px;
-    gap: 20px;
-    padding: 10px;
-    border-radius: 5px;
-    transition: .2s ease-in;
-    align-items: center;
-    width: 100%;
-    .icon{
-        cursor: pointer;
-        scale: 1.2;
-    }
-    h3,a{
-        font-size: 1em;
-        line-clamp: 2;
-        font-weight: lighter;
-        color: var(--primary-text-color);
-        text-wrap: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .link{
-        transition: .1s ease-out;
-        cursor: pointer;
+    .song{
+        background-color: var(--songlist-bg);
+        display: grid;
+        grid-template-columns: 20px 1fr 1fr 1fr auto;
+        margin: 5px;
+        gap: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        transition: .2s ease-in;
+        align-items: center;
+        width: 100%;
+        z-index: 5;
+        position: relative;
+        .draggable{
+            display: grid;
+            padding: 10px;
+            width: 100%;
+            height: 100%;
+            z-index: 4;
+            position: absolute;
+            cursor: grab;
+        }
+        .icon{
+            cursor: pointer;
+            scale: 1.2;
+            z-index: 5;
+        }
+        .text{
+            z-index: 5;
+            pointer-events: none;
+            width: 100%;
+            overflow: hidden;
+            h3,a{
+                font-size: 1em;
+                line-clamp: 2;
+                font-weight: lighter;
+                color: var(--primary-text-color);
+                text-wrap: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .link{
+                transition: .1s ease-out;
+                pointer-events: all;
+                cursor: pointer;
+                &:hover{
+                    font-weight: 600;
+                    color: var(--current-song-color);
+                }
+            }
+        }
         &:hover{
-            font-weight: 600;
-            color: var(--current-song-color);
+            background-color: var(--songlist-bg-hover);
         }
     }
-    &:hover{
-        background-color: var(--songlist-bg-hover);
+    .song:nth-child(2n){
+        background-color: transparent;
+        border: 1px solid var(--songlist-bg-even);
+        &:hover{
+            background-color: var(--songlist-bg-hover);
+        }
     }
-}
-.song:nth-child(2n){
-    background-color: transparent;
-    border: 1px solid var(--songlist-bg-even);
-    &:hover{
-        background-color: var(--songlist-bg-hover);
-    }
-}
-.currentSong{
-    h3, a{
-        color: var(--current-song-color);
-        font-weight: 400;
-    }
-}
+    .currentSong{
+        .text{
+            h3, a{
+                color: var(--current-song-color);
+                font-weight: 400;
+            }
+            }
+        }
