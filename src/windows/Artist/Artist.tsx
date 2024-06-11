@@ -6,7 +6,7 @@ import SongListItem from '../../components/SongListItem/SongListItem'
 import { shuffleArray, TotalDuration } from '../../utilities'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
-import AddTo from '../../components/AddTo/AddTo'
+import AddTo from '../../components/DynamicViews/Buttons/AddTo/AddTo'
 import { AllSongsContext } from '../../contexts/AllSongsContext'
 
 const Artist: React.FC = () => {

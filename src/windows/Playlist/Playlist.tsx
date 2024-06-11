@@ -7,7 +7,7 @@ import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { PlaylistInterface } from '../../data'
-import AddTo from '../../components/AddTo/AddTo'
+import AddTo from '../../components/DynamicViews/Buttons/AddTo/AddTo'
 import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
 
 const Playlist: React.FC = () => {

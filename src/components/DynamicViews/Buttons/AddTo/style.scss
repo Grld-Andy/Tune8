@@ -4,6 +4,7 @@
 .dark{
     --add-to-bg: #555;
 }
+
 .addto-container{
     display: none;
     position: relative;
@@ -12,6 +13,7 @@
         border-radius: 5px;
         border: 1px solid gray;
         bottom: 0px;
+        left: -5px;
         position: absolute;
         display: flex;
         flex-direction: column;
@@ -27,5 +29,8 @@
                 background-color: var(--songlist-bg-hover);
             }
         }
+    }
+    .move-down{
+        bottom: -45px;
     }
 }

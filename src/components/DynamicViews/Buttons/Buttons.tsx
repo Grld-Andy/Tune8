@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import AddTo from '../../AddTo/AddTo'
+import AddTo from './AddTo/AddTo'
 import { Song } from '../../../data'
 import {CurrentSongContext} from '../../../contexts/CurrentSongContext'
 import {QueueSongsContext} from '../../../contexts/QueueSongsContext'
@@ -32,7 +32,7 @@ const Buttons:React.FC<Props> = ({selectedSongs, clearSelected}) => {
     <>
         <button onClick={playAll}>Play All</button>
         <button onClick={playNext}>Play Next</button>
-        <AddTo/>
+        <AddTo selectedSongs={selectedSongs} clearSelected={clearSelected}/>
         <button onClick={clearSelected}>Clear All</button>
     </>
   )

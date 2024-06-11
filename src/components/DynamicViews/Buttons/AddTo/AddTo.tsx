@@ -1,15 +1,20 @@
 import React, { useContext, useRef } from 'react'
 import './style.css'
 import { useLocation, useParams } from 'react-router-dom'
-import { CurrentSongContext } from '../../contexts/CurrentSongContext'
-import { QueueSongsContext } from '../../contexts/QueueSongsContext'
-import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
-import FavoritesContext from '../../contexts/FavoritesContext'
-import { ContextMenuContext } from '../../contexts/ContextMenuContext'
-import { PlaylistContext } from '../../contexts/PlaylistsContext'
-import { AllSongsContext } from '../../contexts/AllSongsContext'
+import { CurrentSongContext } from '../../../../contexts/CurrentSongContext'
+import { QueueSongsContext } from '../../../../contexts/QueueSongsContext'
+import { PlaylistFormContext } from '../../../../contexts/PlaylistFormContext'
+import FavoritesContext from '../../../../contexts/FavoritesContext'
+import { ContextMenuContext } from '../../../../contexts/ContextMenuContext'
+import { PlaylistContext } from '../../../../contexts/PlaylistsContext'
+import { AllSongsContext } from '../../../../contexts/AllSongsContext'
+import { Song } from '../../../../data'
 
-const AddTo: React.FC = () => {
+interface Props{
+  selectedSongs: Array<Song>;
+  clearSelected: () => void
+}
+const AddTo: React.FC<Props> = ({selectedSongs, clearSelected}) => {
   const {songs} = useContext(AllSongsContext)
 
     // add to view
@@ -34,6 +39,12 @@ const AddTo: React.FC = () => {
   const {favoritesDispatch} = useContext(FavoritesContext)
   const {contextMenuDispatch} = useContext(ContextMenuContext)
 
+  const onStaticPage: () => boolean = () => {
+    return (location.pathname === '/' ||
+    location.pathname === '/albums' ||
+    location.pathname === '/artists' ||
+    location.pathname === '/playlists')
+  }
   // helper function
   const getSongs = () => {
     if(location.pathname.includes('/artistView/')){
@@ -44,6 +55,8 @@ const AddTo: React.FC = () => {
     }
     else if(location.pathname.includes('/playlistView/')){
       return playlists.filter(item => item.name === playlist)[0].songs
+    }else if(onStaticPage()){
+      return selectedSongs
     }
   }
 
@@ -57,6 +70,7 @@ const AddTo: React.FC = () => {
       dispatch({type: 'ADD_TO_QUEUE', payload: songsToAdd, index: currentSong.index})
     }
     closeAddTo()
+    clearSelected()
   }
 
   // add to playlist
@@ -67,6 +81,7 @@ const AddTo: React.FC = () => {
       playlistFormDispatch({type: 'OPEN_FORM', payload: 'add'})
     }
     closeAddTo()
+    clearSelected()
   }
 
   // add to favorites
@@ -76,13 +91,14 @@ const AddTo: React.FC = () => {
       favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: songsToAdd})
     }
     closeAddTo()
+    clearSelected()
   }
   
   return (
     <>
         <button className="add" onClick={showAddTo}>Add To</button>
-        <div className="addto-container" ref={addRef} onMouseLeave={closeAddTo}>
-            <div className="single_add_to">
+        <div className='addto-container' ref={addRef} onMouseLeave={closeAddTo}>
+            <div className={onStaticPage() ? `single_add_to move-down` : `single_add_to`}>
                 <div onClick={addToQueue}>Queue</div>
                 <div onClick={addToPlaylist}>Playlist</div>
                 <div onClick={addToFavorites}>Favorites</div>
