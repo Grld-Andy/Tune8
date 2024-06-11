@@ -57,12 +57,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.song .text .link {
+.song .text a {
   transition: 0.1s ease-out;
   pointer-events: all;
   cursor: pointer;
 }
-.song .text .link:hover {
+.song .text a:hover {
   font-weight: 600;
   color: var(--current-song-color);
 }

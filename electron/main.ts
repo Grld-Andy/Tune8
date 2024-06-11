@@ -32,7 +32,8 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
-    show: false
+    show: false,
+    maximizable: true
   })
   
   // Show the window once it is ready to be shown
@@ -87,14 +88,16 @@ ipcMain.on('minimize', () => {
       win.setResizable(windowOnTop ? false : true)
   }
 })
+
+// maximize
 ipcMain.on('maximize', () => {
   const win = BrowserWindow.getFocusedWindow()
   if (win) {
-    if (win.isMaximized()) {
-      win.unmaximize()
+    if (win.fullScreen) {
+      win.fullScreen = false
       win.setResizable(true)
     } else {
-      win.maximize()
+      win.fullScreen = true
       win.setResizable(true)
     }
   }

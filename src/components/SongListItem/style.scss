@@ -53,7 +53,7 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
-            .link{
+            a{
                 transition: .1s ease-out;
                 pointer-events: all;
                 cursor: pointer;
@@ -80,5 +80,5 @@
                 color: var(--current-song-color);
                 font-weight: 400;
             }
-            }
         }
+    }

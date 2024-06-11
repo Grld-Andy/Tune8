@@ -2,7 +2,7 @@ import React, { useContext, useRef } from 'react'
 import { BsPauseCircle, BsPlayCircle } from 'react-icons/bs'
 import './style.css'
 import { Song } from '../../data'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 import { useSortable } from '@dnd-kit/sortable'
@@ -28,7 +28,6 @@ const resetSongs: (index1: number, index2: number) => boolean = (index1, index2)
 
 const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'link' }) => {
   const { currentSong, currentSongDispatch } = useContext(CurrentSongContext)
-  const navigate = useNavigate()
   const clickTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const dragging = useRef(false)
 
@@ -59,20 +58,6 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
     transform: CSS.Transform.toString(transform),
   }
 
-  const handleArtistClick = () => {
-    console.log('some info')
-    if (!dragging.current) {
-      navigate(`/artistView/${song.tag.tags.artist}`)
-    }
-  }
-
-  const handleAlbumClick = () => {
-    console.log('random info')
-    if (!dragging.current) {
-      navigate(`/albumView/${song.tag.tags.album}`)
-    }
-  }
-
   const handleDragStart = () => {
     dragging.current = true
   }
@@ -94,7 +79,7 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
       && currentSong.song?.tag.tags.album === song.tag.tags.album ? `song currentSong` :
       'song'}>
         {
-          page === 'queue' ?
+          page === 'queue' &&
           <div
           ref={setNodeRef}
           {...attributes}
@@ -104,9 +89,6 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
           onMouseUp={handleDragEnd}
           className='draggable'
           >
-          </div>:
-          <div className="draggable">
-            <h1>{index}</h1>
           </div>
         }
         {
@@ -118,10 +100,10 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
           <h3>{song.tag.tags.title}</h3>
         </div>
         <div className='text'>
-          <h3 className='link' onClick={handleArtistClick}>{song.tag.tags.artist}</h3>
+          <Link to={`/artistView/${song.tag.tags.artist}`}>{song.tag.tags.artist}</Link>
         </div>
         <div className='text'>
-          <h3 className='link' onClick={handleAlbumClick}>{song.tag.tags.album}</h3>
+          <Link to={`/albumView/${song.tag.tags.album}`}>{song.tag.tags.album}</Link>
         </div>
         <div className='text'>
           <h3>{song.duration}</h3>

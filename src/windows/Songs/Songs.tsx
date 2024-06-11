@@ -1,20 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './style.css'
-import SongListItem from '../../components/SongListItem/SongListItem';
-import { QueueSongsContext } from '../../contexts/QueueSongsContext';
-import { CurrentSongContext } from '../../contexts/CurrentSongContext';
-import { getSortedSongs, shuffleArray } from '../../utilities';
-import { AllSongsContext } from '../../contexts/AllSongsContext';
-import MusicNavigation from '../../components/MusicNavigation/MusicNavigation';
-import SortButton from '../../components/SortButton/SortButton';
-import { SortedSongs } from '../../data';
+import SongListItem from '../../components/SongListItem/SongListItem'
+import { QueueSongsContext } from '../../contexts/QueueSongsContext'
+import { CurrentSongContext } from '../../contexts/CurrentSongContext'
+import { getSortedSongs, shuffleArray } from '../../utilities'
+import { AllSongsContext } from '../../contexts/AllSongsContext'
+import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
+import SortButton from '../../components/SortButton/SortButton'
+import { Song, SortedSongs } from '../../data'
 
 const Songs: React.FC = () => {
   const {dispatch} = useContext(QueueSongsContext)
   const {songs} = useContext(AllSongsContext)
   const {currentSongDispatch} = useContext(CurrentSongContext)
   const setQueueSongs: () => void = () => {
-    dispatch({type: 'SET_QUEUE', payload: songs, index: 0})
+    dispatch({type: 'SET_QUEUE', payload: getFlatSortedSongs(), index: 0})
   }
 
   // play all songs
@@ -47,6 +47,31 @@ const Songs: React.FC = () => {
     setSortedSongs(getSortedSongs(songs, sortOrder))
   }, [sortOrder, songs])
 
+  const getFlatSortedSongs = (): Array<Song> => {
+    return Object.keys(sortedSongs).sort().reduce((acc, letter) => {
+      const sortedSongsForLetter = Array.from(sortedSongs[letter])
+        .sort((a, b) => a.tag.tags.album.localeCompare(b.tag.tags.album))
+      return acc.concat(sortedSongsForLetter)
+    }, [] as Array<Song>)
+  }
+
+  // Logic to generate the list of songs with continuous indexing
+  let songIndex = 0
+  const sortedSongSections = Object.keys(sortedSongs).sort().map(letter => (
+    <section key={letter} id={letter}>
+      <h2 onClick={toggleShowNav}>{letter}</h2>
+      <div className="listItem">
+        {
+          Array.from(sortedSongs[letter])
+          .sort((a, b) => a.tag.tags.album.localeCompare(b.tag.tags.album))
+          .map((song) => (
+            <SongListItem key={songIndex} song={song} setQueueSongs={setQueueSongs} index={songIndex++} />
+          ))
+        }
+      </div>
+    </section>
+  ))
+
   return (
     <>
       <nav>
@@ -68,21 +93,7 @@ const Songs: React.FC = () => {
             sortOrder={sortOrder}
             object={sortedSongs} closeAndScroll={closeAndScroll}/>
           }
-          {
-            Object.keys(sortedSongs).sort().map(letter => (
-              <section key={letter} id={letter}>
-                <h2 onClick={toggleShowNav}>{letter}</h2>
-                  <div className="listItem">
-                    {
-                      Array.from(sortedSongs[letter]).sort((a, b) => a.tag.tags.album.localeCompare(b.tag.tags.album)).map((song, index) => (
-                        <SongListItem key={index} song={song}
-                        setQueueSongs={setQueueSongs} index={index}/>
-                      ))
-                    }
-                  </div>
-                </section>
-              ))
-            }
+          {sortedSongSections}
         </div>
     </>
   )
