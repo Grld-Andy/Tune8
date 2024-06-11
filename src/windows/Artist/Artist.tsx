@@ -54,7 +54,7 @@ const Artist: React.FC = () => {
           <div className="buttons">
             <button className="play" onClick={playAllSongs}>Play</button>
             <button className="shuffle" onClick={shuffleSongs}>Shuffle</button>
-            <AddTo/>
+            <AddTo selectedSongs={[]} clearSelected={() => {}}/>
           </div>
         </div>
       </div>

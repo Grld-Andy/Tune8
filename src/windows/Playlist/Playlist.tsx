@@ -62,7 +62,7 @@ const Playlist: React.FC = () => {
             <button className="shuffle" onClick={shuffleSongs}>Shuffle</button>
             <button className="shuffle" onClick={edit}>Edit</button>
             <button className="shuffle" onClick={clearPlaylist}>Clear</button>
-            <AddTo/>
+            <AddTo selectedSongs={[]} clearSelected={() => {}}/>
           </div>
         </div>
       </div>
