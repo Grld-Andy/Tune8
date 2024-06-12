@@ -1,10 +1,11 @@
-.album {
+.dynamic-page .album {
   color: var(--primary-text-color);
+  overflow-y: scroll;
 }
-.album section {
+.dynamic-page .album section {
   padding: 5px;
 }
-.album section .cards {
+.dynamic-page .album section .cards {
   display: flex;
   gap: 5px;
   flex-wrap: wrap;

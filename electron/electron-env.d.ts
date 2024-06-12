@@ -25,6 +25,7 @@ declare namespace NodeJS {
 interface IpcRendererCustom extends Electron.IpcRenderer {
   Minimize: () => void;
   Maximize: () => void;
+  GetSongs: () => Array<Song>;
 }
 
 // Used in Renderer process, expose in `preload.ts`

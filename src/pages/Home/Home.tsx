@@ -44,25 +44,35 @@ const Home: React.FC = () => {
           }
         </div>
       </nav>
-      <div className="home view">
-        <section>
-          <h2>Recently Added</h2>
-          <div className="cards">
-            {
-              songs.map(song => (
-                <SongTile
-                  key={song.tag.tags.title}
-                  song={song}
-                  page={'home'}
-                  addToSelected={addToSelected}
-                  selected={selected}
-                  removeFromSelected={removeFromSelected}
-                />
-              ))
-            }
+      {
+        songs.length > 0?
+        <div className="home view">
+          <section>
+            <h2>Recently Added</h2>
+            <div className="cards">
+              {
+                songs.map(song => (
+                  <SongTile
+                    key={song.tag.tags.title}
+                    song={song}
+                    page={'home'}
+                    addToSelected={addToSelected}
+                    selected={selected}
+                    removeFromSelected={removeFromSelected}
+                  />
+                ))
+              }
+            </div>
+          </section>
+        </div>:
+        <div className="empty-window view">
+          <div className="cell">
+            <h1>No songs</h1>
+            <button>Add +</button>
           </div>
-        </section>
-      </div>
+        </div>
+      }
+      
     </>
   )
 }

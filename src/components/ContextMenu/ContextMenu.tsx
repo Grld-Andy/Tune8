@@ -13,7 +13,7 @@ const ContextMenu: React.FC = () => {
   // close context menu
   const closeMenu = (e: React.MouseEvent) => {
     e.preventDefault()
-    contextMenuDispatch({ type: 'CLOSE_MENU', payload: {x: 0, y: 0, lastClicked: []} })
+    contextMenuDispatch({ type: 'CLOSE_MENU', payload: {x: 0, y: 0, lastClicked: contextMenu.lastClicked} })
   }
 
   // context menu options

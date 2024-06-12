@@ -123,6 +123,8 @@ const Songs: React.FC = () => {
           }
         </div>
       </nav>
+      {
+        songs.length > 0?
         <div className="songs view">
           {
             showNav &&
@@ -131,7 +133,15 @@ const Songs: React.FC = () => {
             object={sortedSongs} closeAndScroll={closeAndScroll}/>
           }
           {sortedSongSections}
+        </div>:
+        <div className="empty-window view">
+          <div className="cell">
+            <h1>No songs</h1>
+            <button>Add +</button>
+          </div>
         </div>
+      }
+        
     </>
   )
 }

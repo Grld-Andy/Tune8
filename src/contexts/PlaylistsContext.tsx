@@ -1,7 +1,6 @@
 import React, { createContext, ReactNode, useReducer } from "react";
 import { PlaylistReducer } from "../reducers/PlaylistReducer";
 import { PlaylistInterface, Song } from "../data";
-import { currentPlaylists } from "../assets";
 
 interface Props{
     children: ReactNode
@@ -21,9 +20,7 @@ export const PlaylistContext = createContext<PlaylistContextType>({
 })
 
 const PlaylistsContextProvider: React.FC<Props> = (props) => {
-    const [playlists, playlistsDispatch] = useReducer(PlaylistReducer, [], () => {
-        return currentPlaylists
-    })
+    const [playlists, playlistsDispatch] = useReducer(PlaylistReducer, [])
 
     return (
         <PlaylistContext.Provider value={{playlists, playlistsDispatch}}>

@@ -112,7 +112,7 @@ const Playlists: React.FC = () => {
       <div className="empty-window view">
         <div className="cell">
           <h1>No playlist here</h1>
-          <button>Add +</button>
+          <button onClick={createPlaylist}>Add +</button>
         </div>
       </div>
       }

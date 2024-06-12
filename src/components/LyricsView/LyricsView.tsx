@@ -42,13 +42,14 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
     useEffect(() => {
         setLyrics("Searching ...")
         setTimeout(() => {getLyrics()}, 500)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentSong.song])
 
     return (
     <>
         {
             currentSong.song ?
-            <div className={`lyrics-view lyrics-view-${showLyrics}`}>
+            <div className={`lyrics-view-${showLyrics} lyrics-view `}>
                 <div className="info">
                     <img src={currentSong.song?.imageSrc} />
                 </div>
@@ -58,7 +59,6 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
             </div>
         : <></>
         }
-        
     </>
   )
 }

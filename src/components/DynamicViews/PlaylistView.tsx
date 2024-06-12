@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 const PlaylistView: React.FC = () => {
   return (
-    <div>
+    <div className='dynamic-page'>
       <Outlet/>
     </div>
   )

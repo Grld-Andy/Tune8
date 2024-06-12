@@ -90,6 +90,7 @@
   margin: 10px;
   border: 1px solid var(--primary-text-color);
   border-radius: 5px;
+  outline: none;
 }
 .playlistForm .container .buttons {
   display: flex;

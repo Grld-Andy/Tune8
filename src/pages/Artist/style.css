@@ -1,10 +1,11 @@
-.artist {
+.dynamic-page .artist {
   color: var(--primary-text-color);
+  overflow-y: scroll;
 }
-.artist section {
+.dynamic-page .artist section {
   padding: 5px;
 }
-.artist section .cards {
+.dynamic-page .artist section .cards {
   display: flex;
   gap: 5px;
   flex-wrap: wrap;

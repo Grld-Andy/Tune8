@@ -8,6 +8,7 @@ import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-ki
 import SongListItem from '../../components/SongListItem/SongListItem'
 import { Song } from '../../data'
 import Buttons from '../../components/Buttons/Buttons'
+import { Link } from 'react-router-dom'
 
 const Queue: React.FC = () => {
   const { queue, dispatch } = useContext(QueueSongsContext)
@@ -93,7 +94,9 @@ const Queue: React.FC = () => {
           }
         </div>
       </nav>
-      <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+      {
+        queue.length > 0 ?
+        <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
         <div className="queue view">
           <SortableContext items={queue.map((_, index) => index)} strategy={verticalListSortingStrategy}>
             {queue.map((song, index) => (
@@ -109,7 +112,17 @@ const Queue: React.FC = () => {
             ))}
           </SortableContext>
         </div>
-      </DndContext>
+      </DndContext>:
+      <div className="empty-window view">
+        <div className="cell">
+          <h1>No songs to queue</h1>
+          <Link to={'/songs'}>
+            <button>Add +</button>
+          </Link>
+        </div>
+      </div>
+      }
+      
     </>
   )
 }

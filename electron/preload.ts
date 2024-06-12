@@ -28,5 +28,9 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   },
   Maximize(){
     ipcRenderer.send('maximize')
+  },
+  GetSongs(){
+    const allSongs = ipcRenderer.invoke('get-all-songs')
+    return allSongs
   }
 })

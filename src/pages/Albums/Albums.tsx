@@ -39,7 +39,7 @@ const Albums: React.FC = () => {
   }
   
   // sort albums
-  const [sortOrder, setSortOrder] = useState<string>(localStorage.getItem('albumsSortOrder') ?? 'albums')
+  const [sortOrder, setSortOrder] = useState<string>(localStorage.getItem('albumsSortOrder') ?? 'album')
   const [albums, setAlbums] = useState<SortedSongs>(getSortedSongs(songs, sortOrder, 'albums'))
   useEffect(() => {
     localStorage.setItem('albumsSortOrder', sortOrder)
@@ -67,8 +67,10 @@ const Albums: React.FC = () => {
             </>
           }
         </div>
-      </nav> 
-      <div className="albums view">
+      </nav>
+      {
+        songs.length > 0?
+        <div className="albums view">
             {
               showNav &&
               <MusicNavigation toggleShowNav={toggleShowNav}
@@ -97,6 +99,15 @@ const Albums: React.FC = () => {
               ))
             }
       </div>
+        :
+        <div className="empty-window view">
+          <div className="cell">
+            <h1>No songs</h1>
+            <button>Add +</button>
+          </div>
+        </div>
+      }
+      
     </>
   )
 }

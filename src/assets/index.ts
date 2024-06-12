@@ -34,7 +34,7 @@ export const song1: Song = {
     imageSrc: crown,
     duration: '02:17',
     isFavorite: false,
-    src: '/tune 8/NEFFEX_Crown_Copyright_Free.m4a'
+    src: './public/tune 8/NEFFEX_Crown_Copyright_Free.m4a'
 }
 const song2: Song = {
     id: v1(),
@@ -49,7 +49,7 @@ const song2: Song = {
     imageSrc: fearless,
     duration: '02:48',
     isFavorite: false,
-    src: '/tune 8/Fearless-Lost_Sky.mp3'
+    src: './public/tune 8/Fearless-Lost_Sky.mp3'
 }
 const song3: Song = {
     id: v1(),
@@ -64,7 +64,7 @@ const song3: Song = {
     imageSrc: giants,
     duration: '03:30',
     isFavorite: false,
-    src: '/tune 8/League Of Legends (ft. Becky G, Keke Palmer, SOYEON, DUCKWRT.mp3'
+    src: './public/tune 8/League Of Legends (ft. Becky G, Keke Palmer, SOYEON, DUCKWRT.mp3'
 }
 const song4: Song = {
     id: v1(),
@@ -79,7 +79,7 @@ const song4: Song = {
     imageSrc: kami,
     duration: '03:30',
     isFavorite: false,
-    src: '/tune 8/Rustage - Kami.m4a'
+    src: './public/tune 8/Rustage - Kami.m4a'
 }
 const song5: Song = {
     id: v1(),
@@ -94,7 +94,7 @@ const song5: Song = {
     imageSrc: rare,
     duration: '02:30',
     isFavorite: false,
-    src: '/tune 8/neffex-rare.m4a'
+    src: './public/tune 8/neffex-rare.m4a'
 }
 const song6: Song = {
     id: v1(),
@@ -109,7 +109,7 @@ const song6: Song = {
     imageSrc: light_of_the_sun,
     duration: '03:06',
     isFavorite: false,
-    src: '/tune 8/rustage-sun-wukong-rap-light-of-the-sun-rustage-ft-johnald.m4a'
+    src: './public/tune 8/rustage-sun-wukong-rap-light-of-the-sun-rustage-ft-johnald.m4a'
 }
 const song7: Song = {
     id: v1(),
@@ -124,7 +124,7 @@ const song7: Song = {
     imageSrc: the_search,
     duration: '03:30',
     isFavorite: false,
-    src: '/tune 8/The search.mp3'
+    src: './public/tune 8/The search.mp3'
 }
 const song8: Song = {
     id: v1(),
@@ -139,7 +139,7 @@ const song8: Song = {
     imageSrc: when_i_grow_up,
     duration: '02:00',
     isFavorite: false,
-    src: '/tune 8/when i grow up.mp3'
+    src: './public/tune 8/when i grow up.mp3'
 }
 const song9: Song = {
     id: v1(),
@@ -154,7 +154,7 @@ const song9: Song = {
     imageSrc: headspace,
     duration: '02:00',
     isFavorite: false,
-    src: '/tune 8/HEADSPACE FT. POORSTACY (feat. POORSTACY) - Fame on Fire.m4a'
+    src: './public/tune 8/HEADSPACE FT. POORSTACY (feat. POORSTACY) - Fame on Fire.m4a'
 }
 const playlist1: PlaylistInterface = {
     name: 'random_1',

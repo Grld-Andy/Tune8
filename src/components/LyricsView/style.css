@@ -12,7 +12,6 @@
   color: var(--primary-text-color);
   padding: 10px;
   gap: 20px;
-  transition: 0.5s;
   overflow: hidden;
 }
 .lyrics-view .info {
@@ -63,12 +62,13 @@
 
 .lyrics-view-false {
   opacity: 0;
-  animation: hide 0.2s ease-in;
+  transition: opacity 0.2s ease-in;
   pointer-events: none;
 }
 .lyrics-view-false .lyrics {
   opacity: 1;
-  scale: 0.5;
+  transform: scale(0.5);
+  transition: transform 0.2s ease-in;
 }
 
 .lyrics-view-true {
@@ -89,13 +89,5 @@
   }
   to {
     opacity: 1;
-  }
-}
-@keyframes hide {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
   }
 }/*# sourceMappingURL=style.css.map */

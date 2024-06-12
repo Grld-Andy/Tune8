@@ -5,6 +5,7 @@ import { QueueSongsContext } from '../../contexts/QueueSongsContext';
 import FavoritesContext from '../../contexts/FavoritesContext';
 import Buttons from '../../components/Buttons/Buttons';
 import { Song } from '../../data';
+import { Link } from 'react-router-dom';
 
 const Favorites: React.FC = () => {
   const {favorites,favoritesDispatch} = useContext(FavoritesContext)
@@ -57,6 +58,8 @@ const Favorites: React.FC = () => {
           }
         </div>
       </nav>
+      {
+        favorites.length < 0 ?
         <div className="songs view">
           {
             favorites.map((song, index) => (
@@ -69,7 +72,16 @@ const Favorites: React.FC = () => {
               index={index}/>
             ))
           }
+        </div>:
+        <div className="empty-window view">
+          <div className="cell">
+            <h1>No songs to favorites</h1>
+            <Link to={'/songs'}>
+              <button>Add +</button>
+            </Link>
+          </div>
         </div>
+      }
     </>
   )
 }

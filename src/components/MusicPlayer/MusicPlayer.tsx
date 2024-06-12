@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import {FaCirclePause, FaVolumeOff, FaCirclePlay, FaShuffle, FaForward, FaBackward, FaVolumeHigh} from 'react-icons/fa6'
-import {ImEnlarge} from 'react-icons/im'
-import {TbRepeat, TbRepeatOnce, TbRepeatOff} from 'react-icons/tb'
+import {VscScreenFull} from 'react-icons/vsc'
+import { TbRepeat, TbRepeatOnce, TbRepeatOff } from 'react-icons/tb'
 import {HiMiniWindow, HiMiniEllipsisHorizontal} from 'react-icons/hi2'
 import {MdFavoriteBorder, MdFavorite} from 'react-icons/md'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
@@ -276,7 +276,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
             <FaVolumeOff className='icon' onClick={() => {handleMuteSong(false)}}/>:
             <FaVolumeHigh className='icon' onClick={() => {handleMuteSong(true)}}/>
           }
-          <ImEnlarge className='icon enlarge_icon' onClick={maximize}/>
+          <VscScreenFull className='icon enlarge_icon' onClick={maximize}/>
           <HiMiniEllipsisHorizontal className='icon' onClick={() => {handleShowOptions('options')}}/>
           {
             showOptions === 'options' &&

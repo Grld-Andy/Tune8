@@ -68,6 +68,7 @@
             pointer-events: none;
             width: 100%;
             overflow: hidden;
+            text-overflow: ellipsis;
             h3,a{
                 font-size: 1em;
                 line-clamp: 2;

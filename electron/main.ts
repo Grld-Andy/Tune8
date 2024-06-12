@@ -1,9 +1,15 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
-// import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-
+// import { createRequire } from 'node:module'
 // const require = createRequire(import.meta.url)
+import fs from 'fs/promises'
+import mm, {IAudioMetadata} from 'music-metadata'
+import { currentSongs } from '../src/assets'
+import { Song } from '../src/data'
+import { v1 } from 'uuid'
+import { DurationToString } from '../src/utilities'
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // The built directory structure
@@ -28,7 +34,7 @@ let win: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    icon: path.join(process.env.VITE_PUBLIC ?? '/', 'electron-vite.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
@@ -79,11 +85,13 @@ app.whenReady().then(createWindow)
 let prevSize: number[] = [500, 500]
 ipcMain.on('minimize', () => {
   const win = BrowserWindow.getFocusedWindow()
-  if (win && !win.isMaximized()) {
+  if (win && !win.isMaximized() && !win.fullScreen) {
       const windowOnTop = !win.isAlwaysOnTop()
       win.setAlwaysOnTop(windowOnTop, 'floating')
       if(windowOnTop){
         prevSize = win.getSize()
+      }else{
+        prevSize = []
       }
       win.setSize(windowOnTop ? 300 : prevSize[0], windowOnTop ? 250 : prevSize[1])
       win.setResizable(windowOnTop ? false : true)
@@ -93,7 +101,7 @@ ipcMain.on('minimize', () => {
 // maximize
 ipcMain.on('maximize', () => {
   const win = BrowserWindow.getFocusedWindow()
-  if (win) {
+  if (win && prevSize.length === 0) {
     if (win.fullScreen) {
       win.fullScreen = false
       win.setResizable(true)
@@ -103,3 +111,70 @@ ipcMain.on('maximize', () => {
     }
   }
 })
+
+// load music data
+ipcMain.handle('get-all-songs', async () => {
+  return await getAllSongs()
+})
+const getAllSongs = async () => {
+  const songPaths = currentSongs.map(song => song.src)
+  const songs = []
+
+  for (const songPath of songPaths) {
+    try {
+      const songData = await getSongTags(songPath)
+      songs.push(songData)
+    } catch (err) {
+      console.error('Error fetching song tags:', err)
+    }
+  }
+  return songs
+}
+const getSongTags: (songPath: string) => Promise<Song> = async (songPath: string) => {
+  const imagesBase64 = await convertImagesToBase64()
+  return new Promise((resolve, reject) => {
+    mm.parseFile(songPath)
+      .then((metadata: IAudioMetadata) => {
+        const duration = DurationToString(metadata.format.duration ?? 0)
+        const imageSrc = metadata.common.picture && metadata.common.picture.length > 0
+          ? `data:${metadata.common.picture[0].format};base64,${metadata.common.picture[0].data.toString('base64')}`
+          : imagesBase64[Math.floor(Math.random() * imagesBase64.length)]
+        const musicDataObject: Song = {
+          id: v1(),
+          src: songPath,
+          tag: {
+            tags: {
+              title: metadata.common.title ? metadata.common.title : path.basename(songPath).split('.mp3')[0],
+              artist: metadata.common.artist ? metadata.common.artist : `Unknown Artist`,
+              album: metadata.common.album ? metadata.common.album : `Unknown Album`,
+              year: metadata.common.year ? metadata.common.year : 0
+            }
+          },
+          imageSrc,
+          duration,
+          isFavorite: false
+        }
+        resolve(musicDataObject)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
+const convertImagesToBase64 = async () => {
+  const imageFolderPath = './public/placeholders'
+  try {
+      const imageFiles = await fs.readdir(imageFolderPath)
+      const imageBase64Array = await Promise.all(imageFiles.map(async (imageFile) => {
+          const imagePath = path.join(imageFolderPath, imageFile)
+          const imageBuffer = await fs.readFile(imagePath)
+          const imageBase64 = imageBuffer.toString('base64')
+          return `data:image/png;base64,${imageBase64}`
+      }))
+      return imageBase64Array
+  } catch (error) {
+      console.error('Error converting images to base64:', error)
+      return []
+  }
+}

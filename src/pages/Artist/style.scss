@@ -1,12 +1,15 @@
-.artist{
-    color: var(--primary-text-color);
-    section{
-        padding: 5px;
-        .cards{
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            width: 100%;
+.dynamic-page{
+    .artist{
+        color: var(--primary-text-color);
+        overflow-y: scroll;
+        section{
+            padding: 5px;
+            .cards{
+                display: flex;
+                gap: 5px;
+                flex-wrap: wrap;
+                width: 100%;
+            }
         }
     }
 }

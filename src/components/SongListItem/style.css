@@ -71,6 +71,7 @@
   pointer-events: none;
   width: 100%;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 .song .text h3, .song .text a {
   font-size: 1em;

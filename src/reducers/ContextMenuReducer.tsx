@@ -4,6 +4,7 @@ import { Song } from '../data';
 export const contextMenuReducer = (contextMenu: ContextMenuState, action: {type: string,payload: { x: number, y: number, lastClicked: Array<Song>, indexClicked?: number, nameClicked?: string }}): ContextMenuState => {
   switch (action.type) {
     case 'OPEN_MENU':
+      console.log('openMenu')
       return {
         ...contextMenu,
         isOpen: true,
@@ -13,6 +14,7 @@ export const contextMenuReducer = (contextMenu: ContextMenuState, action: {type:
         nameClicked: action.payload.nameClicked
       }
     case 'CLOSE_MENU':
+      console.log('close menu')
       return {
         ...contextMenu,
         isOpen: false,
