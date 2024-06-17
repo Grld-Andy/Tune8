@@ -1,6 +1,7 @@
-import { createContext, Dispatch, ReactNode, useEffect, useReducer } from "react"
+import { createContext, Dispatch, ReactNode, useReducer } from "react"
 import { AllSongsReducer } from "../reducers/AllSongsReducer"
 import { Song } from "../data"
+import { currentSongs } from "../assets"
 
 interface Props {
     children: ReactNode
@@ -17,22 +18,9 @@ export const AllSongsContext = createContext<AllSongsContextType>({
 })
 
 const AllSongsContextProvider: React.FC<Props> = (props) => {
-    const [songs, songsDispatch] = useReducer(AllSongsReducer, [])
-
-    useEffect(() => {
-        const fetchAllSongs = async () => {
-            try {
-                const allSongs: Array<Song> = await window.ipcRenderer.GetSongs()
-                console.log('all songs: ',allSongs)
-                if (allSongs && allSongs.length > 0)
-                    songsDispatch({ type: 'SET_SONGS', payload: allSongs })
-            } catch (error) {
-                console.error("Error fetching songs:", error)
-            }
-        }
-
-        fetchAllSongs()
-    }, [])
+    const [songs, songsDispatch] = useReducer(AllSongsReducer, [], () => {
+        return currentSongs
+    })
 
     return (
         <AllSongsContext.Provider value={{ songs, songsDispatch }}>
