@@ -178,7 +178,6 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
     if(!currentSong.audioRef)return
     if(speed === 1){
       currentSong.audioRef.playbackRate = 1
-      // handleShowOptions('')
     }
     else if(speed < 0){
       currentSong.audioRef.playbackRate *= Math.abs(speed)
