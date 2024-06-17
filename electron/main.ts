@@ -4,11 +4,16 @@ import path from 'node:path'
 // import { createRequire } from 'node:module'
 // const require = createRequire(import.meta.url)
 import fs from 'fs/promises'
-import mm, {IAudioMetadata} from 'music-metadata'
+import mm, {IPicture, IAudioMetadata} from 'music-metadata'
 import { currentSongs } from '../src/assets'
 import { Song } from '../src/data'
 import { v1 } from 'uuid'
 import { DurationToString } from '../src/utilities'
+import { createTablesOnStartUp, fetchSongsFromDatabase } from './db'
+
+// create table if not exist
+createTablesOnStartUp()
+fetchSongsFromDatabase()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -130,51 +135,64 @@ const getAllSongs = async () => {
   }
   return songs
 }
-const getSongTags: (songPath: string) => Promise<Song> = async (songPath: string) => {
-  const imagesBase64 = await convertImagesToBase64()
+const getSongTags = async (songPath: string) => {
   return new Promise((resolve, reject) => {
     mm.parseFile(songPath)
-      .then((metadata: IAudioMetadata) => {
+      .then(async (metadata: IAudioMetadata) => {
         const duration = DurationToString(metadata.format.duration ?? 0)
-        const imageSrc = metadata.common.picture && metadata.common.picture.length > 0
-          ? `data:${metadata.common.picture[0].format};base64,${metadata.common.picture[0].data.toString('base64')}`
-          : imagesBase64[Math.floor(Math.random() * imagesBase64.length)]
+        let imageSrc = metadata.common.picture && metadata.common.picture.length > 0
+          ? await saveImageToFile(metadata.common.picture[0])
+          : await getRandomPlaceholderImage()
+        if(!imageSrc)
+          imageSrc = '/public/placeholders/music1.jpg'
+        
         const musicDataObject: Song = {
           id: v1(),
           src: songPath,
           tag: {
             tags: {
               title: metadata.common.title ? metadata.common.title : path.basename(songPath).split('.mp3')[0],
-              artist: metadata.common.artist ? metadata.common.artist : `Unknown Artist`,
-              album: metadata.common.album ? metadata.common.album : `Unknown Album`,
-              year: metadata.common.year ? metadata.common.year : 0
-            }
+              artist: metadata.common.artist ? metadata.common.artist : 'Unknown Artist',
+              album: metadata.common.album ? metadata.common.album : 'Unknown Album',
+              year: metadata.common.year ? metadata.common.year : 0,
+              genre: metadata.common.genre ? metadata.common.genre[0] : 'Unknown Genre',
+            },
           },
           imageSrc,
           duration,
-          isFavorite: false
+          isFavorite: false,
         }
         resolve(musicDataObject)
       })
-      .catch(err => {
+      .catch((err: Error|null) => {
         reject(err)
       })
   })
 }
 
-const convertImagesToBase64 = async () => {
+const saveImageToFile = async (picture: IPicture) => {
+  const imageBuffer = picture.data
+  const imageFormat = picture.format
+  const imageFileName = `${v1()}.${imageFormat.split('/')[1]}`
+  const imagePath = path.join(__dirname, 'public', 'images', imageFileName)
+  
+  try {
+    await fs.writeFile(imagePath, imageBuffer)
+    return `/public/images/${imageFileName}`
+  } catch (error) {
+    console.error('Error saving image to file:', error)
+    return null
+  }
+}
+
+const getRandomPlaceholderImage = async () => {
   const imageFolderPath = './public/placeholders'
   try {
-      const imageFiles = await fs.readdir(imageFolderPath)
-      const imageBase64Array = await Promise.all(imageFiles.map(async (imageFile) => {
-          const imagePath = path.join(imageFolderPath, imageFile)
-          const imageBuffer = await fs.readFile(imagePath)
-          const imageBase64 = imageBuffer.toString('base64')
-          return `data:image/png;base64,${imageBase64}`
-      }))
-      return imageBase64Array
+    const imageFiles = await fs.readdir(imageFolderPath)
+    const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)]
+    return `/public/placeholders/${randomImage}`
   } catch (error) {
-      console.error('Error converting images to base64:', error)
-      return []
+    console.error('Error getting random placeholder image:', error)
+    return null
   }
 }

@@ -29,6 +29,7 @@ export const song1: Song = {
             artist: 'Neffex',
             album: 'Neffex 1',
             year: 2013,
+            genre: 'rap'
         },
     },
     imageSrc: crown,
@@ -44,6 +45,7 @@ const song2: Song = {
             artist: 'Lost Sky',
             album: 'Lost',
             year: 2017,
+            genre: 'rap'
         },
     },
     imageSrc: fearless,
@@ -59,6 +61,7 @@ const song3: Song = {
             artist: 'True Damage',
             album: 'League of Legends',
             year: 2022,
+            genre: 'rap'
         },
     },
     imageSrc: giants,
@@ -74,6 +77,7 @@ const song4: Song = {
             artist: 'Rustage',
             album: `Rustage 1`,
             year: 2023,
+            genre: 'rap'
         },
     },
     imageSrc: kami,
@@ -89,6 +93,7 @@ const song5: Song = {
             artist: 'Neffex',
             album: '2 Neffex',
             year: 2021,
+            genre: 'rap'
         },
     },
     imageSrc: rare,
@@ -104,6 +109,7 @@ const song6: Song = {
             artist: 'Rustage',
             album: 'Rustage 1',
             year: 2023,
+            genre: 'rap'
         },
     },
     imageSrc: light_of_the_sun,
@@ -119,6 +125,7 @@ const song7: Song = {
             artist: 'NF',
             album: 'The Search Tour',
             year: 2019,
+            genre: 'rap'
         },
     },
     imageSrc: the_search,
@@ -134,6 +141,7 @@ const song8: Song = {
             artist: 'NF',
             album: 'The Search Tour',
             year: 2019,
+            genre: 'rap'
         },
     },
     imageSrc: when_i_grow_up,
@@ -149,6 +157,7 @@ const song9: Song = {
             artist: 'Fame on Fire',
             album: 'Flame',
             year: 2019,
+            genre: 'rap'
         },
     },
     imageSrc: headspace,

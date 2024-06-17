@@ -5,13 +5,14 @@ export interface Song {
             title: string,
             artist: string,
             album: string,
-            year: number
+            year: number,
+            genre: string
         }
     }
     imageSrc: string,
     duration: string,
     isFavorite: boolean,
-    src: string
+    src: string,
 }
 export interface SortedSongs {
     [key: string]: Set<Song>
