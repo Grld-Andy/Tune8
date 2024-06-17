@@ -4,7 +4,7 @@ import path from 'node:path'
 // import { createRequire } from 'node:module'
 // const require = createRequire(import.meta.url)
 import fs from 'fs/promises'
-import mm, {IPicture, IAudioMetadata} from 'music-metadata'
+import * as mm from 'music-metadata'
 import { currentSongs } from '../src/assets'
 import { Song } from '../src/data'
 import { v1 } from 'uuid'
@@ -138,7 +138,7 @@ const getAllSongs = async () => {
 const getSongTags = async (songPath: string) => {
   return new Promise((resolve, reject) => {
     mm.parseFile(songPath)
-      .then(async (metadata: IAudioMetadata) => {
+      .then(async (metadata: mm.IAudioMetadata) => {
         const duration = DurationToString(metadata.format.duration ?? 0)
         let imageSrc = metadata.common.picture && metadata.common.picture.length > 0
           ? await saveImageToFile(metadata.common.picture[0])
@@ -170,15 +170,15 @@ const getSongTags = async (songPath: string) => {
   })
 }
 
-const saveImageToFile = async (picture: IPicture) => {
+const saveImageToFile = async (picture: mm.IPicture) => {
   const imageBuffer = picture.data
   const imageFormat = picture.format
   const imageFileName = `${v1()}.${imageFormat.split('/')[1]}`
-  const imagePath = path.join(__dirname, 'public', 'images', imageFileName)
+  const imagePath = path.join(__dirname, 'images', imageFileName)
   
   try {
     await fs.writeFile(imagePath, imageBuffer)
-    return `/public/images/${imageFileName}`
+    return `/images/${imageFileName}`
   } catch (error) {
     console.error('Error saving image to file:', error)
     return null
@@ -190,7 +190,7 @@ const getRandomPlaceholderImage = async () => {
   try {
     const imageFiles = await fs.readdir(imageFolderPath)
     const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)]
-    return `/public/placeholders/${randomImage}`
+    return `/placeholders/${randomImage}`
   } catch (error) {
     console.error('Error getting random placeholder image:', error)
     return null
