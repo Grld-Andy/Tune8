@@ -161,12 +161,10 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
   // minimize
   const minimize = () => {
     console.log('only works in desktop')
-    // window.ipcRenderer.Minimize()
   }
   // maximize
   const maximize = () => {
     console.log('only works in desktop')
-    // window.ipcRenderer.Maximize()
   }
 
   // options
