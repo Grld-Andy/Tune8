@@ -1,7 +1,7 @@
 import { createContext, Dispatch, ReactNode, useEffect, useReducer } from "react"
 import { AllSongsReducer } from "../reducers/AllSongsReducer"
 import { Song } from "../data"
-import * as mm from 'music-metadata'
+import {parseFile} from 'music-metadata'
 import { placeholderSongImages, songPaths } from "../assets"
 import { DurationToString } from "../utilities"
 import { v1 as uuidv1 } from "uuid"
@@ -28,14 +28,14 @@ const AllSongsContextProvider: React.FC<Props> = ({ children }) => {
             const musicData: Array<Song> = []
             for (const filePath of songPaths) {
                 try {
-                    const metadata = await mm.parseStream(filePath)
+                    const metadata = await parseFile(filePath)
                     const duration = metadata.format.duration
                     const imageSrc = metadata.common.picture && metadata.common.picture.length > 0
                         ? `data:${metadata.common.picture[0].format};base64,${metadata.common.picture[0].data.toString('base64')}`
                         : placeholderSongImages[Math.floor(Math.random() * placeholderSongImages.length)]
                     const songTitle = metadata.common.title ? metadata.common.title : filePath.split('.mp3')[0]
                     const songAlbum = metadata.common.album ? metadata.common.album : `Unknown Album`
-                    const songYear = metadata.common.year ? metadata.common.year : `#`
+                    const songYear = metadata.common.year ? metadata.common.year : 0
                     const musicDataObject: Song = {
                         id: uuidv1(),
                         isFavorite: false,
