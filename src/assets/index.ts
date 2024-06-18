@@ -21,6 +21,18 @@ export const light_of_the_sun : string = '/my_images/music_cover/light_of_the_su
 export const the_search : string = '/my_images/music_cover/the_search.jpg'
 export const when_i_grow_up : string = '/my_images/music_cover/when_i_grow_up.jpg'
 
+export const songPaths = [
+    '/tune8/Deep Thoughts   NEFFEX.mp3',
+    '/tune8/Fearless-Lost_Sky.mp3',
+    '/tune8/HEADSPACE FT. POORSTACY (feat. POORSTACY) - Fame on Fire.m4a',
+    '/tune8/I m Not Worth It - Neffex.m4a',
+    '/tune8/NEFFEX - Fight Back 6vfP_4u7zik.m4a',
+    '/tune8/NEFFEX - Greatest.mp3',
+    '/tune8/NEFFEX_-_Rumors(playmus.cc).mp3',
+    '/tune8/NEFFEX_Crown_Copyright_Free.m4a',
+    '/tune8/neffex-rare.m4a',
+    '/tune8/NEFFEX-We_Could_Do_It_All.mp3'
+    ]
 export const song1: Song = {
     id: v1(),
     tag: {
