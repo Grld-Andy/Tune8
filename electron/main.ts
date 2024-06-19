@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 // import { createRequire } from 'node:module'
 // const require = createRequire(import.meta.url)
-import fs from 'fs/promises'
+import fs from 'fs'
 import * as mm from 'music-metadata'
 import { currentSongs } from '../src/assets'
 import { Song } from '../src/data'
@@ -42,6 +42,7 @@ function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC ?? '/', 'electron-vite.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
+      nodeIntegration: true,
     },
     show: false,
     maximizable: true,
@@ -171,14 +172,26 @@ const getSongTags = async (songPath: string) => {
 }
 
 const saveImageToFile = async (picture: mm.IPicture) => {
+  const imagesDir = path.join(__dirname, 'public/images');
+
+  if (!fs.existsSync(imagesDir)) {
+    try {
+      await fs.promises.mkdir(imagesDir, { recursive: true });
+      console.log('Folder created');
+    } catch (err) {
+      console.error(err);
+    }
+  }
   const imageBuffer = picture.data
   const imageFormat = picture.format
   const imageFileName = `${v1()}.${imageFormat.split('/')[1]}`
-  const imagePath = path.join(__dirname, 'images', imageFileName)
+  const imagePath = path.join(imagesDir, imageFileName)
+  console.log('saving image: ', imagePath)
   
   try {
-    await fs.writeFile(imagePath, imageBuffer)
-    return `/images/${imageFileName}`
+    await fs.promises.writeFile(imagePath, imageBuffer)
+    // change when building
+    return `../../dist-electron/public/images/${imageFileName}`
   } catch (error) {
     console.error('Error saving image to file:', error)
     return null
@@ -188,7 +201,7 @@ const saveImageToFile = async (picture: mm.IPicture) => {
 const getRandomPlaceholderImage = async () => {
   const imageFolderPath = './public/placeholders'
   try {
-    const imageFiles = await fs.readdir(imageFolderPath)
+    const imageFiles = await fs.promises.readdir(imageFolderPath)
     const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)]
     return `/placeholders/${randomImage}`
   } catch (error) {
