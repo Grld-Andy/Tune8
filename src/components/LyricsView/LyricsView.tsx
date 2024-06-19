@@ -26,15 +26,15 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
                 if (data.lyrics !== undefined) {
                     let lyricsFileContent:string = data.lyrics;
                     if(!lyricsFileContent){
-                        lyricsFileContent = "Not found"
+                        lyricsFileContent = currentSong.song.lyrics
                     }
                     setLyrics(lyricsFileContent)
                     localStorage.setItem(currentSong.song.tag.tags.title, data.lyrics)
                 } else {
-                    setLyrics("Not found")
+                    setLyrics(currentSong.song.lyrics)
                 }
             }catch{
-                setLyrics("Not found")
+                setLyrics(currentSong.song.lyrics)
             }
         }
     }

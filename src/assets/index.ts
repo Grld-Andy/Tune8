@@ -1,5 +1,8 @@
 import { v1 } from "uuid"
 import { PlaylistInterface, Song } from "../data"
+import { L_crown, L_deep_thoughts, L_rumors,
+    L_fight_back, L_greatest, L_im_not_worth_it,
+    L_rare, L_fearless } from "./lyrics"
 
 // profile placeholder
 export const profile : string = '/my_images/profile.jpg'
@@ -34,7 +37,8 @@ export const song1: Song = {
     imageSrc: crown,
     duration: '03:55',
     isFavorite: false,
-    src: '/tune 8/NEFFEX_Crown_Copyright_Free.m4a'
+    src: '/tune 8/NEFFEX_Crown_Copyright_Free.m4a',
+    lyrics: L_crown
 }
 const song2: Song = {
     id: v1(),
@@ -50,7 +54,8 @@ const song2: Song = {
     imageSrc: fearless,
     duration: '03:14',
     isFavorite: false,
-    src: '/tune 8/Fearless-Lost_Sky.mp3'
+    src: '/tune 8/Fearless-Lost_Sky.mp3',
+    lyrics: L_fearless
 }
 const song3: Song = {
     id: v1(),
@@ -66,7 +71,8 @@ const song3: Song = {
     imageSrc: deep_thoughts,
     duration: '03:05',
     isFavorite: false,
-    src: '/tune 8/Deep Thoughts   NEFFEX.mp3'
+    src: '/tune 8/Deep Thoughts   NEFFEX.mp3',
+    lyrics: L_deep_thoughts
 }
 const song4: Song = {
     id: v1(),
@@ -82,7 +88,8 @@ const song4: Song = {
     imageSrc: im_not_worth_it,
     duration: '03:12',
     isFavorite: false,
-    src: '/tune 8/I m Not Worth It - Neffex.m4a'
+    src: '/tune 8/I m Not Worth It - Neffex.m4a',
+    lyrics: L_im_not_worth_it
 }
 const song5: Song = {
     id: v1(),
@@ -98,7 +105,8 @@ const song5: Song = {
     imageSrc: rare,
     duration: '03:55',
     isFavorite: false,
-    src: '/tune 8/neffex-rare.m4a'
+    src: '/tune 8/neffex-rare.m4a',
+    lyrics: L_rare
 }
 const song6: Song = {
     id: v1(),
@@ -114,7 +122,8 @@ const song6: Song = {
     imageSrc: fight_back,
     duration: '03:20',
     isFavorite: false,
-    src: '/tune 8/NEFFEX - Fight Back 6vfP_4u7zik.m4a'
+    src: '/tune 8/NEFFEX - Fight Back 6vfP_4u7zik.m4a',
+    lyrics: L_fight_back
 }
 const song7: Song = {
     id: v1(),
@@ -130,7 +139,8 @@ const song7: Song = {
     imageSrc: greatest,
     duration: '02:56',
     isFavorite: false,
-    src: '/tune 8/NEFFEX - Greatest.mp3'
+    src: '/tune 8/NEFFEX - Greatest.mp3',
+    lyrics: L_greatest
 }
 const song8: Song = {
     id: v1(),
@@ -146,7 +156,8 @@ const song8: Song = {
     imageSrc: rumors,
     duration: '03:26',
     isFavorite: false,
-    src: '/tune 8/NEFFEX_-_Rumors(playmus.cc).mp3'
+    src: '/tune 8/NEFFEX_-_Rumors(playmus.cc).mp3',
+    lyrics: L_rumors
 }
 const playlist1: PlaylistInterface = {
     name: 'random_1',
