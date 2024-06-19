@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, ReactNode, useReducer } from "react";
+import React, { createContext, Dispatch, ReactNode, useEffect, useReducer } from "react";
 import { favoritesReducer } from "../reducers/FavoritesReducer";
 import { Song } from "../data";
 
@@ -20,7 +20,15 @@ export const FavoritesContext = createContext<FavoritesContextType>({
 })
 
 export const FavoritesContextProvider: React.FC<Props> = (props) => {
-    const [favorites, favoritesDispatch] = useReducer(favoritesReducer, [])
+    const [favorites, favoritesDispatch] = useReducer(favoritesReducer, [], () => {
+      const localFavorites = localStorage.getItem('favorites')
+      try { return localFavorites ? JSON.parse(localFavorites) : [] }
+      catch { return [] }
+  })
+
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favorites))
+  }, [favorites])
 
   return (
     <FavoritesContext.Provider value={{favorites, favoritesDispatch}}>

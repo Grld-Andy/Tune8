@@ -13,41 +13,28 @@ export const placeholderSongImages: Array<string> = [image1, image2, image3, ima
 // music placeholder
 export const crown : string = '/my_images/music_cover/crown.jpg'
 export const fearless : string = '/my_images/music_cover/fearless.jpg'
-export const giants : string = '/my_images/music_cover/giants.jpg'
-export const headspace : string = '/my_images/music_cover/headspace.jpg'
-export const kami : string = '/my_images/music_cover/kami.jpg'
+export const deep_thoughts : string = '/my_images/music_cover/deep_thoughts.jpg'
+export const im_not_worth_it : string = '/my_images/music_cover/im_not_worth_it.jpg'
 export const rare : string = '/my_images/music_cover/rare.jpg'
-export const light_of_the_sun : string = '/my_images/music_cover/light_of_the_sun.jpg'
-export const the_search : string = '/my_images/music_cover/the_search.jpg'
-export const when_i_grow_up : string = '/my_images/music_cover/when_i_grow_up.jpg'
+export const fight_back : string = '/my_images/music_cover/fight_back.jpg'
+export const greatest : string = '/my_images/music_cover/greatest.jpg'
+export const rumors : string = '/my_images/music_cover/rumors.jpg'
 
-export const songPaths = [
-    '/tune8/Deep Thoughts   NEFFEX.mp3',
-    '/tune8/Fearless-Lost_Sky.mp3',
-    '/tune8/HEADSPACE FT. POORSTACY (feat. POORSTACY) - Fame on Fire.m4a',
-    '/tune8/I m Not Worth It - Neffex.m4a',
-    '/tune8/NEFFEX - Fight Back 6vfP_4u7zik.m4a',
-    '/tune8/NEFFEX - Greatest.mp3',
-    '/tune8/NEFFEX_-_Rumors(playmus.cc).mp3',
-    '/tune8/NEFFEX_Crown_Copyright_Free.m4a',
-    '/tune8/neffex-rare.m4a',
-    '/tune8/NEFFEX-We_Could_Do_It_All.mp3'
-    ]
 export const song1: Song = {
     id: v1(),
     tag: {
         tags: {
             title: 'Crown',
             artist: 'Neffex',
-            album: 'Neffex 1',
-            year: 2013,
-            genre: 'rap'
+            album: 'Fight Back: The Collection',
+            year: 2018,
+            genre: 'Hip-Hop/Rap'
         },
     },
     imageSrc: crown,
-    duration: '02:17',
+    duration: '03:55',
     isFavorite: false,
-    src: './public/tune 8/NEFFEX_Crown_Copyright_Free.m4a'
+    src: '/tune 8/NEFFEX_Crown_Copyright_Free.m4a'
 }
 const song2: Song = {
     id: v1(),
@@ -61,41 +48,41 @@ const song2: Song = {
         },
     },
     imageSrc: fearless,
-    duration: '02:48',
+    duration: '03:14',
     isFavorite: false,
-    src: './public/tune 8/Fearless-Lost_Sky.mp3'
+    src: '/tune 8/Fearless-Lost_Sky.mp3'
 }
 const song3: Song = {
     id: v1(),
     tag: {
         tags: {
-            title: 'Giants',
-            artist: 'True Damage',
-            album: 'League of Legends',
-            year: 2022,
+            title: 'Deep Thoughts',
+            artist: 'Neffex',
+            album: 'Destiny: The Collection',
+            year: 2019,
             genre: 'rap'
         },
     },
-    imageSrc: giants,
-    duration: '03:30',
+    imageSrc: deep_thoughts,
+    duration: '03:05',
     isFavorite: false,
-    src: './public/tune 8/League Of Legends (ft. Becky G, Keke Palmer, SOYEON, DUCKWRT.mp3'
+    src: '/tune 8/Deep Thoughts   NEFFEX.mp3'
 }
 const song4: Song = {
     id: v1(),
     tag: {
         tags: {
-            title: 'Kami',
-            artist: 'Rustage',
-            album: `Rustage 1`,
-            year: 2023,
+            title: `I'm Not Worth It`,
+            artist: 'Neffex & ZAXX',
+            album: `Neffex`,
+            year: 2020,
             genre: 'rap'
         },
     },
-    imageSrc: kami,
-    duration: '03:30',
+    imageSrc: im_not_worth_it,
+    duration: '03:12',
     isFavorite: false,
-    src: './public/tune 8/Rustage - Kami.m4a'
+    src: '/tune 8/I m Not Worth It - Neffex.m4a'
 }
 const song5: Song = {
     id: v1(),
@@ -103,79 +90,63 @@ const song5: Song = {
         tags: {
             title: 'Rare',
             artist: 'Neffex',
-            album: '2 Neffex',
-            year: 2021,
-            genre: 'rap'
+            album: 'CEO',
+            year: 2023,
+            genre: 'Rap'
         },
     },
     imageSrc: rare,
-    duration: '02:30',
+    duration: '03:55',
     isFavorite: false,
-    src: './public/tune 8/neffex-rare.m4a'
+    src: '/tune 8/neffex-rare.m4a'
 }
 const song6: Song = {
     id: v1(),
     tag: {
         tags: {
-            title: 'Light of the Sun',
-            artist: 'Rustage',
-            album: 'Rustage 1',
-            year: 2023,
-            genre: 'rap'
+            title: 'Fight Back',
+            artist: 'Neffex',
+            album: 'Fight Back: The Collection',
+            year: 2018,
+            genre: 'Hip-Hop/Rap'
         },
     },
-    imageSrc: light_of_the_sun,
-    duration: '03:06',
+    imageSrc: fight_back,
+    duration: '03:20',
     isFavorite: false,
-    src: './public/tune 8/rustage-sun-wukong-rap-light-of-the-sun-rustage-ft-johnald.m4a'
+    src: '/tune 8/NEFFEX - Fight Back 6vfP_4u7zik.m4a'
 }
 const song7: Song = {
     id: v1(),
     tag: {
         tags: {
-            title: 'The Search',
-            artist: 'NF',
-            album: 'The Search Tour',
-            year: 2019,
+            title: 'Greatest',
+            artist: 'Neffex',
+            album: 'Fight Back: The Collection',
+            year: 2018,
             genre: 'rap'
         },
     },
-    imageSrc: the_search,
-    duration: '03:30',
+    imageSrc: greatest,
+    duration: '02:56',
     isFavorite: false,
-    src: './public/tune 8/The search.mp3'
+    src: '/tune 8/NEFFEX - Greatest.mp3'
 }
 const song8: Song = {
     id: v1(),
     tag: {
         tags: {
-            title: 'When I Grow Up',
-            artist: 'NF',
-            album: 'The Search Tour',
-            year: 2019,
+            title: 'Rumors',
+            artist: 'Neffex',
+            album: 'Neffex',
+            year: 2017,
             genre: 'rap'
         },
     },
-    imageSrc: when_i_grow_up,
-    duration: '02:00',
+    imageSrc: rumors,
+    duration: '03:26',
     isFavorite: false,
-    src: './public/tune 8/when i grow up.mp3'
-}
-const song9: Song = {
-    id: v1(),
-    tag: {
-        tags: {
-            title: 'Headspace',
-            artist: 'Fame on Fire',
-            album: 'Flame',
-            year: 2019,
-            genre: 'rap'
-        },
-    },
-    imageSrc: headspace,
-    duration: '02:00',
-    isFavorite: false,
-    src: './public/tune 8/HEADSPACE FT. POORSTACY (feat. POORSTACY) - Fame on Fire.m4a'
+    src: '/tune 8/NEFFEX_-_Rumors(playmus.cc).mp3'
 }
 const playlist1: PlaylistInterface = {
     name: 'random_1',
@@ -191,4 +162,4 @@ const playlist3: PlaylistInterface = {
 }
 export const currentPlaylists: Array<PlaylistInterface> = [playlist1, playlist2, playlist3]
 
-export const currentSongs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8, song9]
+export const currentSongs: Song[] = [song1, song2, song3, song4, song5, song6, song7, song8]

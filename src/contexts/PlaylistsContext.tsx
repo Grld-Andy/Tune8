@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useReducer } from "react";
+import React, { createContext, ReactNode, useEffect, useReducer } from "react";
 import { PlaylistReducer } from "../reducers/PlaylistReducer";
 import { PlaylistInterface, Song } from "../data";
 
@@ -20,7 +20,15 @@ export const PlaylistContext = createContext<PlaylistContextType>({
 })
 
 const PlaylistsContextProvider: React.FC<Props> = (props) => {
-    const [playlists, playlistsDispatch] = useReducer(PlaylistReducer, [])
+    const [playlists, playlistsDispatch] = useReducer(PlaylistReducer, [], () => {
+        const localPlaylists = localStorage.getItem('playlists')
+        try { return localPlaylists ? JSON.parse(localPlaylists) : [] }
+        catch { return [] }
+    })
+
+    useEffect(() => {
+        localStorage.setItem('playlists', JSON.stringify(playlists))
+    }, [playlists])
 
     return (
         <PlaylistContext.Provider value={{playlists, playlistsDispatch}}>
