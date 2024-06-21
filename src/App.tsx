@@ -15,6 +15,7 @@ import AlbumView from './components/DynamicViews/AlbumView'
 import Album from './pages/Album/Album'
 import PlaylistView from './components/DynamicViews/PlaylistView'
 import Playlist from './pages/Playlist/Playlist'
+import SearchResults from './pages/SearchResults/SearchResults'
 
 
 // Routing
@@ -40,6 +41,7 @@ function App() {
           <Route path=':playlist' element={<Playlist/>}></Route>
         </Route>
         <Route path='settings' element={<Settings/>}></Route>
+        <Route path='search/:query' element={<SearchResults/>}></Route>
       </Route>
     </Routes>
   )

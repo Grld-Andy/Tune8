@@ -1,1 +1,7 @@
-/*# sourceMappingURL=style.css.map */
+.favorites {
+  display: flex;
+  flex-direction: column;
+  color: var(--primary-text-color);
+  padding: 10px;
+  padding-left: 0px;
+}/*# sourceMappingURL=style.css.map */

@@ -29,9 +29,9 @@ export function shuffleArray(array: Array<Song>): Array<Song> {
     const newArray = [...array]
     for (let i = newArray.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]]
     }
-    return newArray;
+    return newArray
 }
 
 // get sorted songs

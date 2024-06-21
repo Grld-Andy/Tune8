@@ -52,7 +52,7 @@
 }
 .main .left__ {
   position: fixed;
-  z-index: 20;
+  z-index: 22;
   top: 0;
   left: 0;
   height: calc(100% - 100px);

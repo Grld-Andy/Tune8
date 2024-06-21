@@ -11,6 +11,7 @@ import { FavoritesContextProvider } from './contexts/FavoritesContext.tsx'
 import PlaylistsContextProvider from './contexts/PlaylistsContext.tsx'
 import PlaylistFormContextProvider from './contexts/PlaylistFormContext.tsx'
 import AllSongsContextProvider from './contexts/AllSongsContext.tsx'
+import SearchContextProvider from './contexts/SearchContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -20,13 +21,15 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <QueueSongsContextProvider>
             <FavoritesContextProvider>
               <PlaylistFormContextProvider>
-              <PlaylistsContextProvider>
-                <CurrentSongContextProvider>
-                  <BrowserRouter>
-                    <App />
-                  </BrowserRouter>
-                </CurrentSongContextProvider>
-              </PlaylistsContextProvider>
+                <SearchContextProvider>
+                  <PlaylistsContextProvider>
+                    <CurrentSongContextProvider>
+                      <BrowserRouter>
+                        <App />
+                      </BrowserRouter>
+                    </CurrentSongContextProvider>
+                  </PlaylistsContextProvider>
+                  </SearchContextProvider>
               </PlaylistFormContextProvider>
             </FavoritesContextProvider>
           </QueueSongsContextProvider>

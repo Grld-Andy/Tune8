@@ -1,0 +1,18 @@
+.searchResults{
+    display: flex;
+    flex-direction: column;
+    color: var(--primary-text-color);
+    padding: 10px;
+    padding-left: 0px;
+    .searchTitles{
+        margin-left: 10px;
+    }
+    .searchTiles{
+        margin-left: 10px;
+        display: flex;
+        flex-wrap: nowrap;
+        &::-webkit-scrollbar{
+            display: none;
+        }
+    }
+}

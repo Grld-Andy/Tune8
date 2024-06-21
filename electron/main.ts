@@ -172,14 +172,14 @@ const getSongTags = async (songPath: string) => {
 }
 
 const saveImageToFile = async (picture: mm.IPicture) => {
-  const imagesDir = path.join(__dirname, 'public/images');
+  const imagesDir = path.join(__dirname, 'public/images')
 
   if (!fs.existsSync(imagesDir)) {
     try {
-      await fs.promises.mkdir(imagesDir, { recursive: true });
-      console.log('Folder created');
+      await fs.promises.mkdir(imagesDir, { recursive: true })
+      console.log('Folder created')
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
   const imageBuffer = picture.data

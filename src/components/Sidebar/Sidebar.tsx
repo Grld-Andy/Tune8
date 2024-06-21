@@ -1,19 +1,73 @@
-import React from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import './style.css'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import {FaHouse, FaMusic } from 'react-icons/fa6'
-import {RiPlayListLine} from 'react-icons/ri'
+import {RiPlayListLine, RiSearch2Line} from 'react-icons/ri'
 import {MdLibraryMusic, MdOutlinePlaylistPlay, MdPerson, MdFavorite, MdSettings } from 'react-icons/md'
 import { profile } from '../../assets'
 import { useLocation } from 'react-router-dom'
+import { SearchContext } from '../../contexts/SearchContext'
 
 const Sidebar: React.FC = () => {
   const location = useLocation()
+  const navigate = useNavigate()
+
+  // search results
+  const {searchDispatch} = useContext(SearchContext)
+  const [search, setSearch] = useState<string>('')
+  
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if(search){
+      searchDispatch({type: 'SET_QUERY', payload: search})
+      hideInput()
+      navigate(`search/${search}`)
+    }
+    else{
+      hideInput()
+    }
+  }
+  const handleSearchInput = (val: string) => {
+    setSearch(val)
+  }
+
+  // change sidebar width on search
+  const sidebarRef = useRef<HTMLDivElement|null>(null)
+  const inputRef = useRef<HTMLInputElement|null>(null)
+  const searchRef = useRef<HTMLButtonElement|null>(null)
+  const showInput = () => {
+    if(sidebarRef.current && inputRef.current && searchRef.current){
+      sidebarRef.current.style.width = '200px'
+      inputRef.current.style.display = 'block'
+      inputRef.current.focus()
+      searchRef.current.style.display = 'none'
+    }
+  }
+  const hideInput = () => {
+    if(sidebarRef.current && inputRef.current && searchRef.current){
+      sidebarRef.current.style.width = '55px'
+      inputRef.current.style.display = 'none'
+      searchRef.current.style.display = 'block'
+    }
+  }
+
   return (
-    <div className='sidebar'>
+    <div className='sidebar' ref={sidebarRef}>
       <div className="profile">
         <h1>Tune 8</h1>
         <img src={profile}/>
+        <div className="search">
+          <form onSubmit={handleSearch}>
+            <input type="text" value={search}
+            ref={inputRef} onBlur={hideInput}
+            placeholder='Search song here...'
+            onChange={(e) => {handleSearchInput(e.target.value)}}/>
+          </form>
+          <button className='search-button'
+          ref={searchRef} onClick={showInput}>
+            <RiSearch2Line className='search-icon'/>
+          </button>
+        </div>
       </div>
       <div className="sidebar-links">
         <div className="upper-links">
