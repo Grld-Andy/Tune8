@@ -2,7 +2,7 @@ import { v1 } from "uuid"
 import { PlaylistInterface, Song } from "../data"
 
 // profile placeholder
-export const profile : string = '/my_images/profile.jpg'
+export const profile : string = 'public/my_images/profile.jpg '
 
 export const image1 : string = '/placeholders/music1.jpg'
 export const image2 : string = '/placeholders/music2.jpg'

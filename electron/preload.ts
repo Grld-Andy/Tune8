@@ -32,5 +32,8 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   GetSongs(){
     const allSongs = ipcRenderer.invoke('get-all-songs')
     return allSongs
-  }
+  },
+  onPlayNext: (callback: (event: Electron.IpcRendererEvent) => void) => ipcRenderer.on('play-next-song', callback),
+  onPlayPrev: (callback: (event: Electron.IpcRendererEvent) => void) => ipcRenderer.on('play-prev-song', callback),
+  onPlayPause: (callback: (event: Electron.IpcRendererEvent) => void) => ipcRenderer.on('play-pause-song', callback),
 })

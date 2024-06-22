@@ -26,6 +26,9 @@ interface IpcRendererCustom extends Electron.IpcRenderer {
   Minimize: () => void;
   Maximize: () => void;
   GetSongs: () => Array<Song>;
+  onPlayNext: (callback: (event: IpcRendererEvent) => void) => void;
+  onPlayPrev: (callback: (event: IpcRendererEvent) => void) => void;
+  onPlayPause: (callback: (event: IpcRendererEvent) => void) => void;
 }
 
 // Used in Renderer process, expose in `preload.ts`

@@ -23,7 +23,6 @@ const AllSongsContextProvider: React.FC<Props> = (props) => {
         const fetchAllSongs = async () => {
             try {
                 const allSongs: Array<Song> = await window.ipcRenderer.GetSongs()
-                console.log('all songs: ',allSongs)
                 if (allSongs && allSongs.length > 0)
                     songsDispatch({ type: 'SET_SONGS', payload: allSongs })
             } catch (error) {

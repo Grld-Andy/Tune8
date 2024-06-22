@@ -137,6 +137,27 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
     }, 250)
   }
 
+  // listening to shortcuts
+  useEffect(() => {
+    window.ipcRenderer.onPlayNext(() => {
+      nextSong()
+    })
+    window.ipcRenderer.onPlayPrev(() => {
+      prevSong()
+    })
+    window.ipcRenderer.onPlayPause(() => {
+      if(currentSong)
+        togglePlay(!currentSong.isPlaying)
+    })
+
+    // Cleanup event listeners on component unmount
+    return () => {
+      window.ipcRenderer.onPlayNext(() => {})
+      window.ipcRenderer.onPlayPrev(() => {})
+      window.ipcRenderer.onPlayPause(() => {})
+    }
+  }, [])
+
   useEffect(() => {
     if(currentSong.song)
       handleSongProgress()

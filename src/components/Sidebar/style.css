@@ -15,6 +15,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  contain: layout inline-size;
 }
 .sidebar .profile {
   display: flex;
@@ -33,9 +34,9 @@
 .sidebar .profile .search {
   display: flex;
   align-items: center;
-  margin-top: 10px;
   justify-content: center;
   width: 100%;
+  margin-bottom: 5px;
 }
 .sidebar .profile .search form input {
   width: 100%;
@@ -43,13 +44,13 @@
   border: none;
   outline: none;
   border-radius: 3px;
-  display: none;
   font-size: 1em;
 }
 .sidebar .profile .search .search-button {
   color: white;
   border: none;
   padding: 5px;
+  display: none;
   border-radius: 5px;
   margin: 5px 0;
   height: 30px;
@@ -107,7 +108,32 @@
     width: 50px;
     height: 50px;
   }
+  .sidebar .profile .search form input {
+    display: none;
+  }
+  .sidebar .profile .search .search-button {
+    display: block;
+  }
   .sidebar .sidebar-links h5 {
     display: none;
+  }
+  .expanded {
+    width: 200px;
+  }
+  .expanded .profile h1 {
+    display: block;
+  }
+  .expanded .profile img {
+    width: 150px;
+    height: 150px;
+  }
+  .expanded .profile .search form input {
+    display: block;
+  }
+  .expanded .profile .search .search-button {
+    display: none;
+  }
+  .expanded .sidebar-links h5 {
+    display: block;
   }
 }/*# sourceMappingURL=style.css.map */

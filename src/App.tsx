@@ -20,6 +20,7 @@ import SearchResults from './pages/SearchResults/SearchResults'
 
 // Routing
 function App() {
+  console.log('got here')
 
   return (
     <Routes>

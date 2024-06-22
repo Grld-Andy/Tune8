@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import './index.css'
 import ThemeContextProvider from './contexts/ThemeContext.tsx'
 import CurrentSongContextProvider from './contexts/CurrentSongContext.tsx'
@@ -24,9 +24,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 <SearchContextProvider>
                   <PlaylistsContextProvider>
                     <CurrentSongContextProvider>
-                      <BrowserRouter>
+                      <HashRouter>
                         <App />
-                      </BrowserRouter>
+                      </HashRouter>
                     </CurrentSongContextProvider>
                   </PlaylistsContextProvider>
                   </SearchContextProvider>

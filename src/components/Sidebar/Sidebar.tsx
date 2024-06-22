@@ -37,7 +37,8 @@ const Sidebar: React.FC = () => {
   const searchRef = useRef<HTMLButtonElement|null>(null)
   const showInput = () => {
     if(sidebarRef.current && inputRef.current && searchRef.current){
-      sidebarRef.current.style.width = '200px'
+      sidebarRef.current.classList.add('expanded')
+      // sidebarRef.current.style.width = '200px'
       inputRef.current.style.display = 'block'
       inputRef.current.focus()
       searchRef.current.style.display = 'none'
@@ -45,9 +46,12 @@ const Sidebar: React.FC = () => {
   }
   const hideInput = () => {
     if(sidebarRef.current && inputRef.current && searchRef.current){
-      sidebarRef.current.style.width = '55px'
-      inputRef.current.style.display = 'none'
-      searchRef.current.style.display = 'block'
+      sidebarRef.current.classList.remove('expanded')
+      // sidebarRef.current.style.width = '55px'
+      if(window.innerWidth <= 700){
+        inputRef.current.style.display = 'none'
+        searchRef.current.style.display = 'block'
+      }
     }
   }
 

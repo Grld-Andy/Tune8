@@ -26,6 +26,8 @@ const Home: React.FC = () => {
     return selectedSongs
   }
 
+  console.log('Home')
+
   return (
     <>
       <nav>

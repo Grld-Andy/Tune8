@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 // import { createRequire } from 'node:module'
@@ -48,6 +48,8 @@ function createWindow() {
     maximizable: true,
     autoHideMenuBar: true
   })
+
+  win.webContents.openDevTools()
   
   // Show the window once it is ready to be shown
   win.once('ready-to-show', () => {
@@ -59,13 +61,20 @@ function createWindow() {
     win?.webContents.send('main-process-message', (new Date).toLocaleString())
   })
 
-  if (VITE_DEV_SERVER_URL) {
+  if (!VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL)
   } else {
-    // win.loadFile('dist/index.html')
-    win.loadFile(path.join(RENDERER_DIST, 'index.html'))
+    // win.loadFile(path.join(__dirname, 'index.html'))
+    win.loadFile(path.join(RENDERER_DIST, 'index.html')).catch((err) => {
+      console.error('Failed to load file:', err)
+    })
   }
 }
+
+app.on('will-quit', () => {
+  // Unregister all shortcuts.
+  globalShortcut.unregisterAll();
+})
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -85,14 +94,33 @@ app.on('activate', () => {
   }
 })
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  createWindow()
+
+  // Register the Media Next Track key
+  globalShortcut.register('MediaNextTrack', () => {
+    if (win) {
+      win.webContents.send('play-next-song');
+    }
+  })
+
+  // Register the Media Previous Track key
+  globalShortcut.register('MediaPreviousTrack', () => {
+    if (win) {
+      win.webContents.send('play-prev-song');
+    }
+  })
+})
 
 //  minimize
-let prevSize: number[] = [500, 500]
+let prevSize: number[] = []
 ipcMain.on('minimize', () => {
   const win = BrowserWindow.getFocusedWindow()
   if (win && !win.isMaximized() && !win.fullScreen) {
       const windowOnTop = !win.isAlwaysOnTop()
+      if(win.isAlwaysOnTop()){
+        prevSize = [500, 500]
+      }
       win.setAlwaysOnTop(windowOnTop, 'floating')
       if(windowOnTop){
         prevSize = win.getSize()
@@ -145,7 +173,7 @@ const getSongTags = async (songPath: string) => {
           ? await saveImageToFile(metadata.common.picture[0])
           : await getRandomPlaceholderImage()
         if(!imageSrc)
-          imageSrc = '/public/placeholders/music1.jpg'
+          imageSrc = 'placeholders/music1.jpg'
         
         const musicDataObject: Song = {
           id: v1(),
@@ -172,7 +200,7 @@ const getSongTags = async (songPath: string) => {
 }
 
 const saveImageToFile = async (picture: mm.IPicture) => {
-  const imagesDir = path.join(__dirname, 'public/images')
+  const imagesDir = path.join(RENDERER_DIST, 'public/images')
 
   if (!fs.existsSync(imagesDir)) {
     try {
@@ -191,7 +219,7 @@ const saveImageToFile = async (picture: mm.IPicture) => {
   try {
     await fs.promises.writeFile(imagePath, imageBuffer)
     // change when building
-    return `../../dist-electron/public/images/${imageFileName}`
+    return `public/images/${imageFileName}`
   } catch (error) {
     console.error('Error saving image to file:', error)
     return null
@@ -199,7 +227,7 @@ const saveImageToFile = async (picture: mm.IPicture) => {
 }
 
 const getRandomPlaceholderImage = async () => {
-  const imageFolderPath = './public/placeholders'
+  const imageFolderPath = '/placeholders'
   try {
     const imageFiles = await fs.promises.readdir(imageFolderPath)
     const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)]
