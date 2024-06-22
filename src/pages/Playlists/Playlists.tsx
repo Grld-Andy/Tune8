@@ -7,6 +7,7 @@ import { placeholderSongImages } from '../../assets'
 import { PlaylistFormContext } from '../../contexts/PlaylistFormContext'
 import { v1 } from 'uuid'
 import Buttons from '../../components/Buttons/Buttons'
+import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder'
 
 const Playlists: React.FC = () => {
   const [showNav, setShowNav] = useState(false)
@@ -71,7 +72,7 @@ const Playlists: React.FC = () => {
             selected.length > 0 ||
             <>
               <button onClick={createPlaylist}>Create New</button>
-              <button>Add Files</button>
+              <AddMusicFolderButton/>
             </>
           }
         </div>

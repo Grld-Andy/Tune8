@@ -21,8 +21,9 @@ const AllSongsContextProvider: React.FC<Props> = (props) => {
 
     useEffect(() => {
         const fetchAllSongs = async () => {
+            const musicPath:string = localStorage.getItem("MusicPaths") ?? ''
             try {
-                const allSongs: Array<Song> = await window.ipcRenderer.GetSongs()
+                const allSongs: Array<Song> = await window.ipcRenderer.GetSongs(musicPath)
                 if (allSongs && allSongs.length > 0)
                     songsDispatch({ type: 'SET_SONGS', payload: allSongs })
             } catch (error) {

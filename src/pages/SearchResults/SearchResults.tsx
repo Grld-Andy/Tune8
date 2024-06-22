@@ -10,6 +10,7 @@ import { shuffleArray } from '../../utilities'
 import Buttons from '../../components/Buttons/Buttons'
 import AddTo from '../../components/Buttons/AddTo/AddTo'
 import SongTile from '../../components/SongTile/SongTile'
+import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder'
 
 const SearchResults: React.FC = () => {
   const {songs} = useContext(AllSongsContext)
@@ -172,7 +173,7 @@ const SearchResults: React.FC = () => {
           <div className="empty-window view">
             <div className="cell">
               <h1>No results</h1>
-              <button>Add +</button>
+              <AddMusicFolderButton text={'Add +'}/>
             </div>
           </div>
         }

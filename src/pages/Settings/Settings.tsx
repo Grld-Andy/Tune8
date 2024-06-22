@@ -1,12 +1,27 @@
 import React, { useContext } from 'react'
 import './style.css'
 import { ThemeContext } from '../../contexts/ThemeContext'
+import { AllSongsContext } from '../../contexts/AllSongsContext'
+import { Song } from '../../data'
+import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder'
 
 const Settings: React.FC = () => {
   const {dispatch} = useContext(ThemeContext)
+  const {songsDispatch} = useContext(AllSongsContext)
 
   const changeTheme = (type:string) => {
     dispatch({type: `${type}_THEME`})
+  }
+
+  const refreshSongs = async() => {
+    const musicPath:string = localStorage.getItem("MusicPaths") ?? ''
+    try {
+      const allSongs: Array<Song> = await window.ipcRenderer.GetSongs(musicPath)
+      if (allSongs && allSongs.length > 0)
+        songsDispatch({ type: 'SET_SONGS', payload: allSongs })
+    } catch (error) {
+      console.error("Error fetching songs:", error)
+    }
   }
 
   return (
@@ -25,11 +40,11 @@ const Settings: React.FC = () => {
           <div className="set-grid">
             <div className="set-cell">
               <h3>Music Location</h3>
-              <button>Add Folder</button>
+              <AddMusicFolderButton/>
             </div>
             <div className="set-cell">
               <h3>Refresh Music</h3>
-              <button>Refresh</button>
+              <button onClick={refreshSongs}>Refresh</button>
             </div>
           </div>
         </section>

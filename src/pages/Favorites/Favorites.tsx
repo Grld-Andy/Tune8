@@ -6,6 +6,7 @@ import FavoritesContext from '../../contexts/FavoritesContext';
 import Buttons from '../../components/Buttons/Buttons';
 import { Song } from '../../data';
 import { Link } from 'react-router-dom';
+import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder';
 
 const Favorites: React.FC = () => {
   const {favorites,favoritesDispatch} = useContext(FavoritesContext)
@@ -53,7 +54,7 @@ const Favorites: React.FC = () => {
             selected.length > 0 ||
             <>
               <button onClick={clearFavorites}>Clear Favorites</button>
-              <button>Add Files</button>
+              <AddMusicFolderButton/>
             </>
           }
         </div>

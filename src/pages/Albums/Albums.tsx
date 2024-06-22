@@ -7,6 +7,7 @@ import {AllSongsContext} from '../../contexts/AllSongsContext'
 import SortButton from '../../components/SortButton/SortButton'
 import { getSortedSongs } from '../../utilities'
 import Buttons from '../../components/Buttons/Buttons'
+import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder'
 
 const Albums: React.FC = () => {
   const {songs} = useContext(AllSongsContext)
@@ -63,7 +64,7 @@ const Albums: React.FC = () => {
             <>
               <SortButton sortOrder={sortOrder} page={'albums'}
               setSortOrder={setSortOrder} showNav={showNav}/>
-              <button>Add Files</button>
+              <AddMusicFolderButton/>
             </>
           }
         </div>
@@ -103,7 +104,7 @@ const Albums: React.FC = () => {
         <div className="empty-window view">
           <div className="cell">
             <h1>No songs</h1>
-            <button>Add +</button>
+            <AddMusicFolderButton text={'Add +'}/>
           </div>
         </div>
       }

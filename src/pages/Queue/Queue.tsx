@@ -9,6 +9,7 @@ import SongListItem from '../../components/SongListItem/SongListItem'
 import { Song } from '../../data'
 import Buttons from '../../components/Buttons/Buttons'
 import { Link } from 'react-router-dom'
+import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder'
 
 const Queue: React.FC = () => {
   const { queue, dispatch } = useContext(QueueSongsContext)
@@ -89,7 +90,7 @@ const Queue: React.FC = () => {
             <>
               <button onClick={clearQueue}>Clear Queue</button>
               <button onClick={shuffleSongs}>Shuffle and Play</button>
-              <button>Add Files</button>
+              <AddMusicFolderButton/>
             </>
           }
         </div>
@@ -117,7 +118,7 @@ const Queue: React.FC = () => {
         <div className="cell">
           <h1>No songs to queue</h1>
           <Link to={'/songs'}>
-            <button>Add +</button>
+          <AddMusicFolderButton text={'Add +'}/>
           </Link>
         </div>
       </div>

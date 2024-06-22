@@ -91,3 +91,17 @@ export const getSortedSongs = (songs: Array<Song>, sortOrder: string, page: stri
     })
     return sortedSongs
 }
+
+// const add music folder
+export const addMusicFolder = async() => {
+  try {
+    const filePaths = await window.ipcRenderer.addMusicDirectory()
+    if (filePaths && filePaths.length > 0) {
+      localStorage.setItem("MusicPaths", filePaths[0])
+    }else{
+        console.log('error')
+    }
+  } catch (error) {
+      console.error(error)
+  }
+}

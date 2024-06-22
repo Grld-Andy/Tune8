@@ -1,15 +1,12 @@
-import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, globalShortcut } from 'electron'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 // import { createRequire } from 'node:module'
 // const require = createRequire(import.meta.url)
-import fs from 'fs'
-import * as mm from 'music-metadata'
-import { currentSongs } from '../src/assets'
-import { Song } from '../src/data'
-import { v1 } from 'uuid'
-import { DurationToString } from '../src/utilities'
-import { createTablesOnStartUp, fetchSongsFromDatabase } from './db'
+import { clearSongsInQueue, createTablesOnStartUp, deleteQueueById, fetchAllSongsInQueue, fetchSongsFromDatabase, getSongLyricsWithId, insertSongToQueue, saveSongLyrics, updateSongInDatabase } from './database/db'
+import { getAllSongs } from './songsApi'
+import { Song } from './types/index'
+
 
 // create table if not exist
 createTablesOnStartUp()
@@ -61,7 +58,7 @@ function createWindow() {
     win?.webContents.send('main-process-message', (new Date).toLocaleString())
   })
 
-  if (!VITE_DEV_SERVER_URL) {
+  if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL)
   } else {
     // win.loadFile(path.join(__dirname, 'index.html'))
@@ -112,6 +109,23 @@ app.whenReady().then(() => {
   })
 })
 
+
+// open dialog to select music folder
+const handleDirectoryOpen = async () => {
+  try{
+    const result = await dialog.showOpenDialog({properties: ['openDirectory']})
+    if(!result.canceled){
+      return result.filePaths
+    }else{
+      return ''
+    }
+  }catch (error){
+    console.error(error)
+  }
+}
+ipcMain.handle('dialog:openDirectory', handleDirectoryOpen)
+
+// SCREEN SIZING API
 //  minimize
 let prevSize: number[] = []
 ipcMain.on('minimize', () => {
@@ -131,7 +145,6 @@ ipcMain.on('minimize', () => {
       win.setResizable(windowOnTop ? false : true)
   }
 })
-
 // maximize
 ipcMain.on('maximize', () => {
   const win = BrowserWindow.getFocusedWindow()
@@ -146,94 +159,40 @@ ipcMain.on('maximize', () => {
   }
 })
 
-// load music data
-ipcMain.handle('get-all-songs', async () => {
-  return await getAllSongs()
+
+
+// LYRICS API
+// save lyrics
+ipcMain.handle('save-song-lyrics', async(_event, lyricsData:{lyric: string, song_id: string}) => {
+  return await saveSongLyrics(lyricsData)
 })
-const getAllSongs = async () => {
-  const songPaths = currentSongs.map(song => song.src)
-  const songs = []
+// get lyrics
+ipcMain.handle('get-song-lyrics', async(_event, songId) => {
+  return await getSongLyricsWithId(songId)
+})
 
-  for (const songPath of songPaths) {
-    try {
-      const songData = await getSongTags(songPath)
-      songs.push(songData)
-    } catch (err) {
-      console.error('Error fetching song tags:', err)
-    }
-  }
-  return songs
-}
-const getSongTags = async (songPath: string) => {
-  return new Promise((resolve, reject) => {
-    mm.parseFile(songPath)
-      .then(async (metadata: mm.IAudioMetadata) => {
-        const duration = DurationToString(metadata.format.duration ?? 0)
-        let imageSrc = metadata.common.picture && metadata.common.picture.length > 0
-          ? await saveImageToFile(metadata.common.picture[0])
-          : await getRandomPlaceholderImage()
-        if(!imageSrc)
-          imageSrc = 'placeholders/music1.jpg'
-        
-        const musicDataObject: Song = {
-          id: v1(),
-          src: songPath,
-          tag: {
-            tags: {
-              title: metadata.common.title ? metadata.common.title : path.basename(songPath).split('.mp3')[0],
-              artist: metadata.common.artist ? metadata.common.artist : 'Unknown Artist',
-              album: metadata.common.album ? metadata.common.album : 'Unknown Album',
-              year: metadata.common.year ? metadata.common.year : 0,
-              genre: metadata.common.genre ? metadata.common.genre[0] : 'Unknown Genre',
-            },
-          },
-          imageSrc,
-          duration,
-          isFavorite: false,
-        }
-        resolve(musicDataObject)
-      })
-      .catch((err: Error|null) => {
-        reject(err)
-      })
-  })
-}
 
-const saveImageToFile = async (picture: mm.IPicture) => {
-  const imagesDir = path.join(RENDERER_DIST, 'public/images')
+//  SONG API
+// load song data
+ipcMain.handle('get-all-songs', async (_event, musicPaths:string) => {
+  return await getAllSongs(musicPaths)
+})
+// update song
+ipcMain.handle('update-song', (_event, song: Song) => {
+  return updateSongInDatabase(song)
+})
 
-  if (!fs.existsSync(imagesDir)) {
-    try {
-      await fs.promises.mkdir(imagesDir, { recursive: true })
-      console.log('Folder created')
-    } catch (err) {
-      console.error(err)
-    }
-  }
-  const imageBuffer = picture.data
-  const imageFormat = picture.format
-  const imageFileName = `${v1()}.${imageFormat.split('/')[1]}`
-  const imagePath = path.join(imagesDir, imageFileName)
-  console.log('saving image: ', imagePath)
-  
-  try {
-    await fs.promises.writeFile(imagePath, imageBuffer)
-    // change when building
-    return `public/images/${imageFileName}`
-  } catch (error) {
-    console.error('Error saving image to file:', error)
-    return null
-  }
-}
 
-const getRandomPlaceholderImage = async () => {
-  const imageFolderPath = '/placeholders'
-  try {
-    const imageFiles = await fs.promises.readdir(imageFolderPath)
-    const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)]
-    return `/placeholders/${randomImage}`
-  } catch (error) {
-    console.error('Error getting random placeholder image:', error)
-    return null
-  }
-}
+//  QUEUE API  
+ipcMain.handle('add-song-to-queue', async(_event, song: Song) => {
+  return await insertSongToQueue(song)
+})
+ipcMain.handle('remove-song-from-queue', async(_event, id:number) => {
+  return await deleteQueueById(id)
+})
+ipcMain.handle('get-queue', async() => {
+  return fetchAllSongsInQueue()
+})
+ipcMain.handle('clear-queue', async() => {
+  return clearSongsInQueue()
+})

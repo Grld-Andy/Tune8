@@ -5,6 +5,7 @@ import { Song, SortedSongs } from '../../data'
 import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
 import { AllSongsContext } from '../../contexts/AllSongsContext'
 import Buttons from '../../components/Buttons/Buttons'
+import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder'
 
 const Artists: React.FC = () => {
   const {songs} = useContext(AllSongsContext)
@@ -64,7 +65,7 @@ const Artists: React.FC = () => {
           }
           {
             selected.length > 0 ||
-            <button>Add Files</button>
+            <AddMusicFolderButton/>
           }
         </div>
       </nav> 
@@ -101,7 +102,7 @@ const Artists: React.FC = () => {
         <div className="empty-window view">
           <div className="cell">
             <h1>No songs</h1>
-            <button>Add +</button>
+            <AddMusicFolderButton text={'Add +'}/>
           </div>
         </div>
       }

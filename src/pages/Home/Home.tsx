@@ -4,6 +4,7 @@ import SongTile from '../../components/SongTile/SongTile'
 import {AllSongsContext} from '../../contexts/AllSongsContext'
 import Buttons from '../../components/Buttons/Buttons'
 import { Song } from '../../data'
+import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder'
 
 const Home: React.FC = () => {
   const {songs} = useContext(AllSongsContext)
@@ -42,7 +43,7 @@ const Home: React.FC = () => {
           }
           {
             selected.length > 0 ||
-            <button>Add Files</button>
+            <AddMusicFolderButton/>
           }
         </div>
       </nav>
@@ -70,7 +71,7 @@ const Home: React.FC = () => {
         <div className="empty-window view">
           <div className="cell">
             <h1>No songs</h1>
-            <button>Add +</button>
+            <AddMusicFolderButton text={'Add +'}/>
           </div>
         </div>
       }

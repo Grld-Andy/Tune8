@@ -9,6 +9,7 @@ import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
 import SortButton from '../../components/SortButton/SortButton'
 import { Song, SortedSongs } from '../../data'
 import Buttons from '../../components/Buttons/Buttons'
+import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder'
 
 const Songs: React.FC = () => {
   const {dispatch} = useContext(QueueSongsContext)
@@ -118,7 +119,7 @@ const Songs: React.FC = () => {
               <button onClick={shuffleSongs}>Shuffle and Play</button>
               <SortButton sortOrder={sortOrder} setSortOrder={setSortOrder}
                 showNav={showNav}/>
-              <button>Add Files</button>
+              <AddMusicFolderButton text={'Add +'}/>
             </>
           }
         </div>
@@ -137,7 +138,7 @@ const Songs: React.FC = () => {
         <div className="empty-window view">
           <div className="cell">
             <h1>No songs</h1>
-            <button>Add +</button>
+            <AddMusicFolderButton text={'Add +'}/>
           </div>
         </div>
       }
