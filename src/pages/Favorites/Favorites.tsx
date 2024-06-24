@@ -59,7 +59,7 @@ const Favorites: React.FC = () => {
         </div>
       </nav>
       {
-        favorites.length < 0 ?
+        favorites.length > 0 ?
         <div className="songs view">
           {
             favorites.map((song, index) => (
