@@ -94,7 +94,10 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   async updatePlaylist(id: number, name: string) {
     return await ipcRenderer.invoke('update-playlist', id, name);
   },
-  async addSongToPlaylist(songId: number, playlistId: number) {
+  async addSongToPlaylist(songId: string, playlistId: number) {
     return await ipcRenderer.invoke('add-song-to-playlist', songId, playlistId);
+  },
+  async removeSongFromPlaylist(songId: string, playlistId: number) {
+    return await ipcRenderer.invoke('remove-song-from-playlist', songId, playlistId);
   },
 })

@@ -32,9 +32,12 @@ const Playlist: React.FC = () => {
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0, audioRef: new Audio(playlistSongs.songs[0].src), reset: true, isPlaying: true})
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
-  const clearPlaylist: () => void = () => {
-    if(playlist)
-    playlistsDispatch({type: 'CLEAR_PLAYLIST', payload: {name: playlist, songs: []}})
+  const clearPlaylist: () => void = async () => {
+    const item = playlists.find(val => val.id)
+    if(!playlist || !item)
+      return
+    await window.ipcRenderer.updatePlaylist(item.id, "")
+    playlistsDispatch({type: 'CLEAR_PLAYLIST', payload: {id: item.id, name: item.name, songs: []}})
   }
   const edit = () => {
     if(location.pathname.includes('/playlistView/')){

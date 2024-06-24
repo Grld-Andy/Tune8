@@ -70,13 +70,15 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
   // favorites logic
   const {favorites, favoritesDispatch} = useContext(FavoritesContext)
   const [isFavorite, setIsFavorite] = useState(favorites.some(favSong => favSong.tag.tags.title === currentSong.song?.tag.tags.title))
-  const toggleFavorite: () => void = () => {
+  const toggleFavorite: () => void = async() => {
     if(currentSong.song){
       if(!favorites.some(favSong => favSong.tag.tags.title === currentSong.song?.tag.tags.title)){
         setIsFavorite(true)
+        await window.ipcRenderer.updateSongDatabase({...currentSong.song, isFavorite: true})
         favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: [currentSong.song]})
       }else{
         setIsFavorite(false)
+        await window.ipcRenderer.updateSongDatabase({...currentSong.song, isFavorite: false})
         favoritesDispatch({type: 'REMOVE_FROM_FAVORITES', payload: [currentSong.song]})
       }
       currentSongDispatch({type: 'TOGGLE_FAVORITE', payload: null, index: currentSong.index})

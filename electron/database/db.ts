@@ -327,7 +327,7 @@ export const getPlaylistSongs = (id: number): Promise<Array<RowPlaylistSong>> =>
     });
 };
 
-export const addPlaylist = (name: string, defaultImage: string): Promise<void> => {
+export const addPlaylist = (name: string, defaultImage: string): Promise<number> => {
     return new Promise((resolve, reject) => {
         database.run(
         `INSERT INTO playlist (name, defaultImage) VALUES (?, ?)`,
@@ -336,7 +336,15 @@ export const addPlaylist = (name: string, defaultImage: string): Promise<void> =
             if (err) {
             reject(err);
             } else {
-            resolve();
+                database.get('SELECT last_insert_rowid() as id', [], (err: Error, row: RowPlaylist) => {
+                    if (err) {
+                        reject(err);
+                    } else if (row && row.id) {
+                        resolve(row.id);
+                    } else {
+                        reject(new Error('Unable to get last inserted row id'));
+                    }
+                });
             }
         }
         );
@@ -375,7 +383,7 @@ export const updatePlaylist = (id: number, name: string): Promise<void> => {
     });
 };
 
-export const addSongToPlaylist = (songId: number, playlistId: number): Promise<void> => {
+export const addSongToPlaylist = (songId: string, playlistId: number): Promise<void> => {
     return new Promise((resolve, reject) => {
         database.run(
         `INSERT INTO playlist_song (playlist_id, song_id) VALUES (?, ?)`,
@@ -390,7 +398,7 @@ export const addSongToPlaylist = (songId: number, playlistId: number): Promise<v
         );
     });
 }
-export const removeSongFromPlaylist = (songId: number, playlistId: number): Promise<void> => {
+export const removeSongFromPlaylist = (songId: string, playlistId: number): Promise<void> => {
     return new Promise((resolve, reject) => {
         database.run(
         `DELETE FROM playlist_song WHERE playlist_id = ? AND song_id = ?`,

@@ -21,14 +21,18 @@ const PlaylistForm: React.FC = () => {
 
     // handle creation and editing of playlist
     const navigate = useNavigate()
-    const handlePlaylistInteract = (val: string) => {
-        if(playlistName){
+    const handlePlaylistInteract = async (val: string) => {
+        const playlist = playlists.find(val => val.name === playlistName)
+        if(playlistName && playlist){
             if(val === 'submit'){
-                playlistsDispatch({ type: 'CREATE_PLAYLIST', payload: {name:playlistName, songs: []} })
+                const defaultImage = placeholderSongImages[Math.floor(Math.random() * 4)]
+                const playlistId = await window.ipcRenderer.createPlaylist(playlistName, defaultImage)
+                playlistsDispatch({ type: 'CREATE_PLAYLIST', payload: {id: playlistId,name:playlistName, songs: []} })
                 setPlaylistName('')
             }
             if(val === 'edit' && playlistForm.name){
-                playlistsDispatch({type: 'EDIT_PLAYLIST', payload: {name: playlistForm.name, songs: []}, newName: playlistName})
+                await window.ipcRenderer.updatePlaylist(playlist.id, playlistName)
+                playlistsDispatch({type: 'EDIT_PLAYLIST', payload: {id: playlist.id,name: playlistForm.name, songs: []}, newName: playlistName})
                 navigate(`/playlistView/${playlistName}`)
                 setPlaylistName('')
             }
@@ -41,8 +45,12 @@ const PlaylistForm: React.FC = () => {
 
     // add to existing playlist
     const { contextMenu } = useContext(ContextMenuContext)
-    const addToPlaylist = (name: string) => {
-        playlistsDispatch({ type: 'ADD_TO_PLAYLIST', payload: {name:name, songs: contextMenu.lastClicked} })
+    const addToPlaylist = async (name: string) => {
+        const playlist = playlists.find(val => val.name === playlistName)
+        if(playlist){
+            await Promise.all(contextMenu.lastClicked.map(song => window.ipcRenderer.addSongToPlaylist(song.id, playlist.id)))
+            playlistsDispatch({ type: 'ADD_TO_PLAYLIST', payload: {id: 0,name:name, songs: contextMenu.lastClicked} })
+        }
         closeForm()
     }
 

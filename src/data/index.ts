@@ -20,6 +20,7 @@ export interface SortedSongs {
     [key: string]: Set<Song>
 }
 export interface PlaylistInterface {
+    id: number,
     name: string,
     songs: Array<Song>,
     defaultImage?: string

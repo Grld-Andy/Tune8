@@ -1,6 +1,7 @@
-import React, { createContext, Dispatch, ReactNode, useReducer } from "react";
+import React, { createContext, Dispatch, ReactNode, useContext, useReducer } from "react";
 import { favoritesReducer } from "../reducers/FavoritesReducer";
 import { Song } from "../data";
+import { AllSongsContext } from "./AllSongsContext";
 
 // Props interface
 interface Props{
@@ -20,7 +21,11 @@ export const FavoritesContext = createContext<FavoritesContextType>({
 })
 
 export const FavoritesContextProvider: React.FC<Props> = (props) => {
-    const [favorites, favoritesDispatch] = useReducer(favoritesReducer, [])
+  const { songs } = useContext(AllSongsContext)
+
+  const [favorites, favoritesDispatch] = useReducer(favoritesReducer, [], () => {
+    return songs.filter(song => song.isFavorite)
+  })
 
   return (
     <FavoritesContext.Provider value={{favorites, favoritesDispatch}}>

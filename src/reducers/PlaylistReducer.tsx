@@ -19,7 +19,7 @@ export const PlaylistReducer = (playlists: Array<PlaylistInterface>, action: {ty
             })
         case 'EDIT_PLAYLIST':
             return playlists.map(playlist => {
-                if(playlist.name === action.payload.name && action.newName){
+                if(playlist.id === action.payload.id && action.newName){
                     return {...playlist, name: action.newName}
                 }else{
                     return playlist
@@ -40,7 +40,7 @@ export const PlaylistReducer = (playlists: Array<PlaylistInterface>, action: {ty
             })
         case 'CLEAR_PLAYLIST':
             return playlists.map(playlist => {
-                if(playlist.name === action.payload.name){
+                if(playlist.id === action.payload.id){
                     return {...playlist, songs: [], defaultImage: placeholderSongImages[Math.floor(Math.random() * 4)]}
                 }else{
                     return playlist

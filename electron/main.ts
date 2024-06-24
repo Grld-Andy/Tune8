@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 // import { createRequire } from 'node:module'
 // const require = createRequire(import.meta.url)
-import { addPlaylist, addSongToPlaylist, clearSongsInQueue, createLyricsTable, createPlaylistTable, createQueueTable, createSongTable, deletePlaylist, deleteQueueById, fetchAllSongsInQueue, fetchSongsFromDatabase, getPlaylists, getPlaylistSongs, getSongLyricsWithId, insertSongToQueue, saveSongLyrics, updatePlaylist, updateSongInDatabase } from './database/db'
+import { addPlaylist, addSongToPlaylist, clearSongsInQueue, createLyricsTable, createPlaylistTable, createQueueTable, createSongTable, deletePlaylist, deleteQueueById, fetchAllSongsInQueue, fetchSongsFromDatabase, getPlaylists, getPlaylistSongs, getSongLyricsWithId, insertSongToQueue, removeSongFromPlaylist, saveSongLyrics, updatePlaylist, updateSongInDatabase } from './database/db'
 import { getAllSongs } from './songsApi/songsApi'
 import { Song } from './types/index'
 
@@ -216,6 +216,9 @@ ipcMain.handle('delete-playlist', async (_event, id: number) => {
 ipcMain.handle('update-playlist', async (_event, id: number, name: string) => {
   return await updatePlaylist(id, name)
 })
-ipcMain.handle('add-song-to-playlist', async (_event, songId: number, playlistId: number) => {
+ipcMain.handle('add-song-to-playlist', async (_event, songId: string, playlistId: number) => {
   return await addSongToPlaylist(songId, playlistId)
+})
+ipcMain.handle(('remove-song-from-playlist'), async (_event, songId: string, playlistId: number) => {
+  return await removeSongFromPlaylist(songId, playlistId)
 })

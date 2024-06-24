@@ -90,6 +90,7 @@ const AddTo: React.FC<Props> = ({selectedSongs, clearSelected}) => {
   const addToFavorites = () => {
     const songsToAdd = getSongs()
     if(songsToAdd){
+      songsToAdd.forEach(async(song) => await window.ipcRenderer.updateSongDatabase({...song, isFavorite: true}))
       favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: songsToAdd})
     }
     closeAddTo()

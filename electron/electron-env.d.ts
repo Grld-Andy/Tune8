@@ -37,13 +37,13 @@ interface IpcRendererCustom extends Electron.IpcRenderer {
   removeSongFromQueue: (id: number) => Promise<string>;
   getQueue: () => Promise<string>;
   clearQueue: () => Promise<string>;
-  getPlaylists: () => Promise<Array<PlaylistInterface>>;
-  getPlaylistSongs: (id: number) => Promise<Array<Song>>;
-  createPlaylist: (name: string, defaultImage: string) => Promise<string>;
-  deletePlaylist: (id: number) => Promise<string>;
-  updatePlaylist: (id: number, name: string) => Promise<string>;
-  addSongToPlaylist: (songId: number, playlistId: number) => Promise<string>;
-  removeSongFromPlaylist: (songId: number, playlistId: number) => Promise<string>;
+  getPlaylists: () => Promise<Array<PlaylistInterface>>;//
+  getPlaylistSongs: (id: number) => Promise<Array<Song>>;//
+  createPlaylist: (name: string, defaultImage: string) => Promise<number>;//
+  deletePlaylist: (id: number) => Promise<string>;//
+  updatePlaylist: (id: number, name: string) => Promise<string>;//
+  addSongToPlaylist: (songId: string, playlistId: number) => Promise<string>;//
+  removeSongFromPlaylist: (songId: string, playlistId: number) => Promise<string>;//
 }
 
 // Used in Renderer process, expose in `preload.ts`

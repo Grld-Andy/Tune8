@@ -16,6 +16,7 @@ const Favorites: React.FC = () => {
     dispatch({type: 'SET_QUEUE', payload: favorites, index: 0})
   }
   const clearFavorites = () => {
+    favorites.forEach(async song => {await window.ipcRenderer.updateSongDatabase({...song, isFavorite: false})})
     favoritesDispatch({type: 'CLEAR_FAVORITES', payload: []})
   }
 

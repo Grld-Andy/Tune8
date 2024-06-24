@@ -19,7 +19,7 @@ const ContextMenu: React.FC = () => {
   // context menu options
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const {queue, dispatch} = useContext(QueueSongsContext)
-  const {playlistsDispatch} = useContext(PlaylistContext)
+  const {playlists, playlistsDispatch} = useContext(PlaylistContext)
   const location = useLocation()
   const {playlist} = useParams()
 
@@ -60,6 +60,7 @@ const ContextMenu: React.FC = () => {
   // add to favorites
   const {favoritesDispatch} = useContext(FavoritesContext)
   const addToFavorites = () => {
+    contextMenu.lastClicked.forEach(async song => {await window.ipcRenderer.updateSongDatabase({...song, isFavorite: true})})
     favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: contextMenu.lastClicked})
   }
 
@@ -71,7 +72,7 @@ const ContextMenu: React.FC = () => {
   }
 
   // remove options
-  const remove = () => {
+  const remove = async() => {
     switch(location.pathname){
       case '/queue':
         if(contextMenu.indexClicked || contextMenu.indexClicked === 0){
@@ -87,18 +88,29 @@ const ContextMenu: React.FC = () => {
         }
         break
       case '/favorites':
+        contextMenu.lastClicked.forEach(async song => {await window.ipcRenderer.updateSongDatabase({...song, isFavorite: false})})
         favoritesDispatch({type: 'REMOVE_FROM_FAVORITES', payload: contextMenu.lastClicked})
         break
       case '/playlists':
-        if(contextMenu.nameClicked)
-          playlistsDispatch({type: 'REMOVE_PLAYLIST', payload: {name:contextMenu.nameClicked, songs: []}})
+        if(contextMenu.nameClicked && playlist){
+          const playlist = playlists.find(item => item.name === contextMenu.nameClicked)
+          if(!playlist)
+            break
+          await window.ipcRenderer.deletePlaylist(playlist.id)
+          playlistsDispatch({type: 'REMOVE_PLAYLIST', payload: {id: playlist.id, name:playlist.name, songs: []}})
+        }
         break
       default:
         break
     }
     if(playlist){
-      if(playlist)
-        playlistsDispatch({type: 'REMOVE_FROM_PLAYLIST', payload: {name: playlist, songs: contextMenu.lastClicked}})
+      if(playlist){
+        const pList = playlists.find(item => item.name === contextMenu.nameClicked)
+          if(!pList)
+            return
+        contextMenu.lastClicked.forEach( async (song) => {await window.ipcRenderer.removeSongFromPlaylist(song.id, pList.id)})
+        playlistsDispatch({type: 'REMOVE_FROM_PLAYLIST', payload: {id: pList.id, name: playlist, songs: contextMenu.lastClicked}})
+      }
     }
   }
   
