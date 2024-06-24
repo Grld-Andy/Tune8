@@ -21,11 +21,14 @@ const AllSongsContextProvider: React.FC<Props> = (props) => {
 
     useEffect(() => {
         const fetchAllSongs = async () => {
-            const musicPath:string = localStorage.getItem("MusicPaths") ?? ''
+            const musicPath:Array<string> = JSON.parse(localStorage.getItem("MusicPaths") ?? '[]')
             try {
-                const allSongs: Array<Song> = await window.ipcRenderer.GetSongs(musicPath)
-                if (allSongs && allSongs.length > 0)
-                    songsDispatch({ type: 'SET_SONGS', payload: allSongs })
+                musicPath.forEach(async path => {
+                    const allSongs: Array<Song> = await window.ipcRenderer.GetSongs(path)
+                    if (allSongs && allSongs.length > 0)
+                        songsDispatch({ type: 'SET_SONGS', payload: allSongs })
+                })
+                
             } catch (error) {
                 console.error("Error fetching songs:", error)
             }

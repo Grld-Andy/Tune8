@@ -10,30 +10,32 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
     const {currentSong} = useContext(CurrentSongContext)
     const [lyrics, setLyrics] = useState<string>('')
     
-    const getLyrics = async() => {
-        if(currentSong.song){
-            let getSavedLyrics = localStorage.getItem(currentSong.song.tag.tags.title)
-            if(getSavedLyrics){
-                getSavedLyrics = getSavedLyrics.replace(/\n/g, '<div></div>')
-                setLyrics(getSavedLyrics)
-                return
-            }
-            try{
+    const getLyrics = async () => {
+        if (currentSong.song) {
+            try {
+                const getSavedLyrics = await window.ipcRenderer.getLyricsFromDatabase(currentSong.song.id)
+                if (getSavedLyrics) {
+                    setLyrics(getSavedLyrics)
+                    return
+                }
+                
                 const response = await fetch(
                     `https://api.lyrics.ovh/v1/${currentSong.song.tag.tags.artist}/${currentSong.song.tag.tags.title.split('|')[0].split('ft')[0]}`
                 )
-                const data = await response.json();
+                const data = await response.json()
+                
                 if (data.lyrics !== undefined) {
-                    let lyricsFileContent:string = data.lyrics;
-                    if(!lyricsFileContent){
-                        lyricsFileContent = "Not found"
+                    let lyricsFileContent: string = data.lyrics.replace(/\n/g, '<div></div>')
+                    if (!lyricsFileContent) {
+                    lyricsFileContent = "Not found"
                     }
                     setLyrics(lyricsFileContent)
-                    localStorage.setItem(currentSong.song.tag.tags.title, data.lyrics)
+                    window.ipcRenderer.saveLyricsToDatabase({ lyric: lyricsFileContent, song_id: currentSong.song.id })
                 } else {
                     setLyrics("Not found")
                 }
-            }catch{
+            } catch (error) {
+                console.error("Error fetching lyrics:", error)
                 setLyrics("Not found")
             }
         }
@@ -41,7 +43,7 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
 
     useEffect(() => {
         setLyrics("Searching ...")
-        setTimeout(() => {getLyrics()}, 500)
+        setTimeout(() => {getLyrics()}, 300)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentSong.song])
 

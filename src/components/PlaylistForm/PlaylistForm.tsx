@@ -42,7 +42,6 @@ const PlaylistForm: React.FC = () => {
     // add to existing playlist
     const { contextMenu } = useContext(ContextMenuContext)
     const addToPlaylist = (name: string) => {
-        console.log('adding ',contextMenu.lastClicked, ' to ', name )
         playlistsDispatch({ type: 'ADD_TO_PLAYLIST', payload: {name:name, songs: contextMenu.lastClicked} })
         closeForm()
     }

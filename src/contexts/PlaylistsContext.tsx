@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useReducer } from "react";
+import React, { createContext, ReactNode, useEffect, useReducer } from "react";
 import { PlaylistReducer } from "../reducers/PlaylistReducer";
 import { PlaylistInterface, Song } from "../data";
 
@@ -21,6 +21,16 @@ export const PlaylistContext = createContext<PlaylistContextType>({
 
 const PlaylistsContextProvider: React.FC<Props> = (props) => {
     const [playlists, playlistsDispatch] = useReducer(PlaylistReducer, [])
+
+    useEffect(() => {
+        const fetchPlaylists = async () => {
+            const fetchedPlaylists = await window.ipcRenderer.getPlaylists()
+            fetchedPlaylists.forEach((playlist: PlaylistInterface) => {
+                playlistsDispatch({ type: 'CREATE_PLAYLIST', payload: playlist })
+            })
+        }
+        fetchPlaylists()
+    }, [])
 
     return (
         <PlaylistContext.Provider value={{playlists, playlistsDispatch}}>

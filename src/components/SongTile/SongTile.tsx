@@ -70,7 +70,6 @@ const SongTile: React.FC<Props> = (
   const openContextMenu = (e: React.MouseEvent) => {
     e.preventDefault()
     const itemClicked = getAllSongs()
-    console.log(itemClicked)
     contextMenuDispatch({type: 'OPEN_MENU', payload: {x: e.clientX, y: e.clientY, lastClicked: itemClicked, nameClicked: playlistName}})
   }
 

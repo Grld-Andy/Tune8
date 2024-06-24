@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import './style.css'
 import SongListItem from '../../components/SongListItem/SongListItem'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
@@ -10,6 +9,7 @@ import SortButton from '../../components/SortButton/SortButton'
 import { Song, SortedSongs } from '../../data'
 import Buttons from '../../components/Buttons/Buttons'
 import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder'
+import './style.css'
 
 const Songs: React.FC = () => {
   const {dispatch} = useContext(QueueSongsContext)
@@ -37,7 +37,8 @@ const Songs: React.FC = () => {
   const toggleShowNav: () => void = () => {
     setShowNav(!showNav)
   }
-  const closeAndScroll: () => void = () => {
+  const closeAndScroll = (letter: string) => {
+    document.getElementById(letter)?.scrollIntoView({ behavior: 'smooth' })
     setShowNav(false)
   }
 

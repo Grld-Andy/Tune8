@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import {FaHouse, FaMusic } from 'react-icons/fa6'
 import {RiPlayListLine, RiSearch2Line} from 'react-icons/ri'
 import {MdLibraryMusic, MdOutlinePlaylistPlay, MdPerson, MdFavorite, MdSettings } from 'react-icons/md'
-import { profile } from '../../assets'
+// import { profile } from '../../assets'
 import { useLocation } from 'react-router-dom'
 import { SearchContext } from '../../contexts/SearchContext'
 
@@ -59,7 +59,7 @@ const Sidebar: React.FC = () => {
     <div className='sidebar' ref={sidebarRef}>
       <div className="profile">
         <h1>Tune 8</h1>
-        <img src={profile}/>
+        {/* <img src={profile}/> */}
         <div className="search">
           <form onSubmit={handleSearch}>
             <input type="text" value={search}

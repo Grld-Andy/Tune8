@@ -3,14 +3,9 @@ import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 // import { createRequire } from 'node:module'
 // const require = createRequire(import.meta.url)
-import { clearSongsInQueue, createTablesOnStartUp, deleteQueueById, fetchAllSongsInQueue, fetchSongsFromDatabase, getSongLyricsWithId, insertSongToQueue, saveSongLyrics, updateSongInDatabase } from './database/db'
-import { getAllSongs } from './songsApi'
+import { addPlaylist, addSongToPlaylist, clearSongsInQueue, createLyricsTable, createPlaylistTable, createQueueTable, createSongTable, deletePlaylist, deleteQueueById, fetchAllSongsInQueue, fetchSongsFromDatabase, getPlaylists, getPlaylistSongs, getSongLyricsWithId, insertSongToQueue, saveSongLyrics, updatePlaylist, updateSongInDatabase } from './database/db'
+import { getAllSongs } from './songsApi/songsApi'
 import { Song } from './types/index'
-
-
-// create table if not exist
-createTablesOnStartUp()
-fetchSongsFromDatabase()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -31,6 +26,13 @@ export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron')
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
 
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST
+
+// create table if not exist
+createSongTable()
+createLyricsTable()
+createQueueTable()
+createPlaylistTable()
+fetchSongsFromDatabase()
 
 let win: BrowserWindow | null
 
@@ -70,7 +72,7 @@ function createWindow() {
 
 app.on('will-quit', () => {
   // Unregister all shortcuts.
-  globalShortcut.unregisterAll();
+  globalShortcut.unregisterAll()
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -97,14 +99,14 @@ app.whenReady().then(() => {
   // Register the Media Next Track key
   globalShortcut.register('MediaNextTrack', () => {
     if (win) {
-      win.webContents.send('play-next-song');
+      win.webContents.send('play-next-song')
     }
   })
 
   // Register the Media Previous Track key
   globalShortcut.register('MediaPreviousTrack', () => {
     if (win) {
-      win.webContents.send('play-prev-song');
+      win.webContents.send('play-prev-song')
     }
   })
 })
@@ -195,4 +197,25 @@ ipcMain.handle('get-queue', async() => {
 })
 ipcMain.handle('clear-queue', async() => {
   return clearSongsInQueue()
+})
+
+
+// PLAYLISTS
+ipcMain.handle('get-playlists', async () => {
+  return await getPlaylists()
+})
+ipcMain.handle('get-playlist-songs', async (_event, id: number) => {
+  return await getPlaylistSongs(id)
+})
+ipcMain.handle('create-playlist', async (_event, name: string, defaultImage: string) => {
+  return await addPlaylist(name, defaultImage)
+})
+ipcMain.handle('delete-playlist', async (_event, id: number) => {
+  return await deletePlaylist(id)
+})
+ipcMain.handle('update-playlist', async (_event, id: number, name: string) => {
+  return await updatePlaylist(id, name)
+})
+ipcMain.handle('add-song-to-playlist', async (_event, songId: number, playlistId: number) => {
+  return await addSongToPlaylist(songId, playlistId)
 })

@@ -6,7 +6,7 @@ import { Song } from '../../src/data'
 import { v1 } from 'uuid'
 import { DurationToString } from '../../src/utilities'
 import { RENDERER_DIST } from '../main'
-import { insertSongIntoDatabase } from '../database/db'
+import { fetchSongsFromDatabase, insertSongIntoDatabase } from '../database/db'
 
 async function getFiles(dir: string): Promise<string[]> {
   const subdirs = await fs.promises.readdir(dir)
@@ -17,6 +17,11 @@ async function getFiles(dir: string): Promise<string[]> {
   return files.flat()
 }
 export const getAllSongs = async (musicPaths: string) => {
+  let songs: Array<Song> = []
+  songs = await fetchSongsFromDatabase()
+  if(songs.length > 0){
+    return songs
+  }
   let songPaths: Array<string> = []
   if (musicPaths) {
     try {
@@ -26,9 +31,8 @@ export const getAllSongs = async (musicPaths: string) => {
       songPaths = []
     }
   } else {
-    songPaths = []
+    return songs
   }
-  const songs = []
 
   for (const songPath of songPaths) {
     try {
@@ -40,8 +44,7 @@ export const getAllSongs = async (musicPaths: string) => {
   }
   return songs
 }
-const getSongTags = async (songPath: string) => {
-  console.log(songPath)
+const getSongTags: (s:string) => Promise<Song> = async (songPath: string) => {
   return new Promise((resolve, reject) => {
     mm.parseFile(songPath)
       .then(async (metadata: mm.IAudioMetadata) => {
@@ -50,7 +53,7 @@ const getSongTags = async (songPath: string) => {
           ? await saveImageToFile(metadata.common.picture[0])
           : await getRandomPlaceholderImage()
         if(!imageSrc)
-          imageSrc = 'placeholders/music1.jpg'
+          imageSrc = path.join(RENDERER_DIST, `placeholders/music${Math.floor(Math.random() * 4) + 1}.jpg`)
         
         const musicDataObject: Song = {
           id: v1(),
@@ -82,7 +85,6 @@ const saveImageToFile = async (picture: mm.IPicture) => {
   if (!fs.existsSync(imagesDir)) {
     try {
       await fs.promises.mkdir(imagesDir, { recursive: true })
-      console.log('Folder created')
     } catch (err) {
       console.error(err)
     }
@@ -91,12 +93,10 @@ const saveImageToFile = async (picture: mm.IPicture) => {
   const imageFormat = picture.format
   const imageFileName = `${v1()}.${imageFormat.split('/')[1]}`
   const imagePath = path.join(imagesDir, imageFileName)
-  console.log('saving image: ', imagePath)
   
   try {
     await fs.promises.writeFile(imagePath, imageBuffer)
-    // change when building
-    return `public/images/${imageFileName}`
+    return path.join(RENDERER_DIST, `public/images/${imageFileName}`)
   } catch (error) {
     console.error('Error saving image to file:', error)
     return null
@@ -104,11 +104,11 @@ const saveImageToFile = async (picture: mm.IPicture) => {
 }
 
 const getRandomPlaceholderImage = async () => {
-  const imageFolderPath = '/placeholders'
+  const imageFolderPath = path.join(RENDERER_DIST, 'placeholders')
   try {
     const imageFiles = await fs.promises.readdir(imageFolderPath)
     const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)]
-    return `/placeholders/${randomImage}`
+    return path.join(RENDERER_DIST, `/placeholders/${randomImage}`)
   } catch (error) {
     console.error('Error getting random placeholder image:', error)
     return null

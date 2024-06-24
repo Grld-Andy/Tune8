@@ -156,11 +156,13 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
       window.ipcRenderer.onPlayPrev(() => {})
       window.ipcRenderer.onPlayPause(() => {})
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     if(currentSong.song)
       handleSongProgress()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSong, queue])
 
   // progress bar click logic

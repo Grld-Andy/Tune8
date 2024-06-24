@@ -97,9 +97,11 @@ export const addMusicFolder = async() => {
   try {
     const filePaths = await window.ipcRenderer.addMusicDirectory()
     if (filePaths && filePaths.length > 0) {
-      localStorage.setItem("MusicPaths", filePaths[0])
+      const musicPaths: Array<string> = Array.from(new Set(JSON.parse(localStorage.getItem("MusicPaths") ?? '[]')))
+      musicPaths.push(filePaths[0])
+      localStorage.setItem("MusicPaths", JSON.stringify(musicPaths))
     }else{
-        console.log('error')
+        console.error('error')
     }
   } catch (error) {
       console.error(error)

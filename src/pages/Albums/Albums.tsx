@@ -16,7 +16,8 @@ const Albums: React.FC = () => {
   const toggleShowNav: () => void = () => {
     setShowNav(!showNav)
   }
-  const closeAndScroll: () => void = () => {
+  const closeAndScroll = (letter: string) => {
+    document.getElementById(letter)?.scrollIntoView({ behavior: 'smooth' })
     setShowNav(false)
   }
 

@@ -14,11 +14,15 @@ const Settings: React.FC = () => {
   }
 
   const refreshSongs = async() => {
-    const musicPath:string = localStorage.getItem("MusicPaths") ?? ''
+    const musicPath:Array<string> = JSON.parse(localStorage.getItem("MusicPaths") ?? '[]')
     try {
-      const allSongs: Array<Song> = await window.ipcRenderer.GetSongs(musicPath)
-      if (allSongs && allSongs.length > 0)
+      const allSongs: Array<Song> = []
+      musicPath.forEach(async path => {
+        const songs: Array<Song> = await window.ipcRenderer.GetSongs(path)
+        allSongs.push(...songs)
         songsDispatch({ type: 'SET_SONGS', payload: allSongs })
+      })
+      
     } catch (error) {
       console.error("Error fetching songs:", error)
     }

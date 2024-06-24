@@ -1,25 +1,32 @@
 export interface RowSong{
-    id: number;
+    id: string;
     title: string;
     artist: string;
     album: string;
     imageSrc: string;
     duration: string;
-    year: string;
+    year: number;
     genre: string;
-    url: string;
-    isFavorite: string;
+    src: string;
+    isFavorite: boolean;
     dateAdded: string;
     lastPlayed: string
 }
 export interface RowPlaylist{
     id: number;
-    songId: number;
-    dateCreated: string
+    name: string;
+    dateCreated: string;
+    defaultImage: string;
+}
+export interface RowPlaylistSong{
+    id: number;
+    song_id: string;
+    playlist_id: number;
 }
 export interface RowQueue{
     id: number;
-    song_id: number
+    song_id: number,
+    queue_no: number
 }
 export interface RowLyrics{
     id: number;

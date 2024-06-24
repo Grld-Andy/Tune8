@@ -1,20 +1,68 @@
 import { createRequire } from 'node:module'
-import { RowLyrics, RowQueue, RowSong } from './tables'
+import { fileURLToPath } from 'node:url'
+import { RowLyrics, RowPlaylist, RowPlaylistSong, RowQueue, RowSong } from './tables'
 import { Song } from '../types/index'
 import path from 'node:path'
-import { MAIN_DIST } from '../main'
 const require = createRequire(import.meta.url)
 const sqlite3 = require('sqlite3').verbose()
 
 // const database
-const databasePath = path.join(MAIN_DIST, 'data/database')
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const databasePath = path.join(__dirname, 'database.db')
 const database = new sqlite3.Database(databasePath)
 
-export const createTablesOnStartUp = () => {
+export const createLyricsTable = () => {
+    database.serialize(() => {
+        database.run(
+        `CREATE TABLE IF NOT EXISTS lyrics (
+            id INTEGER PRIMARY KEY,
+            lyric TEXT,
+            song_id TEXT,
+            FOREIGN KEY (song_id) REFERENCES songs(id)
+        );`
+        )
+    })
+}
+export const createQueueTable = () => {
+    database.serialize(() => {
+        database.run(
+        `CREATE TABLE IF NOT EXISTS queue (
+            id INTEGER PRIMARY KEY,
+            song_id TEXT,
+            queue_no INTEGER,
+            FOREIGN KEY (song_id) REFERENCES songs(id)
+        );`
+        )
+    })
+}
+export const createPlaylistTable = () => {
+    database.serialize(() => {
+        database.run(
+        `CREATE TABLE IF NOT EXISTS playlist (
+            id INTEGER PRIMARY KEY,
+            name TEXT,
+            dateCreated TEXT DEFAULT CURRENT_TIMESTAMP,
+            defaultImage TEXT
+        );`
+        )
+    })
+    database.serialize(() => {
+        database.run(`
+        CREATE TABLE IF NOT EXISTS playlist_song (
+            playlist_id INTEGER,
+            song_id TEXT,
+            FOREIGN KEY (playlist_id) REFERENCES playlist(id),
+            FOREIGN KEY (song_id) REFERENCES songs(id),
+            PRIMARY KEY (playlist_id, song_id)
+        );`
+        )
+    })
+}
+export const createSongTable = () => {
     database.serialize(() => {
     database.run(`
         CREATE TABLE IF NOT EXISTS songs (
-            id INTEGER PRIMARY KEY,
+            id TEXT PRIMARY KEY,
             title TEXT,
             artist TEXT,
             album TEXT,
@@ -27,29 +75,6 @@ export const createTablesOnStartUp = () => {
             dateAdded TEXT DEFAULT CURRENT_TIMESTAMP,
             lastPlayed TEXT
         );
-        CREATE TABLE IF NOT EXISTS lyrics (
-            id INTEGER PRIMARY KEY,
-            lyric TEXT,
-            song_id INTEGER,
-            FOREIGN KEY (song_id) REFERENCES songs(id)
-        );
-        CREATE TABLE IF NOT EXISTS playlist (
-            id INTEGER PRIMARY KEY,
-            title TEXT,
-            dateCreated TEXT DEFAULT CURRENT_TIMESTAMP
-        );
-        CREATE TABLE IF NOT EXISTS playlist_song (
-            playlist_id INTEGER,
-            song_id INTEGER,
-            FOREIGN KEY (playlist_id) REFERENCES playlist(id),
-            FOREIGN KEY (song_id) REFERENCES songs(id),
-            PRIMARY KEY (playlist_id, song_id)
-        );
-        CREATE TABLE IF NOT EXISTS queue (
-            id INTEGER PRIMARY KEY,
-            song_id INTEGER,
-            FOREIGN KEY (song_id) REFERENCES songs(id)
-        );
     `)
     })
 }
@@ -59,7 +84,7 @@ export const createTablesOnStartUp = () => {
 export async function getSongLyricsWithId(id: string){
     const db = new sqlite3.Database(databasePath)
     return new Promise((resolve, reject) => {
-        db.get(`SELECT lyric FROM lyrics WHERE song_id = ${id}`, (err: Error, row: RowLyrics) => {
+        db.get(`SELECT lyric FROM lyrics WHERE song_id = ?`, [id], (err: Error, row: RowLyrics) => {
             if (err) {
                 reject(err)
             } else {
@@ -71,7 +96,7 @@ export async function getSongLyricsWithId(id: string){
                         console.log('Database closed succefully')
                     }
                 })
-                resolve(row)
+                resolve(row ? row.lyric : "")
             }
         })
     })
@@ -122,7 +147,7 @@ export async function fetchSongsFromDatabase() {
       return rows.map(row => ({
           imageSrc: row.imageSrc,
           duration: row.duration,
-          url: row.url,
+          src: row.src,
           isFavorite: row.isFavorite,
           dateAdded: row.dateAdded,
           lastPlayed: row.lastPlayed,
@@ -145,8 +170,8 @@ export async function fetchSongsFromDatabase() {
 export async function insertSongIntoDatabase(songObject: Song){
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database(databasePath)
-        db.run(`INSERT INTO songs (title, artist, album, year, genre, imageSrc, duration, src) VALUES (?,?,?,?,?,?,?,?)`,
-            [songObject.tag.tags.title, songObject.tag.tags.artist, songObject.tag.tags.album, songObject.tag.tags.year, songObject.tag.tags.genre, songObject.imageSrc, songObject.duration, songObject.src],
+        db.run(`INSERT INTO songs (id, title, artist, album, year, genre, imageSrc, duration, src) VALUES (?,?,?,?,?,?,?,?,?)`,
+            [songObject.id.replace(/-/g, ''), songObject.tag.tags.title, songObject.tag.tags.artist, songObject.tag.tags.album, songObject.tag.tags.year, songObject.tag.tags.genre, songObject.imageSrc, songObject.duration, songObject.src],
             function (err: Error) {
                 if (err) {
                     reject(err)
@@ -269,3 +294,114 @@ export async function deleteQueueById(id: number){
         })
     })
 }
+
+
+// PLAYLISTS
+export const getPlaylists = (): Promise<Array<RowPlaylist>> => {
+    return new Promise((resolve, reject) => {
+        database.all('SELECT * FROM playlist', (err: Error, rows: Array<RowPlaylist>) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(rows);
+        }
+        });
+    });
+};
+
+export const getPlaylistSongs = (id: number): Promise<Array<RowPlaylistSong>> => {
+    return new Promise((resolve, reject) => {
+        database.all(
+        `SELECT songs.* FROM songs
+        JOIN playlist_song ON songs.id = playlist_song.song_id
+        WHERE playlist_song.playlist_id = ?`,
+        [id],
+        (err: Error, rows: Array<RowPlaylistSong>) => {
+            if (err) {
+            reject(err);
+            } else {
+            resolve(rows);
+            }
+        }
+        );
+    });
+};
+
+export const addPlaylist = (name: string, defaultImage: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        database.run(
+        `INSERT INTO playlist (name, defaultImage) VALUES (?, ?)`,
+        [name, defaultImage],
+        (err: Error) => {
+            if (err) {
+            reject(err);
+            } else {
+            resolve();
+            }
+        }
+        );
+    });
+};
+
+export const deletePlaylist = (id: number): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        database.run(
+        `DELETE FROM playlist WHERE id = ?`,
+        [id],
+        (err: Error) => {
+            if (err) {
+            reject(err);
+            } else {
+            resolve();
+            }
+        }
+        );
+    });
+};
+
+export const updatePlaylist = (id: number, name: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        database.run(
+        `UPDATE playlist SET name = ? WHERE id = ?`,
+        [name, id],
+        (err: Error) => {
+            if (err) {
+            reject(err);
+            } else {
+            resolve();
+            }
+        }
+        );
+    });
+};
+
+export const addSongToPlaylist = (songId: number, playlistId: number): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        database.run(
+        `INSERT INTO playlist_song (playlist_id, song_id) VALUES (?, ?)`,
+        [playlistId, songId],
+        (err: Error) => {
+            if (err) {
+            reject(err);
+            } else {
+            resolve();
+            }
+        }
+        );
+    });
+}
+export const removeSongFromPlaylist = (songId: number, playlistId: number): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        database.run(
+        `DELETE FROM playlist_song WHERE playlist_id = ? AND song_id = ?`,
+        [playlistId, songId],
+        (err: Error) => {
+            if (err) {
+            reject(err);
+            } else {
+            resolve();
+            }
+        }
+        );
+    });
+};

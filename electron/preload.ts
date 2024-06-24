@@ -20,65 +20,81 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     return ipcRenderer.invoke(channel, ...omit)
   },
 
-  // You can expose other APTs you need here.
-  // ...
 
-  Minimize(){
-    ipcRenderer.send('minimize')
+  //  RESIZING
+  Minimize() {
+    ipcRenderer.send('minimize');
   },
-  Maximize(){
-    ipcRenderer.send('maximize')
+  Maximize() {
+    ipcRenderer.send('maximize');
   },
-  GetSongs(musicPaths: string){
-    const allSongs = ipcRenderer.invoke('get-all-songs', musicPaths)
-    return allSongs
-  },
-  onPlayNext: (callback: (event: Electron.IpcRendererEvent) => void) => ipcRenderer.on('play-next-song', callback),
-  onPlayPrev: (callback: (event: Electron.IpcRendererEvent) => void) => ipcRenderer.on('play-prev-song', callback),
-  onPlayPause: (callback: (event: Electron.IpcRendererEvent) => void) => ipcRenderer.on('play-pause-song', callback),
 
+  // OTHER FUNCTIONS
+  async GetSongs(musicPaths: string) {
+    return await ipcRenderer.invoke('get-all-songs', musicPaths);
+  },
+  onPlayNext(callback: (event: Electron.IpcRendererEvent) => void) {
+    ipcRenderer.on('play-next-song', callback);
+  },
+  onPlayPrev(callback: (event: Electron.IpcRendererEvent) => void) {
+    ipcRenderer.on('play-prev-song', callback);
+  },
+  onPlayPause(callback: (event: Electron.IpcRendererEvent) => void) {
+    ipcRenderer.on('play-pause-song', callback);
+  },
 
   // LYRICS
-  saveLyricsToDatabase: async(lyricsData: {lyric: string, song_id: string}) => {
-    const isSaved = await ipcRenderer.invoke('save-song-lyrics', lyricsData)
-    return isSaved
+  async saveLyricsToDatabase(lyricsData: { lyric: string; song_id: string }) {
+    return await ipcRenderer.invoke('save-song-lyrics', lyricsData);
   },
-  getLyricsFromDatabase: async(songId: number) => {
-    const lyrics = await ipcRenderer.invoke('get-song-lyrics', songId)
-    return lyrics
+  async getLyricsFromDatabase(songId: string) {
+    return await ipcRenderer.invoke('get-song-lyrics', songId);
   },
-
 
   // SONGS
-  addMusicDirectory: async () => {
+  async addMusicDirectory() {
     try {
-      const directoryPath = await ipcRenderer.invoke('dialog:openDirectory')
-      return directoryPath
+      return await ipcRenderer.invoke('dialog:openDirectory');
     } catch (error) {
-        console.error('Error selecting music directory: ', error)
-        throw error
+      console.error('Error selecting music directory: ', error);
+      throw error;
     }
   },
-  updateSongDatabase: async(song: Song) => {
-    const isUpdated = await ipcRenderer.invoke('update-song', song)
-    return isUpdated
+  async updateSongDatabase(song: Song) {
+    return await ipcRenderer.invoke('update-song', song);
   },
 
   // QUEUE
-  addSongToQueue: async(song: Song) => {
-    const isAdded = await ipcRenderer.invoke('add-song-to-queue', song)
-    return isAdded
+  async addSongToQueue(song: Song) {
+    return await ipcRenderer.invoke('add-song-to-queue', song);
   },
-  removeSongFromQueue: async(id: number) => {
-    const isRemoved = await ipcRenderer.invoke('remove-song-from-queue', id)
-    return isRemoved
+  async removeSongFromQueue(id: number) {
+    return await ipcRenderer.invoke('remove-song-from-queue', id);
   },
-  getQueue: async() => {
-    const queue = await ipcRenderer.invoke('get-queue')
-    return queue
+  async getQueue() {
+    return await ipcRenderer.invoke('get-queue');
   },
-  clearQueue: async() => {
-    const isCleared = await ipcRenderer.invoke('clear-queue')
-    return isCleared
+  async clearQueue() {
+    return await ipcRenderer.invoke('clear-queue');
+  }, 
+
+  // PLAYLISTS
+  async getPlaylists() {
+    return await ipcRenderer.invoke('get-playlists');
+  },
+  async getPlaylistSongs(id: number) {
+    return await ipcRenderer.invoke('get-playlist-songs', id);
+  },
+  async createPlaylist(name: string) {
+    return await ipcRenderer.invoke('create-playlist', name);
+  },
+  async deletePlaylist(id: number) {
+    return await ipcRenderer.invoke('delete-playlist', id);
+  },
+  async updatePlaylist(id: number, name: string) {
+    return await ipcRenderer.invoke('update-playlist', id, name);
+  },
+  async addSongToPlaylist(songId: number, playlistId: number) {
+    return await ipcRenderer.invoke('add-song-to-playlist', songId, playlistId);
   },
 })
