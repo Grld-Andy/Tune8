@@ -86,11 +86,11 @@ const Playlists: React.FC = () => {
                   <div className="cards">
                     {
                       Array.from(Allplaylists[letter]).map((playlist, index) => {
-                        const newEmpty = {
+                        const newEmpty: Song = {
                           id: v1(),
                           tag: {tags: {title: '',artist: '',album: '',year: 0, genre: ''}},
                           imageSrc: playlist.defaultImage ? playlist.defaultImage : placeholderSongImages[Math.floor(Math.random() * 4)],
-                          duration: '', isFavorite: false, src: ''
+                          duration: '', isFavorite: false, src: '', lyrics: ''
                         }
                         return(
                           <SongTile
