@@ -12,12 +12,14 @@ import PlaylistsContextProvider from './contexts/PlaylistsContext.tsx'
 import PlaylistFormContextProvider from './contexts/PlaylistFormContext.tsx'
 import AllSongsContextProvider from './contexts/AllSongsContext.tsx'
 import SearchContextProvider from './contexts/SearchContext.tsx'
+import FeedbackContextProvider from './contexts/FeedbackContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeContextProvider>
       <ContextMenuContextProvider>
         <AllSongsContextProvider>
+          <FeedbackContextProvider>
           <QueueSongsContextProvider>
             <FavoritesContextProvider>
               <PlaylistFormContextProvider>
@@ -33,6 +35,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               </PlaylistFormContextProvider>
             </FavoritesContextProvider>
           </QueueSongsContextProvider>
+          </FeedbackContextProvider>
         </AllSongsContextProvider>
       </ContextMenuContextProvider>
     </ThemeContextProvider>

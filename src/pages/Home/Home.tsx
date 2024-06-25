@@ -52,7 +52,8 @@ const Home: React.FC = () => {
             <h2>Recently Added</h2>
             <div className="cards">
               {
-                songs.map(song => (
+                songs.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
+                .slice(0, 20).map(song => (
                   <SongTile
                     key={song.tag.tags.title}
                     song={song}

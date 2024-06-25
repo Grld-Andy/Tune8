@@ -22,8 +22,8 @@ const PlaylistForm: React.FC = () => {
     // handle creation and editing of playlist
     const navigate = useNavigate()
     const handlePlaylistInteract = async (val: string) => {
-        const playlist = playlists.find(val => val.name === playlistName)
-        if(playlistName && playlist){
+        const playlist = playlists.find(val => val.name === playlistForm.name)
+        if(playlistName){
             if(val === 'submit'){
                 const defaultImage = placeholderSongImages[Math.floor(Math.random() * 4)]
                 const playlistId = await window.ipcRenderer.createPlaylist(playlistName, defaultImage)
@@ -31,6 +31,10 @@ const PlaylistForm: React.FC = () => {
                 setPlaylistName('')
             }
             if(val === 'edit' && playlistForm.name){
+                if(!playlist){
+                    closeForm()
+                    return
+                }
                 await window.ipcRenderer.updatePlaylist(playlist.id, playlistName)
                 playlistsDispatch({type: 'EDIT_PLAYLIST', payload: {id: playlist.id,name: playlistForm.name, songs: []}, newName: playlistName})
                 navigate(`/playlistView/${playlistName}`)
@@ -78,11 +82,14 @@ const PlaylistForm: React.FC = () => {
                 <div className='playlistForm'>
                     <div className="container">
                         <h1>Add to playlist</h1>
-                        <form onSubmit={() => {handlePlaylistInteract('submit')}}>
+                        <form onSubmit={(e) => {
+                        e.preventDefault()
+                        handlePlaylistInteract('submit')
+                        }}>
                             <input ref={inputRef} value={playlistName} type='text'
                             placeholder='Playlist name' onChange={(e) => {handlePlaylistName(e.target.value)}}/>
                             <div className="buttons">
-                                <button type='submit' onClick={() => {handlePlaylistInteract('submit')}}>Submit</button>
+                                <button type='submit'>Submit</button>
                                 <button onClick={() => {handlePlaylistInteract('')}}>Cancel</button>
                             </div>
                         </form>
@@ -92,11 +99,14 @@ const PlaylistForm: React.FC = () => {
                 <div className='playlistForm'>
                     <div className="container">
                         <h1>Edit Name</h1>
-                        <form onSubmit={() => {handlePlaylistInteract('edit')}}>
+                        <form onSubmit={(e) => {
+                        e.preventDefault()
+                        handlePlaylistInteract('edit')
+                        }}>
                             <input ref={inputRef} value={playlistName} type='text'
                             placeholder='Playlist name' onChange={(e) => {handlePlaylistName(e.target.value)}}/>
                             <div className="buttons">
-                                <button type='submit' onClick={() => {handlePlaylistInteract('edit')}}>Save</button>
+                                <button type='submit'>Save</button>
                                 <button onClick={closeForm}>Cancel</button>
                             </div>
                         </form>

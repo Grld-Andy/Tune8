@@ -65,6 +65,13 @@
                     }
                 }
             }
+            .path-cell{
+                margin: 0;
+                font-size: .85em;
+                svg{
+                    font-size: 1em;
+                }
+            }
         }
     }
 }

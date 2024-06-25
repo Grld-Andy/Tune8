@@ -70,6 +70,7 @@ const getSongTags: (s:string) => Promise<Song> = async (songPath: string) => {
           imageSrc,
           duration,
           isFavorite: false,
+          dateAdded: new Date()
         }
         insertSongIntoDatabase(musicDataObject)
         resolve(musicDataObject)

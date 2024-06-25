@@ -366,6 +366,10 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
                 <h3>Song Duration</h3>
                 <h4>{currentSong.song?.duration}</h4>
               </div>
+              <div className="tile">
+                <h3>Genre</h3>
+                <h4>{currentSong.song?.tag.tags.genre}</h4>
+              </div>
             </div>
             <div className="source">
               <h2>{currentSong.song?.src}</h2>

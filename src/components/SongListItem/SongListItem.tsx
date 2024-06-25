@@ -127,11 +127,17 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
         <div className='text'>
           <h3>{song.tag.tags.title}</h3>
         </div>
-        <div className='text'>
+        <div className='text artist'>
           <Link to={`/artistView/${song.tag.tags.artist}`}>{song.tag.tags.artist}</Link>
         </div>
-        <div className='text'>
+        <div className='text album'>
           <Link to={`/albumView/${song.tag.tags.album}`}>{song.tag.tags.album}</Link>
+        </div>
+        <div className='text year'>
+          <h3>{song.tag.tags.year}</h3>
+        </div>
+        <div className='text genre'>
+          <h3>{song.tag.tags.genre}</h3>
         </div>
         <div className='text'>
           <h3>{song.duration}</h3>

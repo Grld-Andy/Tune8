@@ -13,6 +13,7 @@ export interface Song {
     duration: string,
     isFavorite: boolean,
     src: string,
+    dateAdded: Date
 }
 export interface SortedSongs {
     [key: string]: Set<Song>

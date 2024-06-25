@@ -13,11 +13,15 @@ export interface Song {
     duration: string,
     isFavorite: boolean,
     src: string,
-    dateAdded?: string,
+    dateAdded: Date,
     lastPlayed?: string
 }
 export interface SortedSongs {
     [key: string]: Set<Song>
+}
+export interface MusicPaths{
+    id: number,
+    path: string
 }
 export interface PlaylistInterface {
     id: number,

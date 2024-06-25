@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import './style.css'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import SongListItem from '../../components/SongListItem/SongListItem'
 import { shuffleArray, TotalDuration } from '../../utilities'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
@@ -13,6 +13,7 @@ import Buttons from '../../components/Buttons/Buttons'
 
 const Playlist: React.FC = () => {
   const {playlist} = useParams<string>()
+  const location = useLocation()
   const {playlists, playlistsDispatch} = useContext(PlaylistContext)
   const {playlistFormDispatch} = useContext(PlaylistFormContext)
   const playlistSongs: PlaylistInterface = playlists.filter(item => item.name === playlist)[0]

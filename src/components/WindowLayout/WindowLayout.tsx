@@ -8,6 +8,7 @@ import ContextMenu from '../ContextMenu/ContextMenu'
 import LyricsView from '../LyricsView/LyricsView'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import PlaylistForm from '../PlaylistForm/PlaylistForm'
+import Loaders from '../Loaders/Loaders'
 
 const WindowLayout: React.FC = () => {
   // theme
@@ -35,6 +36,7 @@ const WindowLayout: React.FC = () => {
       <ContextMenu/>
       <PlaylistForm/>
       <LyricsView showLyrics={showLyrics}/>
+      <Loaders/>
     </div>
   )
 }

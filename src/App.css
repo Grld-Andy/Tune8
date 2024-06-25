@@ -5,6 +5,7 @@
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
+  transition: none;
 }
 
 a {

@@ -1,11 +1,22 @@
 import { app, BrowserWindow, dialog, ipcMain, globalShortcut } from 'electron'
+import { createRequire } from 'node:module'
+const require = createRequire(import.meta.url)
+if (require('electron-squirrel-startup')) app.quit();
+
+
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-// import { createRequire } from 'node:module'
-// const require = createRequire(import.meta.url)
-import { addPlaylist, addSongToPlaylist, clearSongsInQueue, createLyricsTable, createPlaylistTable, createQueueTable, createSongTable, deletePlaylist, deleteQueueById, fetchAllSongsInQueue, fetchSongsFromDatabase, getPlaylists, getPlaylistSongs, getSongLyricsWithId, insertSongToQueue, removeSongFromPlaylist, saveSongLyrics, updatePlaylist, updateSongInDatabase } from './database/db'
+
+import { addPlaylist, addSongToPlaylist, clearSongsInQueue,
+  clearSongsInDatabase, deletePlaylist, deleteQueueById, fetchAllSongsInQueue,
+  getPlaylists, getPlaylistSongs, getSongLyricsWithId, insertSongToQueue,
+  removeSongFromPlaylist, saveSongLyrics, updatePlaylist, updateSongInDatabase,
+  createAllTables, insertIntoMusicPath, deleteFromMusicPath, getMusicPaths,
+  getCurrentSong, 
+  updateCurrentSong} from './database/db'
 import { getAllSongs } from './songsApi/songsApi'
 import { Song } from './types/index'
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -28,11 +39,7 @@ export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST
 
 // create table if not exist
-createSongTable()
-createLyricsTable()
-createQueueTable()
-createPlaylistTable()
-fetchSongsFromDatabase()
+createAllTables()
 
 let win: BrowserWindow | null
 
@@ -48,7 +55,7 @@ function createWindow() {
     autoHideMenuBar: true
   })
 
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
   
   // Show the window once it is ready to be shown
   win.once('ready-to-show', () => {
@@ -117,9 +124,10 @@ const handleDirectoryOpen = async () => {
   try{
     const result = await dialog.showOpenDialog({properties: ['openDirectory']})
     if(!result.canceled){
-      return result.filePaths
+      const id =  await insertIntoMusicPath(result.filePaths[0])
+      return {id: id, path: result.filePaths}
     }else{
-      return ''
+      return {id:-1, path: ''}
     }
   }catch (error){
     console.error(error)
@@ -181,7 +189,21 @@ ipcMain.handle('get-all-songs', async (_event, musicPaths:string) => {
 })
 // update song
 ipcMain.handle('update-song', (_event, song: Song) => {
+  console.log(song.tag.tags.title)
   return updateSongInDatabase(song)
+})
+// clear songs
+ipcMain.handle('clear-songs', () => {
+  return clearSongsInDatabase()
+})
+
+
+// CURRENT SONG
+ipcMain.handle('get-last-played', () => {
+  return getCurrentSong()
+})
+ipcMain.handle('update-current-song', (_event, song_id: string, queue_no: number) => {
+  return updateCurrentSong(song_id, queue_no)
 })
 
 
@@ -199,6 +221,14 @@ ipcMain.handle('clear-queue', async() => {
   return clearSongsInQueue()
 })
 
+
+// MUSIC PATHS
+ipcMain.handle('delete-music-path', async (_event, musicPathId: number) => {
+  return await deleteFromMusicPath(musicPathId)
+})
+ipcMain.handle('get-music-paths', async () => {
+  return await getMusicPaths()
+})
 
 // PLAYLISTS
 ipcMain.handle('get-playlists', async () => {

@@ -31,8 +31,11 @@ interface IpcRendererCustom extends Electron.IpcRenderer {
   onPlayPause: (callback: (event: Electron.IpcRendererEvent) => void) => void;
   saveLyricsToDatabase: (lyricsData: { lyric: string; song_id: string }) => Promise<string>;//
   getLyricsFromDatabase: (songId: string) => Promise<string>;//
-  addMusicDirectory: () => Promise<string>;//
+  addMusicDirectory: () => Promise<RowMusicPath>;//
   updateSongDatabase: (song: Song) => Promise<string>;//not done
+  clearSongs: () => Promise<string>;//
+  getLastPlayedSong: () => Promise<RowCurrentSong>;//
+  updateCurrentSong: (song_id: string, queue_no: number) => Promise<string>;//
   addSongToQueue: (song: Song) => Promise<string>;
   removeSongFromQueue: (id: number) => Promise<string>;
   getQueue: () => Promise<string>;
@@ -44,6 +47,8 @@ interface IpcRendererCustom extends Electron.IpcRenderer {
   updatePlaylist: (id: number, name: string) => Promise<string>;//
   addSongToPlaylist: (songId: string, playlistId: number) => Promise<string>;//
   removeSongFromPlaylist: (songId: string, playlistId: number) => Promise<string>;//
+  removeMusicPath: (musicPathId: number) => Promise<string>;
+  fetchMusicPaths: () => Promise<Array<RowMusicPath>>;
 }
 
 // Used in Renderer process, expose in `preload.ts`

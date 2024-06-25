@@ -1,6 +1,7 @@
-import { createContext, Dispatch, ReactNode, useEffect, useReducer } from "react"
+import { createContext, Dispatch, ReactNode, useContext, useEffect, useReducer } from "react"
 import { AllSongsReducer } from "../reducers/AllSongsReducer"
 import { Song } from "../data"
+import { FeedbackContext } from "./FeedbackContext"
 
 interface Props {
     children: ReactNode
@@ -18,15 +19,19 @@ export const AllSongsContext = createContext<AllSongsContextType>({
 
 const AllSongsContextProvider: React.FC<Props> = (props) => {
     const [songs, songsDispatch] = useReducer(AllSongsReducer, [])
+    const {feedbackDispatch} = useContext(FeedbackContext)
 
     useEffect(() => {
         const fetchAllSongs = async () => {
             const musicPath:Array<string> = JSON.parse(localStorage.getItem("MusicPaths") ?? '[]')
             try {
-                musicPath.forEach(async path => {
+                musicPath.forEach(async (path, index) => {
                     const allSongs: Array<Song> = await window.ipcRenderer.GetSongs(path)
-                    if (allSongs && allSongs.length > 0)
+                    if (allSongs && allSongs.length > 0){
                         songsDispatch({ type: 'SET_SONGS', payload: allSongs })
+                        if(index === musicPath.length - 1)
+                            feedbackDispatch({type: 'CLOSE_LOADER', payload:{text: '', view: 'close_loader'}})
+                    }
                 })
                 
             } catch (error) {
@@ -34,8 +39,9 @@ const AllSongsContextProvider: React.FC<Props> = (props) => {
             }
         }
 
+        feedbackDispatch({type: 'LOADER', payload:{text: 'Indexing songs', view: 'loader'}})
         fetchAllSongs()
-    }, [])
+    }, [feedbackDispatch])
 
     return (
         <AllSongsContext.Provider value={{ songs, songsDispatch }}>

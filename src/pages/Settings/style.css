@@ -66,4 +66,11 @@
 }
 .settings section .set-grid .set-cell .themes div {
   cursor: pointer;
+}
+.settings section .set-grid .path-cell {
+  margin: 0;
+  font-size: 0.85em;
+}
+.settings section .set-grid .path-cell svg {
+  font-size: 1em;
 }/*# sourceMappingURL=style.css.map */

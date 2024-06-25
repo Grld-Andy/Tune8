@@ -4,20 +4,24 @@ import { AllSongsContext } from '../../../contexts/AllSongsContext'
 import { Song } from '../../../data'
 
 interface Props{
-    text?: string
+    text?: string,
+    update?: () => void
 }
 
-const AddMusicFolderButton: React.FC<Props> = ({text = ''}) => {
+const AddMusicFolderButton: React.FC<Props> = ({text = '', update}) => {
     const { songsDispatch} = useContext(AllSongsContext)
     async function addMusicPath() {
         await addMusicFolder()
         await fetchAllSongs()
+        if(update){
+            update()
+        }
     }
     const fetchAllSongs = async () => {
-        const musicPath:Array<string> = JSON.parse(localStorage.getItem("MusicPaths") ?? '[]')
+        const musicPath = await window.ipcRenderer.fetchMusicPaths()
         try {
-            musicPath.forEach(async path => {
-                const allSongs: Array<Song> = await window.ipcRenderer.GetSongs(path)
+            musicPath.forEach(async data => {
+                const allSongs: Array<Song> = await window.ipcRenderer.GetSongs(data.path)
                 if (allSongs && allSongs.length > 0)
                     songsDispatch({ type: 'SET_SONGS', payload: allSongs })
             })

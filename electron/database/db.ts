@@ -1,6 +1,6 @@
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
-import { RowLyrics, RowPlaylist, RowPlaylistSong, RowQueue, RowSong } from './tables'
+import { RowCurrentSong, RowLyrics, RowMusicPath, RowPlaylist, RowPlaylistSong, RowQueue, RowSong } from './tables'
 import { Song } from '../types/index'
 import path from 'node:path'
 const require = createRequire(import.meta.url)
@@ -11,6 +11,33 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const databasePath = path.join(__dirname, 'database.db')
 const database = new sqlite3.Database(databasePath)
 
+function dropTable(tableName: string){
+    const db = new sqlite3.Database(databasePath)
+
+    db.serialize(() => {
+        db.run(`DROP TABLE IF EXISTS ${tableName}`, function(err: Error){
+            if(err){
+                console.error(err)
+            }else{
+                console.log('Deleted')
+            }
+        })
+    })
+    db.close((err: Error) => {
+        if(err){console.error(err)}
+        else{console.log('closed')}
+    })
+}
+export const createMusicPaths = () => {
+    database.serialize(() => {
+        database.run(
+        `CREATE TABLE IF NOT EXISTS musicPaths (
+            id INTEGER PRIMARY KEY,
+            path TEXT
+        );`
+        )
+    })
+}
 export const createLyricsTable = () => {
     database.serialize(() => {
         database.run(
@@ -77,6 +104,36 @@ export const createSongTable = () => {
         );
     `)
     })
+}
+export const createCurrentSongTable = () => {
+    database.serialize(() => {
+        database.run(
+        `CREATE TABLE IF NOT EXISTS currentSong (
+            id INTEGER PRIMARY KEY,
+            song_id TEXT,
+            queue_no INTEGER DEFAULT -1,
+            FOREIGN KEY (song_id) REFERENCES songs(id)
+        );`
+        )
+    })
+}
+export const createAllTables = () => {
+    createSongTable()
+    createLyricsTable()
+    createQueueTable()
+    createPlaylistTable()
+    createMusicPaths()
+    createCurrentSongTable()
+    fetchSongsFromDatabase()
+}
+export const dropAllTables = () => {
+    dropTable('playlist_song')
+    dropTable('playlist')
+    dropTable('lyrics')
+    dropTable('queue')
+    dropTable('currentSong')
+    dropTable('songs')
+    dropTable('musicPaths')
 }
 
 
@@ -212,6 +269,52 @@ export async function updateSongInDatabase(songObject: Song){
         )
     })
 }
+export async function clearSongsInDatabase(){
+    dropAllTables()
+    setTimeout(() => {createAllTables()}, 500)
+    return 'Data Deleted'
+}
+
+// CURRENT SONG
+export const getCurrentSong = () => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT songs.*, currentSong.queue_no
+            FROM currentSong
+            JOIN songs ON currentSong.song_id = songs.id
+            WHERE currentSong.id = 1
+        `
+        database.get(query, (err: Error, row: RowCurrentSong) => {
+            if (err) {
+                reject(err)
+            } else {
+                if(row){
+                const { queue_no, ...song } = row
+                resolve({ song, queueNo: queue_no })
+                }else{
+                    resolve({song: null, queue_no: -1})
+                }
+            }
+        })
+    })
+}
+export const updateCurrentSong = (song_id: string, queue_no: number) => {
+    return new Promise((resolve, reject) => {
+        const stmt = `
+            INSERT INTO currentSong (id, song_id, queue_no)
+            VALUES (1, ?, ?)
+            ON CONFLICT(id) DO UPDATE SET song_id = excluded.song_id, queue_no = excluded.queue_no
+        `;
+        database.run(stmt, [song_id, queue_no], function(err: Error) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve('Successful');
+            }
+        });
+    });
+};
+
 
 
 // QUEUE
@@ -413,3 +516,58 @@ export const removeSongFromPlaylist = (songId: string, playlistId: number): Prom
         );
     });
 };
+
+// MUSIC PATHS
+export const insertIntoMusicPath = (musicPath: string): Promise<number> => {
+    return new Promise((resolve, reject) => {
+        database.run(
+        `INSERT INTO musicPaths (path) VALUES (?)`,
+        [musicPath],
+        (err: Error) => {
+            if (err) {
+            reject(err)
+            } else {
+                database.get('SELECT last_insert_rowid() as id', [], (err: Error, row: RowMusicPath) => {
+                    if (err) {
+                        reject(err)
+                    } else if (row && row.id) {
+                        resolve(row.id)
+                    } else {
+                        reject(new Error('Unable to get last inserted row id'))
+                    }
+                })
+            }
+        }
+        )
+    })
+}
+export const deleteFromMusicPath = (musicPathId: number) : Promise<string> => {
+    return new Promise((resolve, reject) => {
+        database.run(
+        `DELETE FROM musicPaths WHERE id = ?`,
+        [musicPathId],
+        (err: Error) => {
+            if (err) {
+            reject(err)
+            } else {
+                resolve("Successful")
+            }
+        }
+        )
+    })
+}
+export const getMusicPaths = () : Promise<Array<RowMusicPath>> => {
+    return new Promise((resolve, reject) => {
+        database.all(
+        `SELECT * FROM musicPaths`,
+        [],
+        (err: Error, rows: Array<RowMusicPath>) => {
+            if (err) {
+            reject(err)
+            } else {
+                resolve(rows)
+            }
+        }
+        )
+    })
+}

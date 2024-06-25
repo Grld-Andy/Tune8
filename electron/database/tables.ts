@@ -9,8 +9,16 @@ export interface RowSong{
     genre: string;
     src: string;
     isFavorite: boolean;
-    dateAdded: string;
+    dateAdded: Date;
     lastPlayed: string
+}
+export interface RowCurrentSong {
+    song: RowSong;
+    queue_no: number;
+}
+export interface RowMusicPath{
+    id: number,
+    path: string
 }
 export interface RowPlaylist{
     id: number;

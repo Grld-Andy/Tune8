@@ -19,7 +19,7 @@
 .song {
   background-color: var(--songlist-bg);
   display: grid;
-  grid-template-columns: 25px 20px 1fr 1fr 1fr auto;
+  grid-template-columns: 25px 20px 1fr 0.7fr 0.7fr 60px 0.7fr auto;
   margin: 5px;
   gap: 20px;
   padding: 10px;
@@ -96,6 +96,38 @@
 }
 .song:hover .select-tile {
   opacity: 1;
+}
+@media (max-width: 1100px) {
+  .song {
+    grid-template-columns: 25px 20px 1fr 0.7fr 0.7fr 0.7fr auto;
+  }
+  .song .year {
+    display: none;
+  }
+}
+@media (max-width: 800px) {
+  .song {
+    grid-template-columns: 25px 20px 1fr 0.7fr 0.7fr auto;
+  }
+  .song .genre {
+    display: none;
+  }
+}
+@media (max-width: 580px) {
+  .song {
+    grid-template-columns: 25px 20px 1fr 0.7fr auto;
+  }
+  .song .album {
+    display: none;
+  }
+}
+@media (max-width: 430px) {
+  .song {
+    grid-template-columns: 25px 20px 1fr auto;
+  }
+  .song .artist {
+    display: none;
+  }
 }
 
 .song:nth-child(2n) {

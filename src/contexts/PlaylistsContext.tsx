@@ -24,10 +24,20 @@ const PlaylistsContextProvider: React.FC<Props> = (props) => {
 
     useEffect(() => {
         const fetchPlaylists = async () => {
-            const fetchedPlaylists = await window.ipcRenderer.getPlaylists()
-            fetchedPlaylists.forEach((playlist: PlaylistInterface) => {
-                playlistsDispatch({ type: 'CREATE_PLAYLIST', payload: playlist })
-            })
+            try {
+                const fetchedPlaylists: Array<PlaylistInterface> = await window.ipcRenderer.getPlaylists()
+                for (const playlist of fetchedPlaylists) {
+                    playlistsDispatch({ type: 'CREATE_PLAYLIST', payload: playlist })
+                    const fetchedSongs: Array<Song> = await window.ipcRenderer.getPlaylistSongs(playlist.id)
+                    playlist.songs = fetchedSongs
+                    playlistsDispatch({
+                        type: 'ADD_TO_PLAYLIST',
+                        payload: playlist
+                    })
+                }
+            } catch (error) {
+                console.error("Error fetching playlists or songs:", error)
+            }
         }
         fetchPlaylists()
     }, [])

@@ -91,7 +91,7 @@ const Playlists: React.FC = () => {
                           id: v1(),
                           tag: {tags: {title: '',artist: '',album: '',year: 0, genre: ''}},
                           imageSrc: playlist.defaultImage ? playlist.defaultImage : placeholderSongImages[Math.floor(Math.random() * 4)],
-                          duration: '', isFavorite: false, src: ''
+                          duration: '', isFavorite: false, src: '', dateAdded: new Date()
                         }
                         return(
                           <SongTile

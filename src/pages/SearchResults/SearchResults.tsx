@@ -110,7 +110,7 @@ const SearchResults: React.FC = () => {
       </nav>
       <div className="searchResults view">
         {
-          queryAlbums &&
+          queryAlbums.length > 0 &&
           <>
             <h1 className="searchTitles">Albums</h1>
             <div className="searchTiles">
@@ -130,7 +130,7 @@ const SearchResults: React.FC = () => {
           </>
         }
         {
-          queryArtists &&
+          queryArtists.length > 0 &&
           <>
             <h1 className="searchTitles">Artists</h1>
             <div className="searchTiles">
@@ -150,7 +150,7 @@ const SearchResults: React.FC = () => {
           </>
         }
         {
-          querySongs &&
+          querySongs.length > 0 &&
           <>
             <h1 className="searchTitles">Songs</h1>
             <div className="searchItems">
@@ -169,8 +169,8 @@ const SearchResults: React.FC = () => {
           </>
         }
         {
-          !querySongs && !queryAlbums && !queryArtists &&
-          <div className="empty-window view">
+          querySongs.length === 0 && queryAlbums.length === 0 && queryArtists.length === 0 &&
+          <div className="empty-window">
             <div className="cell">
               <h1>No results</h1>
               <AddMusicFolderButton text={'Add +'}/>

@@ -63,6 +63,17 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   async updateSongDatabase(song: Song) {
     return await ipcRenderer.invoke('update-song', song);
   },
+  async clearSongs(){
+    return await ipcRenderer.invoke('clear-songs')
+  },
+
+  // CURRENT SONG
+  async getLastPlayedSong(){
+    return await ipcRenderer.invoke('get-last-played')
+  },
+  async updateCurrentSong(song_id: string, queue_no: number) {
+    return await ipcRenderer.invoke('update-current-song', song_id, queue_no);
+  },
 
   // QUEUE
   async addSongToQueue(song: Song) {
@@ -99,5 +110,13 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   },
   async removeSongFromPlaylist(songId: string, playlistId: number) {
     return await ipcRenderer.invoke('remove-song-from-playlist', songId, playlistId);
+  },
+
+  // MUSIC PATHS
+  async removeMusicPath(musicPathId: number) {
+    return await ipcRenderer.invoke('delete-music-path', musicPathId);
+  },
+  async fetchMusicPaths() {
+    return await ipcRenderer.invoke('get-music-paths');
   },
 })

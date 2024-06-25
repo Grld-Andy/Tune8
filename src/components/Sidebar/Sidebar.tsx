@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react'
 import './style.css'
 import { NavLink, useNavigate } from 'react-router-dom'
-import {FaHouse, FaMusic } from 'react-icons/fa6'
+import {FaArrowLeft, FaHouse, FaMusic } from 'react-icons/fa6'
 import {RiPlayListLine, RiSearch2Line} from 'react-icons/ri'
 import {MdLibraryMusic, MdOutlinePlaylistPlay, MdPerson, MdFavorite, MdSettings } from 'react-icons/md'
 // import { profile } from '../../assets'
@@ -35,12 +35,13 @@ const Sidebar: React.FC = () => {
   const sidebarRef = useRef<HTMLDivElement|null>(null)
   const inputRef = useRef<HTMLInputElement|null>(null)
   const searchRef = useRef<HTMLButtonElement|null>(null)
-  const showInput = () => {
+  const showInput = (focus: boolean = true) => {
     if(sidebarRef.current && inputRef.current && searchRef.current){
       sidebarRef.current.classList.add('expanded')
       // sidebarRef.current.style.width = '200px'
       inputRef.current.style.display = 'block'
-      inputRef.current.focus()
+      if(focus)
+        inputRef.current.focus()
       searchRef.current.style.display = 'none'
     }
   }
@@ -55,10 +56,28 @@ const Sidebar: React.FC = () => {
     }
   }
 
+  // restyle on window change
+  window.addEventListener('resize', () => {
+    if(window.innerWidth > 700){
+      showInput(false)
+    }
+    if(window.innerWidth < 700){
+      hideInput()
+    }
+  })
+
+  // back button to prev page
+  const prevPage = () => {
+    navigate(-1)
+  }
+
   return (
     <div className='sidebar' ref={sidebarRef}>
       <div className="profile">
-        <h1>Tune 8</h1>
+        <div className="name">
+          <FaArrowLeft onClick={prevPage}/>
+          <h1>Tune 8</h1>
+        </div>
         {/* <img src={profile}/> */}
         <div className="search">
           <form onSubmit={handleSearch}>
@@ -68,7 +87,7 @@ const Sidebar: React.FC = () => {
             onChange={(e) => {handleSearchInput(e.target.value)}}/>
           </form>
           <button className='search-button'
-          ref={searchRef} onClick={showInput}>
+          ref={searchRef} onClick={() => {showInput()}}>
             <RiSearch2Line className='search-icon'/>
           </button>
         </div>

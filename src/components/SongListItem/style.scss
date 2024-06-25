@@ -14,99 +14,123 @@
     --current-song-color: #ff0;
     --checkbox-bg: #770;
 }
-    .song{
-        background-color: var(--songlist-bg);
-        display: grid;
-        grid-template-columns: 25px 20px 1fr 1fr 1fr auto;
-        margin: 5px;
-        gap: 20px;
-        padding: 10px;
+.song{
+    background-color: var(--songlist-bg);
+    display: grid;
+    grid-template-columns: 25px 20px 1fr .7fr .7fr 60px .7fr auto;
+    margin: 5px;
+    gap: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    transition: .2s ease-in;
+    align-items: center;
+    width: 100%;
+    z-index: 5;
+    position: relative;
+    .select-tile{
+        border: 1px solid var(--primary-text-color);
+        z-index: 10;
+        opacity: 0;
         border-radius: 5px;
-        transition: .2s ease-in;
-        align-items: center;
+        height: 25px;
+        width: 25px;
+        overflow: hidden;
+        align-content: center;
+        justify-content: center;
+        &:hover{
+            background-color: var(--songtile-icon-bg-hover);
+        }
+    }
+    .selected{
+        background-color: var(--checkbox-bg);
+        display: flex;
+        opacity: 1;
+    }
+    .show-true{
+        opacity: 1;
+    }
+    .draggable{
+        display: grid;
+        padding: 10px;
         width: 100%;
+        height: 100%;
+        z-index: 4;
+        position: absolute;
+        cursor: grab;
+    }
+    .icon{
+        cursor: pointer;
+        scale: 1.4;
         z-index: 5;
-        position: relative;
-        .select-tile{
-            border: 1px solid var(--primary-text-color);
-            z-index: 10;
-            opacity: 0;
-            border-radius: 5px;
-            height: 25px;
-            width: 25px;
-            overflow: hidden;
-            align-content: center;
-            justify-content: center;
-            &:hover{
-                background-color: var(--songtile-icon-bg-hover);
-            }
-        }
-        .selected{
-            background-color: var(--checkbox-bg);
-            display: flex;
-            opacity: 1;
-        }
-        .show-true{
-            opacity: 1;
-        }
-        .draggable{
-            display: grid;
-            padding: 10px;
-            width: 100%;
-            height: 100%;
-            z-index: 4;
-            position: absolute;
-            cursor: grab;
-        }
-        .icon{
-            cursor: pointer;
-            scale: 1.4;
-            z-index: 5;
-        }
-        .text{
-            z-index: 5;
-            pointer-events: none;
-            width: 100%;
+    }
+    .text{
+        z-index: 5;
+        pointer-events: none;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        h3,a{
+            font-size: 1em;
+            line-clamp: 2;
+            font-weight: lighter;
+            color: var(--primary-text-color);
+            text-wrap: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            h3,a{
-                font-size: 1em;
-                line-clamp: 2;
-                font-weight: lighter;
-                color: var(--primary-text-color);
-                text-wrap: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            a{
-                transition: .1s ease-out;
-                pointer-events: all;
-                cursor: pointer;
-                &:hover{
-                    font-weight: 600;
-                    color: var(--current-song-color);
-                }
-            }
         }
-        &:hover{
-            background-color: var(--songlist-bg-hover);
-            .select-tile{
-                opacity: 1;
-            }
-        }
-    }
-    .song:nth-child(2n){
-        background-color: transparent;
-        border: 1px solid var(--songlist-bg-even);
-        &:hover{
-            background-color: var(--songlist-bg-hover);
-        }
-    }
-    .currentSong{
-        .text{
-            h3, a{
+        a{
+            transition: .1s ease-out;
+            pointer-events: all;
+            cursor: pointer;
+            &:hover{
+                font-weight: 600;
                 color: var(--current-song-color);
-                font-weight: 400;
             }
         }
     }
+    &:hover{
+        background-color: var(--songlist-bg-hover);
+        .select-tile{
+            opacity: 1;
+        }
+    }
+    @media (max-width: 1100px) {
+        grid-template-columns: 25px 20px 1fr .7fr .7fr .7fr auto;
+        .year{
+            display: none;
+        }
+    }
+    @media (max-width: 800px) {
+        grid-template-columns: 25px 20px 1fr .7fr .7fr auto;
+        .genre{
+            display: none;
+        }
+    }
+    @media (max-width: 580px) {
+        grid-template-columns: 25px 20px 1fr .7fr auto;
+        .album{
+            display: none;
+        }
+    }
+    @media (max-width: 430px) {
+        grid-template-columns: 25px 20px 1fr auto;
+        .artist{
+            display: none;
+        }
+    }
+}
+.song:nth-child(2n){
+    background-color: transparent;
+    border: 1px solid var(--songlist-bg-even);
+    &:hover{
+        background-color: var(--songlist-bg-hover);
+    }
+}
+.currentSong{
+    .text{
+        h3, a{
+            color: var(--current-song-color);
+            font-weight: 400;
+        }
+    }
+}
