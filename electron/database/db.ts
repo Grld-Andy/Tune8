@@ -5,10 +5,17 @@ import { Song } from '../types/index'
 import path from 'node:path'
 const require = createRequire(import.meta.url)
 const sqlite3 = require('sqlite3').verbose()
+const { app } = require('electron')
 
 // const database
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const databasePath = path.join(__dirname, 'database.db')
+const isDev = !app.isPackaged
+let databasePath: string
+if (isDev) {
+    databasePath = path.join(__dirname, 'database.db')
+} else {
+    databasePath = path.join(process.resourcesPath, 'app/dist-electron/database.db')
+}
 const database = new sqlite3.Database(databasePath)
 
 function dropTable(tableName: string){
