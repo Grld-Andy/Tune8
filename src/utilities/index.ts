@@ -97,3 +97,12 @@ export const addMusicFolder = async() => {
   const musicPathData = await window.ipcRenderer.addMusicDirectory()
   return musicPathData
 }
+
+// update database
+export const updateCurrentSongInDatabase = (song: Song, queueNo: number) => {
+  window.ipcRenderer.updateSongDatabase({...song, lastPlayed: new Date()})
+  window.ipcRenderer.updateCurrentSong(song.id, queueNo)
+}
+export const clearCurrentSongInDatabase = () => {
+  window.ipcRenderer.updateCurrentSong('', -1)
+}

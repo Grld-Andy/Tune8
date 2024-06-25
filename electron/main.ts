@@ -45,7 +45,7 @@ let win: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC ?? '/', 'electron-vite.svg'),
+    icon: path.join(process.env.VITE_PUBLIC ?? '/', 'setupFiles/setup.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
       nodeIntegration: true,
@@ -141,18 +141,14 @@ let prevSize: number[] = []
 ipcMain.on('minimize', () => {
   const win = BrowserWindow.getFocusedWindow()
   if (win && !win.isMaximized() && !win.fullScreen) {
-      const windowOnTop = !win.isAlwaysOnTop()
-      if(win.isAlwaysOnTop()){
-        prevSize = [500, 500]
-      }
-      win.setAlwaysOnTop(windowOnTop, 'floating')
-      if(windowOnTop){
-        prevSize = win.getSize()
-      }else{
-        prevSize = []
-      }
-      win.setSize(windowOnTop ? 300 : prevSize[0], windowOnTop ? 250 : prevSize[1])
-      win.setResizable(windowOnTop ? false : true)
+    const windowOnTop = !win.isAlwaysOnTop()
+    if (windowOnTop) {
+      prevSize = win.getSize()
+    }
+    win.setAlwaysOnTop(windowOnTop, 'floating')
+    win.setSize(windowOnTop ? 300 : (prevSize.length > 0 ? prevSize[0] : win.getSize()[0]),
+                windowOnTop ? 250 : (prevSize.length > 0 ? prevSize[1] : win.getSize()[1]))
+    win.setResizable(!windowOnTop)
   }
 })
 // maximize

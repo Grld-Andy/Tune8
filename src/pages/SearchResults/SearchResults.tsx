@@ -6,7 +6,7 @@ import SongListItem from '../../components/SongListItem/SongListItem'
 import { Song } from '../../data'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
-import { shuffleArray } from '../../utilities'
+import { shuffleArray, updateCurrentSongInDatabase } from '../../utilities'
 import Buttons from '../../components/Buttons/Buttons'
 import AddTo from '../../components/Buttons/AddTo/AddTo'
 import SongTile from '../../components/SongTile/SongTile'
@@ -59,11 +59,13 @@ const SearchResults: React.FC = () => {
   }
   const playAllSongs = () => {
     currentSongDispatch({type: 'SET_CURRENT_SONG', isPlaying: true, payload: querySongs[0], index: 0, audioRef: new Audio(querySongs[0].src), reset: true})
+    updateCurrentSongInDatabase(querySongs[0], 0)
     setQueueSongs()
   }
   const shuffleSongs: () => void = () => {
     const newQueue = shuffleArray(querySongs)
     currentSongDispatch({type: 'SET_CURRENT_SONG', isPlaying: true, payload: newQueue[0], index: 0, audioRef: new Audio(querySongs[0].src), reset: true})
+    updateCurrentSongInDatabase(newQueue[0], 0)
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
 

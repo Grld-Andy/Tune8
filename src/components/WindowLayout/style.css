@@ -166,6 +166,11 @@ nav .nav-right button {
 nav .nav-right button:hover {
   background-color: var(--primary-button-bg-hover);
 }
+@media (max-width: 420px) {
+  nav button {
+    display: none;
+  }
+}
 
 .dynamic-page {
   display: grid;

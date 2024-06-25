@@ -7,6 +7,7 @@ import { FavoritesContext } from '../../contexts/FavoritesContext';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { PlaylistContext } from '../../contexts/PlaylistsContext';
 import { PlaylistFormContext } from '../../contexts/PlaylistFormContext';
+import { clearCurrentSongInDatabase, updateCurrentSongInDatabase } from '../../utilities';
 
 const ContextMenu: React.FC = () => {
   const { contextMenu, contextMenuDispatch } = useContext(ContextMenuContext);
@@ -26,10 +27,13 @@ const ContextMenu: React.FC = () => {
   // play song
   const playSong = () => {
     if(location.pathname === '/queue'){
-      if(contextMenu.indexClicked)
+      if(contextMenu.indexClicked){
         currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: contextMenu.indexClicked})
+        updateCurrentSongInDatabase(contextMenu.lastClicked[0], contextMenu.indexClicked)
+      }
     }else{
       currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
+      updateCurrentSongInDatabase(contextMenu.lastClicked[0], 0)
       dispatch({type: 'SET_QUEUE', payload: contextMenu.lastClicked, index: 0})
     }
   }
@@ -38,6 +42,7 @@ const ContextMenu: React.FC = () => {
   const playNextInQueue = () => {
     if(!currentSong.song){
         currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
+        updateCurrentSongInDatabase(contextMenu.lastClicked[0], 0)
     }
     const currentSongQueueID = queue.findIndex(item => item.tag.tags.title === currentSong.song?.tag.tags.title)
     dispatch({type: 'PLAY_NEXT', payload: contextMenu.lastClicked, index: currentSongQueueID})
@@ -53,6 +58,7 @@ const ContextMenu: React.FC = () => {
   const addToQueue = () => {
     if(!currentSong.song){
         currentSongDispatch({type: 'SET_CURRENT_SONG', payload: contextMenu.lastClicked[0], index: 0})
+        updateCurrentSongInDatabase(contextMenu.lastClicked[0], 0)
     }
     dispatch({type: 'ADD_TO_QUEUE', payload: contextMenu.lastClicked, index: currentSong.index})
   }
@@ -80,9 +86,11 @@ const ContextMenu: React.FC = () => {
             let nextIndex = contextMenu.indexClicked + 1
             if(nextIndex >= queue.length) nextIndex = 0
             currentSongDispatch({type: 'SET_CURRENT_SONG', payload: queue[nextIndex], index: nextIndex!==0 ? nextIndex-1 : 0, isPlaying: currentSong.isPlaying})
+            updateCurrentSongInDatabase(queue[nextIndex], nextIndex!==0 ? nextIndex-1 : 0)
           }
           else {
             currentSongDispatch({type: 'CLEAR_CURRENT_SONG', payload: null, index: -1, audioRef: null, isPlaying: false})
+            clearCurrentSongInDatabase()
           }
           dispatch({type: 'REMOVE_FROM_QUEUE', payload: [], index: contextMenu.indexClicked})
         }

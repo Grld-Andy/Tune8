@@ -3,7 +3,7 @@ import './style.css'
 import { useParams } from 'react-router-dom'
 import { Song } from '../../data'
 import SongListItem from '../../components/SongListItem/SongListItem'
-import { shuffleArray, TotalDuration } from '../../utilities'
+import { shuffleArray, TotalDuration, updateCurrentSongInDatabase } from '../../utilities'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import AddTo from '../../components/Buttons/AddTo/AddTo'
@@ -25,11 +25,13 @@ const Album: React.FC = () => {
   }
   const playAllSongs = () => {
     currentSongDispatch({type: 'SET_CURRENT_SONG', isPlaying: true, payload: albumSongs[0], index: 0, audioRef: new Audio(albumSongs[0].src), reset: true})
+    updateCurrentSongInDatabase(albumSongs[0], 0)
     setQueueSongs()
   }
   const shuffleSongs: () => void = () => {
     const newQueue = shuffleArray(albumSongs)
     currentSongDispatch({type: 'SET_CURRENT_SONG', isPlaying: true, payload: newQueue[0], index: 0, audioRef: new Audio(albumSongs[0].src), reset: true})
+    updateCurrentSongInDatabase(newQueue[0], 0)
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
 

@@ -9,6 +9,7 @@ import { ContextMenuContext } from '../../../contexts/ContextMenuContext'
 import { PlaylistContext } from '../../../contexts/PlaylistsContext'
 import { AllSongsContext } from '../../../contexts/AllSongsContext'
 import { Song } from '../../../data'
+import { updateCurrentSongInDatabase } from '../../../utilities'
 
 interface Props{
   selectedSongs: Array<Song>;
@@ -68,6 +69,7 @@ const AddTo: React.FC<Props> = ({selectedSongs, clearSelected}) => {
     if(songsToAdd){
       if(!currentSong.song){
         currentSongDispatch({type: 'SET_CURRENT_SONG', payload: songsToAdd[0], index: 0})
+        updateCurrentSongInDatabase(songsToAdd[0], 0)
       }
       dispatch({type: 'ADD_TO_QUEUE', payload: songsToAdd, index: currentSong.index})
     }

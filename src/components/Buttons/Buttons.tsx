@@ -3,6 +3,7 @@ import AddTo from './AddTo/AddTo'
 import { Song } from '../../data'
 import {CurrentSongContext} from '../../contexts/CurrentSongContext'
 import {QueueSongsContext} from '../../contexts/QueueSongsContext'
+import { updateCurrentSongInDatabase } from '../../utilities'
 
 interface Props{
     selectedSongs: Array<Song>
@@ -16,12 +17,14 @@ const Buttons:React.FC<Props> = ({selectedSongs, clearSelected}) => {
   
   const playAll: () => void = () => {
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: selectedSongs[0], index: 0, isPlaying: true})
+    updateCurrentSongInDatabase(selectedSongs[0], 0)
     dispatch({type: 'SET_QUEUE', payload: selectedSongs, index: 0})
     clearSelected()
   }
   const playNext: () => void = () => {
     if(!currentSong.song){
       currentSongDispatch({type: 'SET_CURRENT_SONG', payload: selectedSongs[0], index: 0})
+      updateCurrentSongInDatabase(selectedSongs[0], 0)
     }
     const currentSongQueueID = queue.findIndex(item => item.tag.tags.title === currentSong.song?.tag.tags.title)
     dispatch({type: 'PLAY_NEXT', payload: selectedSongs, index: currentSongQueueID})

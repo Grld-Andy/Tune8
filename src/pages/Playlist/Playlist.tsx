@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import './style.css'
 import { useLocation, useParams } from 'react-router-dom'
 import SongListItem from '../../components/SongListItem/SongListItem'
-import { shuffleArray, TotalDuration } from '../../utilities'
+import { shuffleArray, TotalDuration, updateCurrentSongInDatabase } from '../../utilities'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
@@ -26,11 +26,13 @@ const Playlist: React.FC = () => {
   }
   const playAllSongs = () => {
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: playlistSongs.songs[0], index: 0, audioRef: new Audio(playlistSongs.songs[0].src), reset: true, isPlaying: true})
+    updateCurrentSongInDatabase(playlistSongs.songs[0], 0)
     setQueueSongs()
   }
   const shuffleSongs: () => void = () => {
     const newQueue = shuffleArray(playlistSongs.songs)
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0, audioRef: new Audio(playlistSongs.songs[0].src), reset: true, isPlaying: true})
+    updateCurrentSongInDatabase(newQueue[0], 0)
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
   const clearPlaylist: () => void = async () => {

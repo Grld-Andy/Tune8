@@ -7,7 +7,7 @@ import {MdFavoriteBorder, MdFavorite} from 'react-icons/md'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import FavoritesContext from '../../contexts/FavoritesContext'
-import { DurationToString, shuffleArray } from '../../utilities'
+import { DurationToString, shuffleArray, updateCurrentSongInDatabase } from '../../utilities'
 import { Link } from 'react-router-dom'
 import './style.css'
 
@@ -37,22 +37,26 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
     if(currentSongIndex === queue.length-1){
       currentSongIndex = -1
     }
-    if (currentSong.audioRef) currentSong.audioRef.currentTime = 0
+    if (currentSong.audioRef){ currentSong.audioRef.currentTime = 0}
+    const nextsong = queue[currentSongIndex + 1]
     currentSongDispatch({
-      type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex + 1], isPlaying: currentSong.isPlaying,
-      index: currentSongIndex + 1, audioRef: new Audio(queue[currentSongIndex + 1].src)
+      type: 'SET_CURRENT_SONG', payload: nextsong, isPlaying: currentSong.isPlaying,
+      index: currentSongIndex + 1, audioRef: new Audio(nextsong.src)
     })
+    updateCurrentSongInDatabase(nextsong, currentSongIndex)
   }
   const prevSong: () => void = () => {
     let currentSongIndex: number = currentSong.index
     if(currentSongIndex === 0){
       currentSongIndex = queue.length
     }
-    if (currentSong.audioRef) currentSong.audioRef.currentTime = 0
+    if (currentSong.audioRef) {currentSong.audioRef.currentTime = 0}
+    const prevsong = queue[currentSongIndex - 1]
     currentSongDispatch({
-      type: 'SET_CURRENT_SONG', payload: queue[currentSongIndex - 1], isPlaying: currentSong.isPlaying,
-      index: currentSongIndex - 1, audioRef: new Audio(queue[currentSongIndex - 1].src)
+      type: 'SET_CURRENT_SONG', payload: prevsong, isPlaying: currentSong.isPlaying,
+      index: currentSongIndex - 1, audioRef: new Audio(prevsong.src)
     })
+    updateCurrentSongInDatabase(prevsong, currentSongIndex)
   }
   const {dispatch} = useContext(QueueSongsContext)
   const shuffleSongs: () => void = () => {
@@ -61,6 +65,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
       type: 'SET_CURRENT_SONG', payload: newQueue[0],
       index: 0, audioRef: new Audio(queue[0].src)
     })
+    updateCurrentSongInDatabase(newQueue[0], 0)
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
   const togglePlay: (val: boolean) => void = (val: boolean) => {
@@ -259,7 +264,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
           }
           <div className="text">
             {
-              currentSong.song?
+              currentSong.song && currentSong.song.tag?
               <>
                 <h5>{currentSong.song.tag.tags.title}</h5>
                 <h5>{currentSong.song.tag.tags.artist}</h5>
@@ -302,7 +307,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
             <FaVolumeHigh className='icon' onClick={() => {handleMuteSong(true)}}/>
           }
           <VscScreenFull className='icon enlarge_icon' onClick={maximize}/>
-          <HiMiniEllipsisHorizontal className='icon' onClick={() => {handleShowOptions('options')}}/>
+          <HiMiniEllipsisHorizontal className='icon details' onClick={() => {handleShowOptions('options')}}/>
           {
             showOptions === 'options' &&
             <ul className="b-right-menu">

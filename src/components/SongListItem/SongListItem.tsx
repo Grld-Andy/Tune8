@@ -8,6 +8,7 @@ import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { IoMdCheckmark } from 'react-icons/io'
+import { updateCurrentSongInDatabase } from '../../utilities'
 
 interface Props {
   song: Song
@@ -47,6 +48,7 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
       audioRef: new Audio(song.src),
       reset: resetSongs(currentSong.index, index),
     })
+    updateCurrentSongInDatabase(song, index)
     setQueueSongs()
   }
 

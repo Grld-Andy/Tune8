@@ -9,6 +9,7 @@ import { ContextMenuContext } from '../../contexts/ContextMenuContext'
 import { PlaylistContext } from '../../contexts/PlaylistsContext'
 import { AllSongsContext } from '../../contexts/AllSongsContext'
 import { IoMdCheckmark } from 'react-icons/io'
+import { updateCurrentSongInDatabase } from '../../utilities'
 
 interface Props{
     song: Song,
@@ -75,6 +76,7 @@ const SongTile: React.FC<Props> = (
 
   const playSong = () => {
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: song, index: 0, isPlaying: true, reset:true})
+    updateCurrentSongInDatabase(song, 0)
     const allSongs: Array<Song> = getAllSongs()
     dispatch({type: 'SET_QUEUE', payload: allSongs, index: 0})
   }

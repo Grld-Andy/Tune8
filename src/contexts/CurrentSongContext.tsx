@@ -38,17 +38,10 @@ const CurrentSongContextProvider: React.FC<Props> = (props) => {
             return await window.ipcRenderer.getLastPlayedSong()
         }
         getLastPlayed()
-        .then(res => dispatch({ type: 'SET_CURRENT_SONG', payload: res.song, index: res.index, isPlaying: res.isPlaying, audioRef: res.audioRef }))
+        .then(res => {
+            dispatch({ type: 'SET_CURRENT_SONG', payload: res.song, index: res.index, isPlaying: res.isPlaying, audioRef: res.audioRef })
+        })
     }, [])
-
-    useEffect(() => {
-        if(currentSong.song){
-            window.ipcRenderer.updateSongDatabase({...currentSong.song, lastPlayed: new Date()})
-            window.ipcRenderer.updateCurrentSong(currentSong.song?.id, currentSong.index)
-        }else{
-            window.ipcRenderer.updateCurrentSong('', -1)
-        }
-    }, [currentSong])
 
     return (
         <CurrentSongContext.Provider value={{ currentSong, currentSongDispatch: dispatch }}>

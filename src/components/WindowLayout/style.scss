@@ -163,6 +163,11 @@ nav{
             }
         }
     }
+    @media (max-width: 420px) {
+        button{
+            display: none
+        }
+    }
 }
 .dynamic-page{
     display: grid;

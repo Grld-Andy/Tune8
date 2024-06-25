@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import './style.css'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
-import { shuffleArray } from '../../utilities'
+import { clearCurrentSongInDatabase, shuffleArray, updateCurrentSongInDatabase } from '../../utilities'
 import { closestCorners, DndContext, DragEndEvent } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import SongListItem from '../../components/SongListItem/SongListItem'
@@ -19,6 +19,7 @@ const Queue: React.FC = () => {
     dispatch({ type: 'CLEAR_QUEUE', payload: [], index: 0 })
     currentSongDispatch({ type: 'TOGGLE_CURRENT_SONG_STATE', payload: null, index: 0, isPlaying: false })
     currentSongDispatch({ type: 'CLEAR_CURRENT_SONG', payload: null, index: -1, audioRef: null, isPlaying: false })
+    clearCurrentSongInDatabase()
   }
 
   const setQueueSongs = () => {
@@ -28,6 +29,7 @@ const Queue: React.FC = () => {
   const shuffleSongs = () => {
     const newQueue = shuffleArray(queue)
     currentSongDispatch({ type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0 })
+    updateCurrentSongInDatabase(newQueue[0], 0)
     dispatch({ type: 'SET_QUEUE', payload: newQueue, index: 0 })
   }
 
@@ -42,14 +44,17 @@ const Queue: React.FC = () => {
       // Update the current song index if it was moved
       if (currentSong.index === oldIndex) {
         currentSongDispatch({ type: 'SET_CURRENT_SONG', payload: newQueue[newIndex], index: newIndex })
+        updateCurrentSongInDatabase(newQueue[newIndex], newIndex)
       } else if (currentSong.index > oldIndex && currentSong.index <= newIndex) {
         // If the current song index is after the old index and before the new index, it should decrement by 1
         const updatedIndex = currentSong.index - 1
         currentSongDispatch({ type: 'SET_CURRENT_SONG', payload: newQueue[updatedIndex], index: updatedIndex })
+        updateCurrentSongInDatabase(newQueue[updatedIndex], updatedIndex)
       } else if (currentSong.index < oldIndex && currentSong.index >= newIndex) {
         // If the current song index is before the old index and after the new index, it should increment by 1
         const updatedIndex = currentSong.index + 1
         currentSongDispatch({ type: 'SET_CURRENT_SONG', payload: newQueue[updatedIndex], index: updatedIndex })
+        updateCurrentSongInDatabase(newQueue[updatedIndex], updatedIndex)
       }
     }
   }

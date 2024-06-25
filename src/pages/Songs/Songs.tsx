@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import SongListItem from '../../components/SongListItem/SongListItem'
 import { QueueSongsContext } from '../../contexts/QueueSongsContext'
 import { CurrentSongContext } from '../../contexts/CurrentSongContext'
-import { getSortedSongs, shuffleArray } from '../../utilities'
+import { getSortedSongs, shuffleArray, updateCurrentSongInDatabase } from '../../utilities'
 import { AllSongsContext } from '../../contexts/AllSongsContext'
 import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
 import SortButton from '../../components/SortButton/SortButton'
@@ -22,6 +22,7 @@ const Songs: React.FC = () => {
   // play all songs
   const playAllSongs: () => void = () => {
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: songs[0], index: 0, reset: true, isPlaying: true})
+    updateCurrentSongInDatabase(songs[0], 0)
     setQueueSongs()
   }
 
@@ -29,6 +30,7 @@ const Songs: React.FC = () => {
   const shuffleSongs: () => void = () => {
     const newQueue = shuffleArray(songs)
     currentSongDispatch({type: 'SET_CURRENT_SONG', payload: newQueue[0], index: 0, reset: true, isPlaying: true})
+    updateCurrentSongInDatabase(newQueue[0], 0)
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
 
