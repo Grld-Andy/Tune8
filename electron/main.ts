@@ -49,7 +49,7 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
       nodeIntegration: true,
-      devTools: false,
+      devTools: false
     },
     show: false,
     maximizable: true,
@@ -78,62 +78,49 @@ function createWindow() {
   }
 }
 
+app.on('will-quit', () => {
+  // Unregister all shortcuts.
+  globalShortcut.unregisterAll()
+})
 
+// Quit when all windows are closed, except on macOS. There, it's common
+// for applications and their menu bar to stay active until the user quits
+// explicitly with Cmd + Q.
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+    win = null
+  }
+})
 
-const gotTheLock = app.requestSingleInstanceLock()
-
-if (!gotTheLock) {
-  app.quit()
-} else {
-  app.on('second-instance', () => {
-    // Focus on the existing window if the user tries to open another instance
-    if (win) {
-      if (win.isMinimized()) win.restore()
-      win.focus()
-    }
-  })
-
-  app.on('ready', () => {
+app.on('activate', () => {
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
+  }
+})
 
-    // Register the Media Next Track key
-    globalShortcut.register('MediaNextTrack', () => {
-      if (win) {
-        win.webContents.send('play-next-song')
-      }
-    })
+// const gotTheLock = app.requestSingleInstanceLock()
 
-    // Register the Media Previous Track key
-    globalShortcut.register('MediaPreviousTrack', () => {
-      if (win) {
-        win.webContents.send('play-prev-song')
-      }
-    })
-  })
+app.whenReady().then(() => {
+  createWindow()
 
-  app.on('will-quit', () => {
-    // Unregister all shortcuts.
-    globalShortcut.unregisterAll()
-  })
-  
-  // Quit when all windows are closed, except on macOS. There, it's common
-  // for applications and their menu bar to stay active until the user quits
-  // explicitly with Cmd + Q.
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      app.quit()
-      win = null
+  // Register the Media Next Track key
+  globalShortcut.register('MediaNextTrack', () => {
+    if (win) {
+      win.webContents.send('play-next-song')
     }
   })
-  
-  app.on('activate', () => {
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
+
+  // Register the Media Previous Track key
+  globalShortcut.register('MediaPreviousTrack', () => {
+    if (win) {
+      win.webContents.send('play-prev-song')
     }
   })
-}
+})
+
 
 // open dialog to select music folder
 const handleDirectoryOpen = async () => {

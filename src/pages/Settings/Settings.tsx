@@ -72,6 +72,7 @@ const Settings: React.FC = () => {
 
   const clearData = async () => {
     localStorage.clear()
+    setMusicPaths([])
     clearQueue()
     clearSongs()
     clearAllPlaylists()

@@ -1,5 +1,4 @@
 import { createRequire } from 'node:module'
-import { fileURLToPath } from 'node:url'
 import { RowCurrentSong, RowLyrics, RowMusicPath, RowPlaylist, RowPlaylistSong, RowQueue, RowSong } from './tables'
 import { Song } from '../types/index'
 import path from 'node:path'
@@ -8,13 +7,12 @@ const sqlite3 = require('sqlite3').verbose()
 const { app } = require('electron')
 
 // const database
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const isDev = !app.isPackaged
 let databasePath: string
 if (isDev) {
-    databasePath = path.join(__dirname, 'database.db')
+    databasePath = path.join(app.getPath('userData'), 'database.db')
 } else {
-    databasePath = path.join(process.resourcesPath, 'app/dist-electron/database.db')
+    databasePath = path.join(app.getPath('userData'), 'database.db')
 }
 const database = new sqlite3.Database(databasePath)
 
