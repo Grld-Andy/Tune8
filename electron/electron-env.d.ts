@@ -34,7 +34,7 @@ interface IpcRendererCustom extends Electron.IpcRenderer {
   addMusicDirectory: () => Promise<RowMusicPath>;//
   updateSongDatabase: (song: Song) => Promise<string>;//not done
   clearSongs: () => Promise<string>;//
-  getLastPlayedSong: () => Promise<RowCurrentSong>;//
+  getLastPlayedSong: () => Promise<{song: Song, queue_no: number}>;//
   updateCurrentSong: (song_id: string, queue_no: number) => Promise<string>;//
   addSongToQueue: (song: Song) => Promise<string>;
   removeSongFromQueue: (id: number) => Promise<string>;

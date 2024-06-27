@@ -6,7 +6,6 @@ export const currentSongReducer = (currentSong: CurrentSongState,
   : CurrentSongState => {
   switch (action.type) {
     case 'SET_CURRENT_SONG':
-      localStorage.setItem('lastPlayed', JSON.stringify({song: action.payload, index: action.index}))
       if (currentSong.audioRef && action.reset) {
         currentSong.audioRef.currentTime = 0
         return { ...currentSong, song: action.payload, index: action.index, audioRef: action.audioRef ?? currentSong.audioRef, isPlaying: action.isPlaying ?? currentSong.isPlaying }
@@ -23,7 +22,6 @@ export const currentSongReducer = (currentSong: CurrentSongState,
         return currentSong
       }
     case 'CLEAR_CURRENT_SONG':
-      localStorage.setItem('lastPlayed', JSON.stringify({song: null, index: -1}))
       if (currentSong.audioRef) {
         currentSong.audioRef.currentTime = 0
         currentSong.audioRef?.pause()

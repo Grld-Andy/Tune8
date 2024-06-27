@@ -49,14 +49,14 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
       nodeIntegration: true,
-      devTools: false
+      devTools: true
     },
     show: false,
     maximizable: true,
     autoHideMenuBar: true
   })
 
-  // win.webContents.openDevTools()
+  win.webContents.openDevTools()
   
   // Show the window once it is ready to be shown
   win.once('ready-to-show', () => {
@@ -188,7 +188,6 @@ ipcMain.handle('get-all-songs', async (_event, musicPaths:string) => {
 })
 // update song
 ipcMain.handle('update-song', (_event, song: Song) => {
-  console.log(song.tag.tags.title)
   return updateSongInDatabase(song)
 })
 // clear songs

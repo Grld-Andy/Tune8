@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, ReactNode, useContext, useReducer } from "react";
+import React, { createContext, Dispatch, ReactNode, useContext, useEffect, useReducer } from "react";
 import { favoritesReducer } from "../reducers/FavoritesReducer";
 import { Song } from "../data";
 import { AllSongsContext } from "./AllSongsContext";
@@ -23,9 +23,12 @@ export const FavoritesContext = createContext<FavoritesContextType>({
 export const FavoritesContextProvider: React.FC<Props> = (props) => {
   const { songs } = useContext(AllSongsContext)
 
-  const [favorites, favoritesDispatch] = useReducer(favoritesReducer, [], () => {
-    return songs.filter(song => song.isFavorite)
-  })
+  const [favorites, favoritesDispatch] = useReducer(favoritesReducer, [])
+
+  useEffect(() => {
+    const favoriteSongs = songs.filter(song => song.isFavorite)
+    favoritesDispatch({type: 'ADD_TO_FAVORITES', payload: favoriteSongs})
+  }, [songs])
 
   return (
     <FavoritesContext.Provider value={{favorites, favoritesDispatch}}>

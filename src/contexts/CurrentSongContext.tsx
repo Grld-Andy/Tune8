@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useEffect, useReducer } from "react";
 import { currentSongReducer } from "../reducers/CurrentSongReducer";
 import { Song } from "../data";
-
 interface Props {
     children: ReactNode
 }
@@ -22,7 +21,7 @@ const initialState: CurrentSongState = {
 
 interface CurrentSongType {
     currentSong: CurrentSongState,
-    currentSongDispatch: React.Dispatch<{ type: string, payload: Song | null, index: number, isPlaying?: boolean, audioRef?: HTMLAudioElement | null, reset?: boolean }>
+    currentSongDispatch: React.Dispatch<{ type: string, payload: Song | null, index: number, isPlaying?: boolean, audioRef?: HTMLAudioElement | null, currentSonget?: boolean }>
 }
 
 export const CurrentSongContext = createContext<CurrentSongType>({
@@ -35,12 +34,13 @@ const CurrentSongContextProvider: React.FC<Props> = (props) => {
 
     useEffect(() => {
         const getLastPlayed = async() => {
-            return await window.ipcRenderer.getLastPlayedSong()
+            const lastSong: {song: Song, queue_no: number} = await window.ipcRenderer.getLastPlayedSong()
+            const songAudio = new Audio()
+            songAudio.src = lastSong.song.src
+            console.log(lastSong)
+            dispatch({ type: 'SET_CURRENT_SONG', payload: lastSong.song, index: lastSong.queue_no, isPlaying: false, audioRef: songAudio })
         }
         getLastPlayed()
-        .then(res => {
-            dispatch({ type: 'SET_CURRENT_SONG', payload: res.song, index: res.index, isPlaying: res.isPlaying, audioRef: res.audioRef })
-        })
     }, [])
 
     return (

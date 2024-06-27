@@ -16,6 +16,9 @@ export interface RowCurrentSong {
     song: RowSong;
     queue_no: number;
 }
+export interface RowCurrentSongPlusSong extends RowSong{
+    queue_no: number;
+}
 export interface RowMusicPath{
     id: number,
     path: string

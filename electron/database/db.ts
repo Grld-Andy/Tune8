@@ -1,7 +1,8 @@
 import { createRequire } from 'node:module'
-import { RowCurrentSong, RowLyrics, RowMusicPath, RowPlaylist, RowPlaylistSong, RowQueue, RowSong } from './tables'
+import { RowCurrentSongPlusSong, RowLyrics, RowMusicPath, RowPlaylist, RowPlaylistSong, RowQueue, RowSong } from './tables'
 import { Song } from '../types/index'
 import path from 'node:path'
+import { formatSongRowToSongObject } from '../songsApi/songsApi'
 const require = createRequire(import.meta.url)
 const sqlite3 = require('sqlite3').verbose()
 const { app } = require('electron')
@@ -187,47 +188,30 @@ export async function saveSongLyrics(lyrics:{lyric: string, song_id: string}){
 
 // SONGS (get/post/update)
 export async function fetchSongsFromDatabase() {
-  try {
-      const db = new sqlite3.Database(databasePath)
-      const rows: Array<RowSong> = await new Promise((resolve, reject) => {
-          db.all('SELECT * FROM songs', (err: unknown, rows: Array<RowSong>) => {
-              if (err) {
-                  reject(err)
-              } else {
-                  db.close((err:unknown) => {
-                      if(err){
-                          console.error('An error occured')
-                      }
-                      else{
-                          console.log('Database closed succefully')
-                      }
-                  })
-                  resolve(rows)
-              }
-          })
-      })
-      return rows.map(row => ({
-          imageSrc: row.imageSrc,
-          duration: row.duration,
-          src: row.src,
-          isFavorite: row.isFavorite,
-          dateAdded: row.dateAdded,
-          lastPlayed: row.lastPlayed,
-          id: row.id,
-          tag: {
-              tags: {
-                  title: row.title,
-                  artist: row.artist,
-                  year: row.year,
-                  genre: row.genre,
-                  album: row.album
-              }
-          }
-      }))
-  }catch (error) {
-      console.error('Error fetching data from database:', error)
-      throw error
-  }
+    try {
+        const db = new sqlite3.Database(databasePath)
+        const rows: Array<RowSong> = await new Promise((resolve, reject) => {
+            db.all('SELECT * FROM songs', (err: unknown, rows: Array<RowSong>) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    db.close((err:unknown) => {
+                        if(err){
+                            console.error('An error occured')
+                        }
+                        else{
+                            console.log('Database closed succefully')
+                        }
+                    })
+                    resolve(rows)
+                }
+            })
+        })
+    return rows.map(row => formatSongRowToSongObject(row))
+    }catch (error) {
+        console.error('Error fetching data from database:', error)
+        throw error
+    }
 }
 export async function insertSongIntoDatabase(songObject: Song){
     return new Promise((resolve, reject) => {
@@ -253,12 +237,13 @@ export async function insertSongIntoDatabase(songObject: Song){
 export async function updateSongInDatabase(songObject: Song){
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database(databasePath)
-        db.run(`UPDATE songs SET title =?, artist =?, album =?, year =?, genre =?, imageSrc =?, duration =?, src =? WHERE id =?`,
+        db.run(`UPDATE songs SET title =?, artist =?, album =?, year =?, isFavorite=?, genre =?, imageSrc =?, duration =?, src =? WHERE id =?`,
             [songObject.tag.tags.title, songObject.tag.tags.artist, songObject.tag.tags.album,
-                songObject.tag.tags.year, songObject.tag.tags.genre, songObject.imageSrc,
+                songObject.tag.tags.year, songObject.isFavorite, songObject.tag.tags.genre, songObject.imageSrc,
                 songObject.duration, songObject.src, songObject.id],
             function (err: Error) {
                 if (err) {
+                    console.error('not found: ', err)
                     reject(err)
                 } else {
                     db.close((err: Error) => {
@@ -268,6 +253,7 @@ export async function updateSongInDatabase(songObject: Song){
                             console.log('Database connection closed.')
                         }
                     })
+                    console.log(`${songObject.tag.tags.title} is now ${songObject.isFavorite}`)
                     resolve("Successful")
                 }
             }
@@ -289,13 +275,13 @@ export const getCurrentSong = () => {
             JOIN songs ON currentSong.song_id = songs.id
             WHERE currentSong.id = 1
         `
-        database.get(query, (err: Error, row: RowCurrentSong) => {
+        database.get(query, (err: Error, row: RowCurrentSongPlusSong) => {
             if (err) {
                 reject(err)
             } else {
                 if(row){
-                const { queue_no, ...song } = row
-                resolve({ song, queueNo: queue_no })
+                    const songObject = formatSongRowToSongObject(row)
+                    resolve({ song: songObject, queue_no: row.queue_no })
                 }else{
                     resolve({song: null, queue_no: -1})
                 }
@@ -309,16 +295,16 @@ export const updateCurrentSong = (song_id: string, queue_no: number) => {
             INSERT INTO currentSong (id, song_id, queue_no)
             VALUES (1, ?, ?)
             ON CONFLICT(id) DO UPDATE SET song_id = excluded.song_id, queue_no = excluded.queue_no
-        `;
+        `
         database.run(stmt, [song_id, queue_no], function(err: Error) {
             if (err) {
-                reject(err);
+                reject(err)
             } else {
-                resolve('Successful');
+                resolve('Successful')
             }
-        });
-    });
-};
+        })
+    })
+}
 
 
 
@@ -366,22 +352,22 @@ export async function fetchAllSongsInQueue() {
     return new Promise((resolve, reject) => {
         db.all(`SELECT * FROM queue`, [], (err: Error, queueRows: Array<RowQueue>) => {
             if (err) {
-                return reject(err);
+                return reject(err)
             }
-            const songIds = queueRows.map(row => row.song_id);
+            const songIds = queueRows.map(row => row.song_id)
             if (songIds.length === 0) {
-                return resolve([]);
+                return resolve([])
             }
-            const fetchSongsQuery = `SELECT * FROM songs WHERE id IN (${songIds.join(',')})`;
+            const fetchSongsQuery = `SELECT * FROM songs WHERE id IN (${songIds.join(',')})`
 
             db.all(fetchSongsQuery, [], (err:Error, songRows: Array<RowSong>) => {
                 if (err) {
-                    return reject(err);
+                    return reject(err)
                 }
-                resolve(songRows);
-            });
-        });
-    });
+                resolve(songRows)
+            })
+        })
+    })
 }
 export async function deleteQueueById(id: number){
     const db = new sqlite3.Database(databasePath)
@@ -409,13 +395,13 @@ export const getPlaylists = (): Promise<Array<RowPlaylist>> => {
     return new Promise((resolve, reject) => {
         database.all('SELECT * FROM playlist', (err: Error, rows: Array<RowPlaylist>) => {
         if (err) {
-            reject(err);
+            reject(err)
         } else {
-            resolve(rows);
+            resolve(rows)
         }
-        });
-    });
-};
+        })
+    })
+}
 
 export const getPlaylistSongs = (id: number): Promise<Array<RowPlaylistSong>> => {
     return new Promise((resolve, reject) => {
@@ -426,14 +412,17 @@ export const getPlaylistSongs = (id: number): Promise<Array<RowPlaylistSong>> =>
         [id],
         (err: Error, rows: Array<RowPlaylistSong>) => {
             if (err) {
-            reject(err);
+                reject(err)
             } else {
-            resolve(rows);
+                if(rows.length === 0)
+                    resolve(rows)
+                else
+                    resolve([])
             }
         }
-        );
-    });
-};
+        )
+    })
+}
 
 export const addPlaylist = (name: string, defaultImage: string): Promise<number> => {
     return new Promise((resolve, reject) => {
@@ -442,22 +431,22 @@ export const addPlaylist = (name: string, defaultImage: string): Promise<number>
         [name, defaultImage],
         (err: Error) => {
             if (err) {
-            reject(err);
+            reject(err)
             } else {
                 database.get('SELECT last_insert_rowid() as id', [], (err: Error, row: RowPlaylist) => {
                     if (err) {
-                        reject(err);
+                        reject(err)
                     } else if (row && row.id) {
-                        resolve(row.id);
+                        resolve(row.id)
                     } else {
-                        reject(new Error('Unable to get last inserted row id'));
+                        reject(new Error('Unable to get last inserted row id'))
                     }
-                });
+                })
             }
         }
-        );
-    });
-};
+        )
+    })
+}
 
 export const deletePlaylist = (id: number): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -466,14 +455,14 @@ export const deletePlaylist = (id: number): Promise<void> => {
         [id],
         (err: Error) => {
             if (err) {
-            reject(err);
+            reject(err)
             } else {
-            resolve();
+            resolve()
             }
         }
-        );
-    });
-};
+        )
+    })
+}
 
 export const updatePlaylist = (id: number, name: string): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -482,14 +471,14 @@ export const updatePlaylist = (id: number, name: string): Promise<void> => {
         [name, id],
         (err: Error) => {
             if (err) {
-            reject(err);
+            reject(err)
             } else {
-            resolve();
+            resolve()
             }
         }
-        );
-    });
-};
+        )
+    })
+}
 
 export const addSongToPlaylist = (songId: string, playlistId: number): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -498,13 +487,13 @@ export const addSongToPlaylist = (songId: string, playlistId: number): Promise<v
         [playlistId, songId],
         (err: Error) => {
             if (err) {
-            reject(err);
+            reject(err)
             } else {
-            resolve();
+            resolve()
             }
         }
-        );
-    });
+        )
+    })
 }
 export const removeSongFromPlaylist = (songId: string, playlistId: number): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -513,14 +502,14 @@ export const removeSongFromPlaylist = (songId: string, playlistId: number): Prom
         [playlistId, songId],
         (err: Error) => {
             if (err) {
-            reject(err);
+            reject(err)
             } else {
-            resolve();
+            resolve()
             }
         }
-        );
-    });
-};
+        )
+    })
+}
 
 // MUSIC PATHS
 export const insertIntoMusicPath = (musicPath: string): Promise<number> => {

@@ -20,17 +20,17 @@ const Settings: React.FC = () => {
   }
 
   const refreshSongs = async() => {
-    const musicPath:Array<string> = JSON.parse(localStorage.getItem("MusicPaths") ?? '[]')
+    const musicPaths:Array<MusicPaths> = await window.ipcRenderer.fetchMusicPaths()
     try {
       const allSongs: Array<Song> = []
-      if(musicPath.length > 0)
+      if(musicPaths.length > 0)
         feedbackDispatch({type: 'LOADER', payload:{text: 'Indexing songs', view: 'loader'}})
-      musicPath.forEach(async (path, index) => {
-        const songs: Array<Song> = await window.ipcRenderer.GetSongs(path)
+      musicPaths.forEach(async (path, index) => {
+        const songs: Array<Song> = await window.ipcRenderer.GetSongs(path.path)
         if(songs.length > 0){
           allSongs.push(...songs)
           songsDispatch({ type: 'SET_SONGS', payload: allSongs })
-          if(index === musicPath.length - 1)
+          if(index === musicPaths.length - 1)
             feedbackDispatch({type: 'CLOSE_LOADER', payload:{text: '', view: 'close_loader'}})
         }
       })

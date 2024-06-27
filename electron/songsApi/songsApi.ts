@@ -7,6 +7,7 @@ import { v1 } from 'uuid'
 import { DurationToString } from '../../src/utilities'
 import { RENDERER_DIST } from '../main'
 import { fetchSongsFromDatabase, insertSongIntoDatabase } from '../database/db'
+import { RowSong } from '../database/tables'
 
 async function getFiles(dir: string): Promise<string[]> {
   const subdirs = await fs.promises.readdir(dir)
@@ -114,4 +115,45 @@ const getRandomPlaceholderImage = async () => {
     console.error('Error getting random placeholder image:', error)
     return null
   }
+}
+
+export const formatSongRowToSongObject: (s:RowSong) => Song = (song: RowSong) => {
+  const songObject = {
+    id: song.id,
+    src: song.src,
+    tag: {
+      tags: {
+        title: song.title,
+        artist: song.artist,
+        album: song.album,
+        year: song.year,
+        genre: song.genre,
+      },
+    },
+    imageSrc: song.imageSrc,
+    duration: song.duration,
+    isFavorite: song.isFavorite,
+    dateAdded: song.dateAdded
+  }
+  return songObject
+}
+export const formatCurrentSongRowToSongObject: (s:RowSong) => Song = (song: RowSong) => {
+  const songObject = {
+    id: song.id,
+    src: song.src,
+    tag: {
+      tags: {
+        title: song.title,
+        artist: song.artist,
+        album: song.album,
+        year: song.year,
+        genre: song.genre,
+      },
+    },
+    imageSrc: song.imageSrc,
+    duration: song.duration,
+    isFavorite: song.isFavorite,
+    dateAdded: song.dateAdded
+  }
+  return songObject
 }
