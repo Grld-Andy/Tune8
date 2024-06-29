@@ -15,6 +15,7 @@ const ContextMenu: React.FC = () => {
   const closeMenu = (e: React.MouseEvent) => {
     e.preventDefault()
     contextMenuDispatch({ type: 'CLOSE_MENU', payload: {x: 0, y: 0, lastClicked: contextMenu.lastClicked} })
+    contextMenuDispatch({type: 'CLEAR_CONTEXT', payload: {x: 0, y: 0, lastClicked: []}})
   }
 
   // context menu options
@@ -100,7 +101,7 @@ const ContextMenu: React.FC = () => {
         favoritesDispatch({type: 'REMOVE_FROM_FAVORITES', payload: contextMenu.lastClicked})
         break
       case '/playlists':
-        if(contextMenu.nameClicked && playlist){
+        if(contextMenu.nameClicked){
           const playlist = playlists.find(item => item.name === contextMenu.nameClicked)
           if(!playlist)
             break
@@ -112,13 +113,17 @@ const ContextMenu: React.FC = () => {
         break
     }
     if(playlist){
-      if(playlist){
-        const pList = playlists.find(item => item.name === contextMenu.nameClicked)
-          if(!pList)
-            return
-        contextMenu.lastClicked.forEach( async (song) => {await window.ipcRenderer.removeSongFromPlaylist(song.id, pList.id)})
+        const pList = playlists.find(item => item.name === playlist)
+        if(!pList){
+          return
+        }
+        console.log(contextMenu.lastClicked)
+        contextMenu.lastClicked.forEach( async (song) => {
+          console.log(pList)
+          console.log(song)
+          await window.ipcRenderer.removeSongFromPlaylist(song.id, pList.id)
+        })
         playlistsDispatch({type: 'REMOVE_FROM_PLAYLIST', payload: {id: pList.id, name: playlist, songs: contextMenu.lastClicked}})
-      }
     }
   }
   

@@ -16,7 +16,7 @@
   align-items: center;
   justify-content: center;
   background-color: var(--playlist-overlay-bg);
-  z-index: 21;
+  z-index: 27;
   overflow: hidden;
   position: fixed;
 }

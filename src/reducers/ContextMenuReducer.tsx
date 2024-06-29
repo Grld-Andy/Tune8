@@ -10,7 +10,7 @@ export const contextMenuReducer = (contextMenu: ContextMenuState, action: {type:
         position: action.payload || {x: 0, y: 0},
         lastClicked: action.payload.lastClicked,
         indexClicked: action.payload.indexClicked,
-        nameClicked: action.payload.nameClicked
+        nameClicked: action.payload.nameClicked,
       }
     case 'CLOSE_MENU':
       return {
@@ -18,6 +18,12 @@ export const contextMenuReducer = (contextMenu: ContextMenuState, action: {type:
         isOpen: false,
         lastClicked: action.payload.lastClicked,
         nameClicked: action.payload.nameClicked
+      }
+    case 'CLEAR_CONTEXT':
+      return {
+        ...contextMenu,
+        isOpen: false,
+        lastClicked: [],
       }
     default:
       return contextMenu

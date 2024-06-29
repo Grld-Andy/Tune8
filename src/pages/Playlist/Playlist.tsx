@@ -36,11 +36,14 @@ const Playlist: React.FC = () => {
     dispatch({type: 'SET_QUEUE', payload: newQueue, index: 0})
   }
   const clearPlaylist: () => void = async () => {
-    const item = playlists.find(val => val.id)
-    if(!playlist || !item)
-      return
-    await window.ipcRenderer.updatePlaylist(item.id, "")
-    playlistsDispatch({type: 'CLEAR_PLAYLIST', payload: {id: item.id, name: item.name, songs: []}})
+    const item = playlists.find(val => val.name === playlist)
+    if(playlist && item){
+      item.songs.forEach(song => {
+        window.ipcRenderer.removeSongFromPlaylist(song.id, item.id).then(() => {
+          playlistsDispatch({type: 'CLEAR_PLAYLIST', payload: {id: item.id, name: item.name, songs: []}})
+        })
+      })
+    }
   }
   const edit = () => {
     if(location.pathname.includes('/playlistView/')){

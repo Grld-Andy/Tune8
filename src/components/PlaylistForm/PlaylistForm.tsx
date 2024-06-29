@@ -16,6 +16,7 @@ const PlaylistForm: React.FC = () => {
         setPlaylistName(val)
     }
     const closeForm = () => {
+        contextMenuDispatch({type: 'CLEAR_CONTEXT', payload: {x: 0, y: 0, lastClicked: []}})
         playlistFormDispatch({type: 'CLOSE_FORM', payload: ''})
     }
 
@@ -27,7 +28,9 @@ const PlaylistForm: React.FC = () => {
             if(val === 'submit'){
                 const defaultImage = placeholderSongImages[Math.floor(Math.random() * 4)]
                 const playlistId = await window.ipcRenderer.createPlaylist(playlistName, defaultImage)
-                playlistsDispatch({ type: 'CREATE_PLAYLIST', payload: {id: playlistId,name:playlistName, songs: []} })
+                const selectedSongs = contextMenu.lastClicked
+                playlistsDispatch({ type: 'CREATE_PLAYLIST', payload: {id: playlistId,name:playlistName, songs: selectedSongs} })
+                contextMenuDispatch({type: 'CLEAR_CONTEXT', payload: {x: 0, y: 0, lastClicked: []}})
                 setPlaylistName('')
             }
             if(val === 'edit' && playlistForm.name){
@@ -48,12 +51,14 @@ const PlaylistForm: React.FC = () => {
     }
 
     // add to existing playlist
-    const { contextMenu } = useContext(ContextMenuContext)
+    const { contextMenu, contextMenuDispatch } = useContext(ContextMenuContext)
     const addToPlaylist = async (name: string) => {
-        const playlist = playlists.find(val => val.name === playlistName)
+        const playlist = playlists.find(val => val.name === name)
         if(playlist){
-            await Promise.all(contextMenu.lastClicked.map(song => window.ipcRenderer.addSongToPlaylist(song.id, playlist.id)))
-            playlistsDispatch({ type: 'ADD_TO_PLAYLIST', payload: {id: 0,name:name, songs: contextMenu.lastClicked} })
+            const playlistSongs = contextMenu.lastClicked
+            await Promise.all(playlistSongs.map(song => window.ipcRenderer.addSongToPlaylist(song.id, playlist.id)))
+            playlistsDispatch({ type: 'ADD_TO_PLAYLIST', payload: {id: 0,name:name, songs: playlistSongs} })
+            contextMenuDispatch({type: 'CLEAR_CONTEXT', payload: {x: 0, y: 0, lastClicked: []}})
         }
         closeForm()
     }

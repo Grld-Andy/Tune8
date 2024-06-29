@@ -8,6 +8,7 @@ import { DurationToString } from '../../src/utilities'
 import { RENDERER_DIST } from '../main'
 import { fetchSongsFromDatabase, insertSongIntoDatabase } from '../database/db'
 import { RowSong } from '../database/tables'
+import { app } from 'electron'
 
 async function getFiles(dir: string): Promise<string[]> {
   const subdirs = await fs.promises.readdir(dir)
@@ -17,33 +18,25 @@ async function getFiles(dir: string): Promise<string[]> {
   }))
   return files.flat()
 }
-export const getAllSongs = async (musicPaths: string) => {
+export const getAllSongs = async () => {
   let songs: Array<Song> = []
   songs = await fetchSongsFromDatabase()
   if(songs.length > 0){
     return songs
+  }else{
+    return []
   }
-  let songPaths: Array<string> = []
-  if (musicPaths) {
-    try {
-      songPaths = await getFiles(musicPaths)
-    } catch (err) {
-      console.error('Error reading files:', err)
-      songPaths = []
-    }
-  } else {
-    return songs
-  }
-
-  for (const songPath of songPaths) {
+}
+export async function insertNewSongs(path: string){
+  const musicFiles = await getFiles(path)
+  for (const songPath of musicFiles) {
     try {
       const songData = await getSongTags(songPath)
-      songs.push(songData)
+      insertSongIntoDatabase(songData)
     } catch (err) {
       console.error('Error fetching song tags:', err)
     }
   }
-  return songs
 }
 const getSongTags: (s:string) => Promise<Song> = async (songPath: string) => {
   return new Promise((resolve, reject) => {
@@ -83,7 +76,7 @@ const getSongTags: (s:string) => Promise<Song> = async (songPath: string) => {
 }
 
 const saveImageToFile = async (picture: mm.IPicture) => {
-  const imagesDir = path.join(RENDERER_DIST, 'public/images')
+  const imagesDir = path.join(app.getPath('userData'), 'images')
   if (!fs.existsSync(imagesDir)) {
     try {
       await fs.promises.mkdir(imagesDir, { recursive: true })
@@ -98,7 +91,7 @@ const saveImageToFile = async (picture: mm.IPicture) => {
   
   try {
     await fs.promises.writeFile(imagePath, imageBuffer)
-    return path.join(RENDERER_DIST, `public/images/${imageFileName}`)
+    return path.join(app.getPath('userData'), `images/${imageFileName}`)
   } catch (error) {
     console.error('Error saving image to file:', error)
     return null

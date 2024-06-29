@@ -34,9 +34,11 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
   const {queue} = useContext(QueueSongsContext)
   const nextSong: () => void = () => {
     let currentSongIndex: number = currentSong.index
+    console.log('current song index: ', currentSong)
     if(currentSongIndex === queue.length-1){
       currentSongIndex = -1
     }
+    console.log('next song index: ', currentSong)
     if (currentSong.audioRef){ currentSong.audioRef.currentTime = 0}
     const nextsong = queue[currentSongIndex + 1]
     currentSongDispatch({
@@ -147,6 +149,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
   // listening to shortcuts
   useEffect(() => {
     window.ipcRenderer.onPlayNext(() => {
+      console.log('came all the way to next')
       nextSong()
     })
     window.ipcRenderer.onPlayPrev(() => {
@@ -157,13 +160,6 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
         togglePlay(!currentSong.isPlaying)
     })
 
-    // Cleanup event listeners on component unmount
-    return () => {
-      window.ipcRenderer.onPlayNext(() => {})
-      window.ipcRenderer.onPlayPrev(() => {})
-      window.ipcRenderer.onPlayPause(() => {})
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

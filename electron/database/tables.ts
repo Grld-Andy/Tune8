@@ -34,6 +34,10 @@ export interface RowPlaylistSong{
     song_id: string;
     playlist_id: number;
 }
+export interface RowPlaylistSongPlusSong extends RowSong{
+    song_id: string;
+    playlist_id: number;
+}
 export interface RowQueue{
     id: number;
     song_id: number,

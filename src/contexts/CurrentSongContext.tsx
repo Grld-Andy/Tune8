@@ -21,7 +21,7 @@ const initialState: CurrentSongState = {
 
 interface CurrentSongType {
     currentSong: CurrentSongState,
-    currentSongDispatch: React.Dispatch<{ type: string, payload: Song | null, index: number, isPlaying?: boolean, audioRef?: HTMLAudioElement | null, currentSonget?: boolean }>
+    currentSongDispatch: React.Dispatch<{ type: string, payload: Song | null, index: number, isPlaying?: boolean, audioRef?: HTMLAudioElement | null, currentSong?: Song, reset?: boolean }>
 }
 
 export const CurrentSongContext = createContext<CurrentSongType>({
@@ -34,11 +34,14 @@ const CurrentSongContextProvider: React.FC<Props> = (props) => {
 
     useEffect(() => {
         const getLastPlayed = async() => {
-            const lastSong: {song: Song, queue_no: number} = await window.ipcRenderer.getLastPlayedSong()
-            const songAudio = new Audio()
-            songAudio.src = lastSong.song.src
-            console.log(lastSong)
-            dispatch({ type: 'SET_CURRENT_SONG', payload: lastSong.song, index: lastSong.queue_no, isPlaying: false, audioRef: songAudio })
+            await window.ipcRenderer.getLastPlayedSong()
+            .then(lastSong => {
+                if(lastSong.song){
+                    const songAudio = new Audio()
+                    songAudio.src = lastSong.song.src
+                    dispatch({ type: 'SET_CURRENT_SONG', payload: lastSong.song, index: lastSong.queue_no, isPlaying: false, audioRef: songAudio })
+                }
+            })
         }
         getLastPlayed()
     }, [])

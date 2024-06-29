@@ -17,7 +17,7 @@ const msiCreator = new MSICreator({
         chooseDirectory: true,
         images: {
             background: path.resolve(__dirname, './public/setupFiles/bg2.png'),
-            banner: path.resolve(__dirname, './public/setupFiles/bg1.jpg')
+            banner: path.resolve(__dirname, './public/setupFiles/bg1.png')
         }
     },
     icon: path.resolve(__dirname, './public/setupFiles/setup.ico')

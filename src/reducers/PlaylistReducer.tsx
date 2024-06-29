@@ -6,6 +6,8 @@ export const PlaylistReducer = (playlists: Array<PlaylistInterface>, action: {ty
         case 'CREATE_PLAYLIST':
             if(!playlists.some(playlist => playlist.name === action.payload.name)){
                 action.payload.defaultImage = placeholderSongImages[Math.floor(Math.random() * 4)]
+                if(action.songs)
+                    action.payload.songs = action.songs
                 return [...playlists, action.payload]
             }
             else return Array.from(new Set(playlists))

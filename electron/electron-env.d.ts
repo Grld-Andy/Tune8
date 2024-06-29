@@ -25,7 +25,7 @@ declare namespace NodeJS {
 interface IpcRendererCustom extends Electron.IpcRenderer {
   Minimize: () => void;//
   Maximize: () => void;//
-  GetSongs: (musicPaths: string) => Promise<Array<Song>>;//
+  GetSongs: () => Promise<Array<Song>>;//
   onPlayNext: (callback: (event: Electron.IpcRendererEvent) => void) => void;
   onPlayPrev: (callback: (event: Electron.IpcRendererEvent) => void) => void;
   onPlayPause: (callback: (event: Electron.IpcRendererEvent) => void) => void;

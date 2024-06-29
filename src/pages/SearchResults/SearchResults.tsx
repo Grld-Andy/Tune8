@@ -35,19 +35,19 @@ const SearchResults: React.FC = () => {
     const filteredAlbums = Array.from(albumsSet).filter(album =>
       album.toLowerCase().includes(lowerCaseQuery)
     )
-    const albumResults = filteredAlbums.flatMap(album =>
-      songs.filter(song => song.tag.tags.album.toLowerCase().includes(album.toLowerCase()))
-    )
+    const albumResults: Array<Song> = filteredAlbums.map(album => 
+      songs.find(song => song.tag.tags.album === album)
+    ).filter(song => song !== undefined) as Array<Song>
     setQueryAlbums(albumResults)
 
     // get songs by artist
-    const artistSet = new Set(songs.map(song => song.tag.tags.album))
-    const filteredArtists = Array.from(artistSet).filter(album =>
-      album.toLowerCase().includes(lowerCaseQuery)
+    const artistSet = new Set(songs.map(song => song.tag.tags.artist))
+    const filteredArtists = Array.from(artistSet).filter(artist =>
+      artist.toLowerCase().includes(lowerCaseQuery)
     )
-    const artistResults = filteredArtists.flatMap(album =>
-      songs.filter(song => song.tag.tags.album.toLowerCase().includes(album.toLowerCase()))
-    )
+    const artistResults: Array<Song> = filteredArtists.map(artist => 
+      songs.find(song => song.tag.tags.artist === artist)
+  ).filter(song => song !== undefined) as Array<Song>
     setQueryArtists(artistResults)
   }, [query, songs])
   

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './style.css'
 import SongTile from '../../components/SongTile/SongTile'
 import { PlaylistInterface, Song, SortedPlaylists, SortedSongs } from '../../data'
@@ -55,6 +55,9 @@ const Playlists: React.FC = () => {
     })
     return selectedPlaylists.flatMap(playlist => playlist.songs)
   }
+  useEffect(() => {
+    console.log(playlists)
+  }, [playlists])
 
   return (
     <>
@@ -95,7 +98,7 @@ const Playlists: React.FC = () => {
                         }
                         return(
                           <SongTile
-                            song={playlist.songs.length > 0 ? playlist.songs[0] : newEmpty}
+                            song={(playlist.songs && playlist.songs.length > 0) ? playlist.songs[0] : newEmpty}
                             key={index}
                             page={'playlist'}
                             playlistName={playlist.name}

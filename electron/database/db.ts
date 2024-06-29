@@ -1,20 +1,13 @@
 import { createRequire } from 'node:module'
-import { RowCurrentSongPlusSong, RowLyrics, RowMusicPath, RowPlaylist, RowPlaylistSong, RowQueue, RowSong } from './tables'
+import { RowCurrentSongPlusSong, RowLyrics, RowMusicPath, RowPlaylist, RowPlaylistSongPlusSong, RowQueue, RowSong } from './tables'
 import { Song } from '../types/index'
-import path from 'node:path'
 import { formatSongRowToSongObject } from '../songsApi/songsApi'
+import { getDatabasePath } from '../main'
 const require = createRequire(import.meta.url)
 const sqlite3 = require('sqlite3').verbose()
-const { app } = require('electron')
-
 // const database
-const isDev = !app.isPackaged
-let databasePath: string
-if (isDev) {
-    databasePath = path.join(app.getPath('userData'), 'database.db')
-} else {
-    databasePath = path.join(app.getPath('userData'), 'database.db')
-}
+
+const databasePath = getDatabasePath()
 const database = new sqlite3.Database(databasePath)
 
 function dropTable(tableName: string){
@@ -39,7 +32,7 @@ export const createMusicPaths = () => {
         database.run(
         `CREATE TABLE IF NOT EXISTS musicPaths (
             id INTEGER PRIMARY KEY,
-            path TEXT
+            path TEXT UNIQUE
         );`
         )
     })
@@ -217,7 +210,7 @@ export async function insertSongIntoDatabase(songObject: Song){
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database(databasePath)
         db.run(`INSERT INTO songs (id, title, artist, album, year, genre, imageSrc, duration, src) VALUES (?,?,?,?,?,?,?,?,?)`,
-            [songObject.id.replace(/-/g, ''), songObject.tag.tags.title, songObject.tag.tags.artist, songObject.tag.tags.album, songObject.tag.tags.year, songObject.tag.tags.genre, songObject.imageSrc, songObject.duration, songObject.src],
+            [songObject.id.replace(/-/g, ''), songObject.tag.tags.title, songObject.tag.tags.artist.split('ft.')[0], songObject.tag.tags.album, songObject.tag.tags.year, songObject.tag.tags.genre, songObject.imageSrc, songObject.duration, songObject.src],
             function (err: Error) {
                 if (err) {
                     reject(err)
@@ -253,7 +246,6 @@ export async function updateSongInDatabase(songObject: Song){
                             console.log('Database connection closed.')
                         }
                     })
-                    console.log(`${songObject.tag.tags.title} is now ${songObject.isFavorite}`)
                     resolve("Successful")
                 }
             }
@@ -364,7 +356,12 @@ export async function fetchAllSongsInQueue() {
                 if (err) {
                     return reject(err)
                 }
-                resolve(songRows)
+                if(songRows.length > 0){
+                    const songObject: Array<Song> = songRows.map(songRow => {
+                        return formatSongRowToSongObject(songRow)
+                    })
+                    resolve(songObject)
+                }
             })
         })
     })
@@ -403,19 +400,23 @@ export const getPlaylists = (): Promise<Array<RowPlaylist>> => {
     })
 }
 
-export const getPlaylistSongs = (id: number): Promise<Array<RowPlaylistSong>> => {
+export const getPlaylistSongs = (id: number) => {
     return new Promise((resolve, reject) => {
         database.all(
         `SELECT songs.* FROM songs
         JOIN playlist_song ON songs.id = playlist_song.song_id
         WHERE playlist_song.playlist_id = ?`,
         [id],
-        (err: Error, rows: Array<RowPlaylistSong>) => {
+        (err: Error, rows: Array<RowPlaylistSongPlusSong>) => {
             if (err) {
                 reject(err)
             } else {
-                if(rows.length === 0)
-                    resolve(rows)
+                if(rows.length > 0){
+                    const playlistSongs: Array<Song> = rows.map((row) => {
+                        return formatSongRowToSongObject(row)
+                    })
+                    resolve(playlistSongs)
+                }
                 else
                     resolve([])
             }
@@ -497,6 +498,7 @@ export const addSongToPlaylist = (songId: string, playlistId: number): Promise<v
 }
 export const removeSongFromPlaylist = (songId: string, playlistId: number): Promise<void> => {
     return new Promise((resolve, reject) => {
+        console.log(playlistId, " playlist and song id ", songId)
         database.run(
         `DELETE FROM playlist_song WHERE playlist_id = ? AND song_id = ?`,
         [playlistId, songId],
@@ -535,19 +537,37 @@ export const insertIntoMusicPath = (musicPath: string): Promise<number> => {
         )
     })
 }
-export const deleteFromMusicPath = (musicPathId: number) : Promise<string> => {
+export const deleteFromMusicPath = (musicPathId: number): Promise<string> => {
     return new Promise((resolve, reject) => {
-        database.run(
-        `DELETE FROM musicPaths WHERE id = ?`,
-        [musicPathId],
-        (err: Error) => {
-            if (err) {
-            reject(err)
-            } else {
-                resolve("Successful")
-            }
-        }
-        )
+        database.serialize(() => {
+            database.run('BEGIN TRANSACTION')
+            database.run(
+                `DELETE FROM songs WHERE src LIKE (
+                    SELECT path || '%' FROM musicPaths WHERE id = ?
+                )`,
+                [musicPathId],
+                (err: Error) => {
+                    if (err) {
+                        database.run('ROLLBACK')
+                        reject(err)
+                        return
+                    }
+                    database.run(
+                        `DELETE FROM musicPaths WHERE id = ?`,
+                        [musicPathId],
+                        (err: Error) => {
+                            if (err) {
+                                database.run('ROLLBACK')
+                                reject(err)
+                            } else {
+                                database.run('COMMIT')
+                                resolve('Successful')
+                            }
+                        }
+                    )
+                }
+            )
+        })
     })
 }
 export const getMusicPaths = () : Promise<Array<RowMusicPath>> => {

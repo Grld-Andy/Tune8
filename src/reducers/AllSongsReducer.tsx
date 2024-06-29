@@ -1,6 +1,6 @@
 import { Song } from "../data"
 
-export const AllSongsReducer = (songs: Array<Song>|[], action: {type: string, payload: Array<Song>|[]}): Array<Song> => {
+export const AllSongsReducer = (songs: Array<Song>|[], action: {type: string, payload: Array<Song>|[], path?: string}): Array<Song> => {
     switch(action.type){
         case 'SET_SONGS':
             return mergeSongs(songs, action.payload)
@@ -9,6 +9,13 @@ export const AllSongsReducer = (songs: Array<Song>|[], action: {type: string, pa
                 const updatedSong = action.payload.find(s => s.id === song.id)
                 return updatedSong ? updatedSong : song
             })
+        case 'DELETE_SONGS':
+                if(action.path){
+                    console.log(action.path)
+                    const path = action.path
+                    return songs.filter(song => !song.src.startsWith(path))
+                }
+                return songs
         case 'CLEAR_SONGS':
             return []
         default:

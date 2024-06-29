@@ -311,4 +311,10 @@
   .musicPlayer .bottom .b-right .details, .musicPlayer .bottom .b-right .enlarge_icon {
     display: none;
   }
+  .musicPlayer .options-overlay {
+    display: none;
+  }
+  .musicPlayer .song-details {
+    display: none;
+  }
 }/*# sourceMappingURL=style.css.map */

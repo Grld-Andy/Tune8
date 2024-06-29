@@ -30,10 +30,12 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   },
 
   // OTHER FUNCTIONS
-  async GetSongs(musicPaths: string) {
-    return await ipcRenderer.invoke('get-all-songs', musicPaths);
+  async GetSongs() {
+    console.log('gettings so')
+    return await ipcRenderer.invoke('get-all-songs');
   },
   onPlayNext(callback: (event: Electron.IpcRendererEvent) => void) {
+    console.log('preload next song')
     ipcRenderer.on('play-next-song', callback);
   },
   onPlayPrev(callback: (event: Electron.IpcRendererEvent) => void) {

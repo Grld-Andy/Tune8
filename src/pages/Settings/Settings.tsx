@@ -20,27 +20,22 @@ const Settings: React.FC = () => {
   }
 
   const refreshSongs = async() => {
-    const musicPaths:Array<MusicPaths> = await window.ipcRenderer.fetchMusicPaths()
     try {
       const allSongs: Array<Song> = []
-      if(musicPaths.length > 0)
-        feedbackDispatch({type: 'LOADER', payload:{text: 'Indexing songs', view: 'loader'}})
-      musicPaths.forEach(async (path, index) => {
-        const songs: Array<Song> = await window.ipcRenderer.GetSongs(path.path)
-        if(songs.length > 0){
-          allSongs.push(...songs)
-          songsDispatch({ type: 'SET_SONGS', payload: allSongs })
-          if(index === musicPaths.length - 1)
-            feedbackDispatch({type: 'CLOSE_LOADER', payload:{text: '', view: 'close_loader'}})
-        }
-      })
+      feedbackDispatch({type: 'LOADER', payload:{text: 'Indexing songs', view: 'loader'}})
+      const songs: Array<Song> = await window.ipcRenderer.GetSongs()
+      if(songs.length > 0){
+        allSongs.push(...songs)
+        songsDispatch({ type: 'SET_SONGS', payload: allSongs })
+        feedbackDispatch({type: 'CLOSE_LOADER', payload:{text: '', view: 'close_loader'}})
+      }
     } catch (error) {
       console.error("Error fetching songs:", error)
     }
   }
 
   const { dispatch } = useContext(QueueSongsContext)
-  const { currentSongDispatch } = useContext(CurrentSongContext)
+  const { currentSong, currentSongDispatch } = useContext(CurrentSongContext)
   const { playlists, playlistsDispatch } = useContext(PlaylistContext)
 
   const clearAllPlaylists: () => void = async () => {
@@ -106,8 +101,17 @@ const Settings: React.FC = () => {
   }, [])
 
   // remove path
-  const removePath = async(id: number) => {
-    await window.ipcRenderer.removeMusicPath(id)
+  const removePath = async(path: MusicPaths) => {
+    await window.ipcRenderer.removeMusicPath(path.id).then(
+      (res) => {
+        if(res){
+          songsDispatch({ type: 'DELETE_SONGS', payload: [] , path: path.path})
+          if(currentSong.song?.src.startsWith(path.path)){
+            clearQueue()
+          }
+        }
+      }
+    )
     await updatePaths()
   }
   const updatePaths = async() => {
@@ -136,7 +140,7 @@ const Settings: React.FC = () => {
               musicPaths.map((path, index) => (
                 <div className="set-cell path-cell" key={index}>
                   <h3>{path.path}</h3>
-                  <button onClick={() => {removePath(path.id)}}><MdDelete size={15}/></button>
+                  <button onClick={() => {removePath(path)}}><MdDelete size={15}/></button>
                 </div>
               ))
             }
