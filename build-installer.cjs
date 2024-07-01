@@ -13,6 +13,7 @@ const msiCreator = new MSICreator({
     version: '1.0.0',
     manufacturer: 'Grld-Andy',
     noShortcut: false,
+    setupIcon: path.resolve(__dirname, './public/setupFiles/tune8-3.ico'),
     ui: {
         chooseDirectory: true,
         images: {
@@ -20,7 +21,7 @@ const msiCreator = new MSICreator({
             banner: path.resolve(__dirname, './public/setupFiles/bg1.png')
         }
     },
-    icon: path.resolve(__dirname, './public/setupFiles/setup.ico')
+    icon: path.resolve(__dirname, './public/setupFiles/tune8-3.ico')
 })
 
 msiCreator.create().then(() => {
