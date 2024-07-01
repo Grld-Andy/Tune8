@@ -25,3 +25,8 @@ release
 *.sln
 *.sw?
 .out
+
+# Others
+Tune8-win32-x64
+windows_installer
+public/setupFiles
