@@ -23,12 +23,13 @@ const Settings: React.FC = () => {
     try {
       const allSongs: Array<Song> = []
       feedbackDispatch({type: 'LOADER', payload:{text: 'Indexing songs', view: 'loader'}})
-      const songs: Array<Song> = await window.ipcRenderer.GetSongs()
-      if(songs.length > 0){
-        allSongs.push(...songs)
-        songsDispatch({ type: 'SET_SONGS', payload: allSongs })
+      window.ipcRenderer.GetSongs().then((songs) => {
+        if(songs.length > 0){
+          allSongs.push(...songs)
+          songsDispatch({ type: 'SET_SONGS', payload: allSongs })
+        }
         feedbackDispatch({type: 'CLOSE_LOADER', payload:{text: '', view: 'close_loader'}})
-      }
+      })
     } catch (error) {
       console.error("Error fetching songs:", error)
     }
@@ -39,12 +40,15 @@ const Settings: React.FC = () => {
   const { playlists, playlistsDispatch } = useContext(PlaylistContext)
 
   const clearAllPlaylists: () => void = async () => {
-    feedbackDispatch({type: 'LOADER', payload:{text: 'Deleting playlists', view: 'loader'}})
+    feedbackDispatch({type: 'LOADER', payload:{text: 'Deleting', view: 'loader'}})
     playlists.forEach( async (playlist) => {
-      await window.ipcRenderer.deletePlaylist(playlist.id)
-      playlistsDispatch({type: 'REMOVE_PLAYLIST', payload: {id: playlist.id, name:playlist.name, songs: []}})
+      window.ipcRenderer.deletePlaylist(playlist.id).then(() => {
+        playlistsDispatch({type: 'REMOVE_PLAYLIST', payload: {id: playlist.id, name:playlist.name, songs: []}})
+      })
     })
-    feedbackDispatch({type: 'COMPLETED', payload:{text: 'Deleted', view: 'completed'}})
+    setTimeout(() => {
+      feedbackDispatch({type: 'COMPLETED', payload:{text: 'Deleted', view: 'completed'}})
+    }, 1000)
     setTimeout(() => {
       feedbackDispatch({type: 'CLOSE_LOADER', payload:{text: '', view: 'close_completed'}})
     }, 3000)
@@ -55,14 +59,9 @@ const Settings: React.FC = () => {
     currentSongDispatch({ type: 'CLEAR_CURRENT_SONG', payload: null, index: -1, audioRef: null, isPlaying: false })
   }
   const clearSongs: () => void = async() => {
-    const result = await window.ipcRenderer.clearSongs()
-    if(result){
+    window.ipcRenderer.clearSongs().then(() => {
       songsDispatch({ type: 'CLEAR_SONGS', payload: [] })
-      feedbackDispatch({type: 'COMPLETED', payload:{text: result, view: 'completed'}})
-      setTimeout(() => {
-        feedbackDispatch({type: 'CLOSE_LOADER', payload:{text: '', view: 'close_completed'}})
-      }, 3000)
-    }
+    })
   }
 
   const clearData = async () => {

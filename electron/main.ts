@@ -74,7 +74,7 @@ function createWindow() {
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', (new Date).toLocaleString().concat(__dirname))
+    win?.webContents.send('main-process-message', (new Date).toLocaleString().concat(app.getPath('userData')))
   })
 
   if (VITE_DEV_SERVER_URL) {
@@ -99,6 +99,20 @@ if(!gotTheLock){
   })
 
   app.on('ready', () => {
+    createWindow()
+
+    globalShortcut.register('MediaNextTrack', () => {
+      if (win) {
+        win.webContents.send('media-control', 'next')
+      }
+    })
+  
+    globalShortcut.register('MediaPreviousTrack', () => {
+      if (win) {
+        win.webContents.send('media-control', 'previous')
+      }
+    })
+
     app.on('will-quit', () => {
       // Unregister all shortcuts.
       globalShortcut.unregisterAll()
@@ -121,23 +135,6 @@ if(!gotTheLock){
         createWindow()
       }
     })
-    
-    app.whenReady().then(() => {
-      // // Register the Media Next Track key
-      // globalShortcut.register('MediaNextTrack', () => {
-      //   if (win) {
-      //     console.log('next song')
-      //     win.webContents.send('play-next-song')
-      //   }
-      // })
-      // // Register the Media Previous Track key
-      // globalShortcut.register('MediaPreviousTrack', () => {
-      //   if (win) {
-      //     console.log('prev song')
-      //     win.webContents.send('play-prev-song')
-      //   }
-      // })
-    }).then(() => createWindow())
   })
 }
 

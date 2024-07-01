@@ -147,20 +147,18 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
   }
 
   // listening to shortcuts
-  useEffect(() => {
-    window.ipcRenderer.onPlayNext(() => {
-      console.log('came all the way to next')
-      nextSong()
-    })
-    window.ipcRenderer.onPlayPrev(() => {
-      prevSong()
-    })
-    window.ipcRenderer.onPlayPause(() => {
-      if(currentSong)
-        togglePlay(!currentSong.isPlaying)
-    })
-
-  }, [])
+  window.ipcRenderer.on('media-control', (_event, command) => {
+    switch (command) {
+      case 'next':
+        nextSong()
+        break
+      case 'previous':
+        prevSong()
+        break
+      default:
+        console.error(`Unknown media control command: ${command}`)
+    }
+  })
 
   useEffect(() => {
     if(currentSong.song)
@@ -256,7 +254,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
           {
             currentSong.song?
             <img src={currentSong.song.imageSrc} alt=''/>:
-            <img src='/placeholders/music1.jpg' alt=''/>
+            <img src='placeholders/music1.jpg' alt=''/>
           }
           <div className="text">
             {

@@ -24,11 +24,12 @@ const AllSongsContextProvider: React.FC<Props> = (props) => {
     useEffect(() => {
         const fetchAllSongs = async () => {
             try {
-                const allSongs: Array<Song> = await window.ipcRenderer.GetSongs()
-                if (allSongs && allSongs.length > 0){
-                    songsDispatch({ type: 'SET_SONGS', payload: allSongs })
+                window.ipcRenderer.GetSongs().then((allSongs) => {
+                    if (allSongs && allSongs.length > 0){
+                        songsDispatch({ type: 'SET_SONGS', payload: allSongs })
+                    }
                     feedbackDispatch({type: 'CLOSE_LOADER', payload:{text: '', view: 'close_loader'}})
-                }
+                })
             } catch (error) {
                 console.error("Error fetching songs:", error)
             }

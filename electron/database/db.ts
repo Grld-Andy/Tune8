@@ -283,6 +283,9 @@ export const getCurrentSong = () => {
 }
 export const updateCurrentSong = (song_id: string, queue_no: number) => {
     return new Promise((resolve, reject) => {
+        console.log(`=========================
+            updating current song
+            ==============================`)
         const stmt = `
             INSERT INTO currentSong (id, song_id, queue_no)
             VALUES (1, ?, ?)
