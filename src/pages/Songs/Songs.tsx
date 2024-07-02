@@ -9,6 +9,8 @@ import SortButton from '../../components/SortButton/SortButton'
 import { Song, SortedSongs } from '../../data'
 import Buttons from '../../components/Buttons/Buttons'
 import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder'
+import { FixedSizeList as List } from 'react-window'
+import AutoSizer from 'react-virtualized-auto-sizer'
 import './style.css'
 
 const Songs: React.FC = () => {
@@ -85,20 +87,44 @@ const Songs: React.FC = () => {
     <section key={letter} id={letter}>
       <h2 onClick={toggleShowNav}>{letter}</h2>
       <div className="listItem">
-        {
-          Array.from(sortedSongs[letter])
-          .sort((a, b) => a.tag.tags.album.localeCompare(b.tag.tags.album))
-          .map((song) => (
-            <SongListItem
-            key={songIndex}
-            song={song} setQueueSongs={setQueueSongs}
-            index={songIndex++}
-            addToSelected={addToSelected}
-            selected={selected}
-            removeFromSelected={removeFromSelected}
-            />
-          ))
-        }
+        {/* <AutoSizer>
+          {({height, width}) => (
+            <List
+              height={height}
+              itemCount={Array.from(sortedSongs[letter]).length}
+              itemSize={50}
+              width={width}
+            >
+              {({index, style}) => (
+                <div style={style}>
+                  <SongListItem
+                  key={songIndex}
+                  song={Array.from(sortedSongs[letter])[index]}
+                  setQueueSongs={setQueueSongs}
+                  index={songIndex++}
+                  addToSelected={addToSelected}
+                  selected={selected}
+                  removeFromSelected={removeFromSelected}
+                  />
+                </div>
+              )}
+            </List>
+          )} */}
+          {
+            Array.from(sortedSongs[letter])
+            .sort((a, b) => a.tag.tags.album.localeCompare(b.tag.tags.album))
+            .map((song) => (
+              <SongListItem
+              key={songIndex}
+              song={song} setQueueSongs={setQueueSongs}
+              index={songIndex++}
+              addToSelected={addToSelected}
+              selected={selected}
+              removeFromSelected={removeFromSelected}
+              />
+            ))
+          }
+        {/* </AutoSizer> */}
       </div>
     </section>
   ))
