@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import {FaCirclePause, FaVolumeOff, FaCirclePlay, FaShuffle, FaForward, FaBackward, FaVolumeHigh} from 'react-icons/fa6'
 import {VscScreenFull} from 'react-icons/vsc'
 import { TbRepeat, TbRepeatOnce, TbRepeatOff } from 'react-icons/tb'
@@ -32,7 +32,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
   // currentsong logic(next, prev, shuffle, play/pause)
   const {currentSong, currentSongDispatch} = useContext(CurrentSongContext)
   const {queue} = useContext(QueueSongsContext)
-  const nextSong: () => void = () => {
+  const nextSong: () => void = useCallback(() => {
     let currentSongIndex: number = currentSong.index
     if(currentSongIndex === queue.length-1){
       currentSongIndex = -1
@@ -45,8 +45,8 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
       index: currentSongIndex + 1, audioRef: new Audio(nextsong.src)
     })
     updateCurrentSongInDatabase(nextsong, currentSongIndex)
-  }
-  const prevSong: () => void = () => {
+  }, [currentSong, currentSongDispatch, queue])
+  const prevSong: () => void = useCallback(() => {
     let currentSongIndex: number = currentSong.index
     if(currentSongIndex === 0){
       currentSongIndex = queue.length
@@ -58,7 +58,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
       index: currentSongIndex - 1, audioRef: new Audio(prevsong.src)
     })
     updateCurrentSongInDatabase(prevsong, currentSongIndex)
-  }
+  }, [currentSong.audioRef, currentSong.index, currentSong.isPlaying, currentSongDispatch, queue])
   const {dispatch} = useContext(QueueSongsContext)
   const shuffleSongs: () => void = () => {
     const newQueue = shuffleArray(queue)
@@ -161,22 +161,26 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
           console.error(`Unknown media control command: ${command}`)
       }
     })
-  }, [])
+  }, [nextSong, prevSong])
   
 
   // useEffect(() => {
   //   window.addEventListener('keypress', (e: KeyboardEvent) => {
   //     console.log(e.key)
   //     switch(e.key){
-  //       case 'MediaNext':
+  //       case 'MediaTrackNext':
+  //         console.log('next song')
+  //         nextSong()
   //         break
-  //       case 'MediaPrev':
+  //       case 'MediaTrackPrevious':
+  //         console.log('prev song')
+  //         prevSong()
   //         break
   //       default:
   //         break
   //     }
   //   })
-  // }, [])
+  // }, [nextSong, prevSong])
   
 
   useEffect(() => {

@@ -109,6 +109,7 @@ if(!gotTheLock){
   
     globalShortcut.register('MediaPreviousTrack', () => {
       if (win) {
+        console.log('prev song')
         win.webContents.send('media-control', 'previous')
       }
     })

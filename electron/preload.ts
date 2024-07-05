@@ -35,7 +35,6 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     return await ipcRenderer.invoke('get-all-songs');
   },
   onPlayNext(callback: (event: Electron.IpcRendererEvent) => void) {
-    console.log('preload next song')
     ipcRenderer.on('play-next-song', callback);
   },
   onPlayPrev(callback: (event: Electron.IpcRendererEvent) => void) {
