@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import './style.css'
 import SongTile from '../../components/SongTile/SongTile'
 import { Song, SortedSongs } from '../../data'
@@ -31,26 +31,31 @@ const Artists: React.FC = () => {
     setSelected([])
   }
   // helper function to get selected songs
-  const getSelectedSongs: () => Array<Song> = () => {
-    const selectedSongs: Array<Song> = selected.flatMap(selectedArtist => {
-      return songs.filter(item => item.tag.tags.artist === selectedArtist)
-    })
-    return selectedSongs
-  }
+  const getSelectedSongs = useMemo(() => {
+    return () => {
+      const selectedSongs: Array<Song> = selected.flatMap(selectedArtist => {
+        return songs.filter(item => item.tag.tags.artist === selectedArtist)
+      })
+      return selectedSongs
+    }
+  }, [selected, songs])
 
   // get artists
-  const artists: SortedSongs = {}
-  songs.forEach(song => {
-    let firstLetter:string = song.tag.tags.artist.charAt(0).toUpperCase()
-    firstLetter = /^[A-Za-z]$/.test(firstLetter) ? firstLetter : '#'
-    // initialize to store empty array before pushing
-    if (!artists[firstLetter]) {
-      artists[firstLetter] = new Set()
-    }
-    if(!Array.from(artists[firstLetter]).some(elem => elem.tag.tags.artist === song.tag.tags.artist)){
-      artists[firstLetter].add(song)
-    }
-  })
+  const artists: SortedSongs = useMemo(() => {
+    const artistMap: SortedSongs = {}
+    songs.forEach(song => {
+      let firstLetter: string = song.tag.tags.artist.charAt(0).toUpperCase()
+      firstLetter = /^[A-Za-z]$/.test(firstLetter) ? firstLetter : '#'
+      // initialize to store empty array before pushing
+      if (!artistMap[firstLetter]) {
+        artistMap[firstLetter] = new Set()
+      }
+      if (!Array.from(artistMap[firstLetter]).some(elem => elem.tag.tags.artist === song.tag.tags.artist)) {
+        artistMap[firstLetter].add(song)
+      }
+    })
+    return artistMap
+  }, [songs])
 
   return (
     <>

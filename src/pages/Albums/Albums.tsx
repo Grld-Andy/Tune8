@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useMemo } from 'react'
 import './style.css'
 import SongTile from '../../components/SongTile/SongTile'
-import { Song, SortedSongs } from '../../data'
+import { Song } from '../../data'
 import MusicNavigation from '../../components/MusicNavigation/MusicNavigation'
 import {AllSongsContext} from '../../contexts/AllSongsContext'
 import SortButton from '../../components/SortButton/SortButton'
@@ -33,20 +33,21 @@ const Albums: React.FC = () => {
     setSelected([])
   }
   // helper function to get selected songs
-  const getSelectedSongs: () => Array<Song> = () => {
-    const selectedSongs: Array<Song> = selected.flatMap(selectedAlbum => {
-      return songs.filter(item => item.tag.tags.album === selectedAlbum)
-    })
-    return selectedSongs
-  }
+  const getSelectedSongs = useMemo(() => {
+    return () => {
+      const selectedSongs: Array<Song> = selected.flatMap(selectedAlbum => {
+        return songs.filter(item => item.tag.tags.album === selectedAlbum)
+      })
+      return selectedSongs
+    }
+  }, [selected, songs])
   
   // sort albums
   const [sortOrder, setSortOrder] = useState<string>(localStorage.getItem('albumsSortOrder') ?? 'album')
-  const [albums, setAlbums] = useState<SortedSongs>(getSortedSongs(songs, sortOrder, 'albums'))
+  const albums = useMemo(() => getSortedSongs(songs, sortOrder, 'albums'), [songs, sortOrder])
   useEffect(() => {
     localStorage.setItem('albumsSortOrder', sortOrder)
-    setAlbums(getSortedSongs(songs, sortOrder, 'albums'))
-  }, [sortOrder, songs])
+  }, [sortOrder])
 
   return (
     <>

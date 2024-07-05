@@ -20,6 +20,7 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
                 }
                 
                 const response = await fetch(
+                    // `https://api.textyl.co/api/lyrics?q=${currentSong.song.tag.tags.artist}%20${currentSong.song.tag.tags.title.split('|')[0].split('ft')[0]}`
                     `https://api.lyrics.ovh/v1/${currentSong.song.tag.tags.artist}/${currentSong.song.tag.tags.title.split('|')[0].split('ft')[0]}`
                 )
                 const data = await response.json()

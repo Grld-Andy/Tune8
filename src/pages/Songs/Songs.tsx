@@ -9,8 +9,8 @@ import SortButton from '../../components/SortButton/SortButton'
 import { Song, SortedSongs } from '../../data'
 import Buttons from '../../components/Buttons/Buttons'
 import AddMusicFolderButton from '../../components/Buttons/AddMusicFolder/AddMusicFolder'
-import { FixedSizeList as List } from 'react-window'
-import AutoSizer from 'react-virtualized-auto-sizer'
+// import { FixedSizeList as List } from 'react-window'
+// import AutoSizer from 'react-virtualized-auto-sizer'
 import './style.css'
 
 const Songs: React.FC = () => {

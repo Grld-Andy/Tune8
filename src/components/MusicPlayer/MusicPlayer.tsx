@@ -34,7 +34,6 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
   const {queue} = useContext(QueueSongsContext)
   const nextSong: () => void = () => {
     let currentSongIndex: number = currentSong.index
-    console.log('current song index: ', currentSong)
     if(currentSongIndex === queue.length-1){
       currentSongIndex = -1
     }
@@ -147,18 +146,38 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
   }
 
   // listening to shortcuts
-  window.ipcRenderer.on('media-control', (_event, command) => {
-    switch (command) {
-      case 'next':
-        nextSong()
-        break
-      case 'previous':
-        prevSong()
-        break
-      default:
-        console.error(`Unknown media control command: ${command}`)
-    }
-  })
+  useEffect(() => {
+    window.ipcRenderer.on('media-control', (_event, command) => {
+      switch (command) {
+        case 'next':
+          console.log('next song')
+          nextSong()
+          break
+        case 'previous':
+          console.log('prev song')
+          prevSong()
+          break
+        default:
+          console.error(`Unknown media control command: ${command}`)
+      }
+    })
+  }, [])
+  
+
+  // useEffect(() => {
+  //   window.addEventListener('keypress', (e: KeyboardEvent) => {
+  //     console.log(e.key)
+  //     switch(e.key){
+  //       case 'MediaNext':
+  //         break
+  //       case 'MediaPrev':
+  //         break
+  //       default:
+  //         break
+  //     }
+  //   })
+  // }, [])
+  
 
   useEffect(() => {
     if(currentSong.song)
