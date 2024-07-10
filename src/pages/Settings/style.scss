@@ -1,9 +1,3 @@
-.light{
-    --settings-btn-bg: #00c;
-}
-.dark{
-    --settings-btn-bg: #009;
-}
 .settings{
     section{
         padding: 10px;
@@ -56,6 +50,12 @@
                     .white{
                         background-color: white;
                         box-shadow: inset 0 0 5px #0007;
+                        width: $theme-size;
+                        height: $theme-size;
+                        border-radius: 50%;
+                    }
+                    .beige{
+                        background-color: rgb(255, 167, 108);
                         width: $theme-size;
                         height: $theme-size;
                         border-radius: 50%;

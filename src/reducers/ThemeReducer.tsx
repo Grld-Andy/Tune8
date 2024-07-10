@@ -4,6 +4,8 @@ export const themeReducer = (state:string, action: { type: string }) => {
             return 'dark'
         case 'LIGHT_THEME':
             return 'light'
+        case 'BEIGE_THEME':
+            return 'beige'
         default:
             return state
     }

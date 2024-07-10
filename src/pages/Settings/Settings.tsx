@@ -157,6 +157,7 @@ const Settings: React.FC = () => {
               <div className="themes">
                 <div className="black" onClick={() => {changeTheme('DARK')}}></div>
                 <div className="white" onClick={() => {changeTheme('LIGHT')}}></div>
+                <div className="beige" onClick={() => {changeTheme('BEIGE')}}></div>
               </div>
             </div>
           </div>
