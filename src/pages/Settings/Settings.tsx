@@ -15,10 +15,12 @@ const Settings: React.FC = () => {
   const {songsDispatch} = useContext(AllSongsContext)
   const {feedbackDispatch} = useContext(FeedbackContext)
 
+  // change themes
   const changeTheme = (type:string) => {
     themeDispatch({type: `${type}_THEME`})
   }
 
+  // refetch songs from database and add new songs
   const refreshSongs = async() => {
     try {
       const allSongs: Array<Song> = []
@@ -117,6 +119,12 @@ const Settings: React.FC = () => {
     await fetchMusicPath()
   }
 
+  // confirm delete
+  const [confirmDelete, setConfirmDelete] = useState<string>('')
+  const handleConfirmDelete = (val: string) => {
+    setConfirmDelete(val)
+  }
+
   return (
     <>
       <nav>
@@ -131,21 +139,32 @@ const Settings: React.FC = () => {
         <section>
           <h2>Music Library</h2>
           <div className="set-grid">
-            <div className="set-cell">
+            <div className="set-cell top-cell">
               <h3>Music Location</h3>
               <AddMusicFolderButton update={updatePaths}/>
             </div>
             {
               musicPaths.map((path, index) => (
                 <div className="set-cell path-cell" key={index}>
-                  <h3>{path.path}</h3>
-                  <button onClick={() => {removePath(path)}}><MdDelete size={15}/></button>
+                  {
+                    confirmDelete === `musicPath-${index}`?
+                    <h3>Are you sure?</h3>:
+                    <h3>{path.path}</h3>
+                  }
+                  {
+                    confirmDelete === `musicPath-${index}`?
+                    <div className='music-grid'>
+                      <button onClick={() => {handleConfirmDelete('');removePath(path)}}>Yes</button>
+                      <button onClick={() => {handleConfirmDelete('')}}>No</button>
+                      </div>:
+                    <h3><button onClick={() => {handleConfirmDelete(`musicPath-${index}`)}}><MdDelete size={15}/></button></h3>
+                  }
                 </div>
               ))
             }
-            <div className="set-cell">
+            <div className="set-cell top-cell">
               <h3>Refresh Music</h3>
-              <button onClick={refreshSongs}>Refresh</button>
+              <button className='set-button' onClick={refreshSongs}>Refresh</button>
             </div>
           </div>
         </section>
@@ -166,12 +185,38 @@ const Settings: React.FC = () => {
           <h2>Data</h2>
           <div className="set-grid">
             <div className="set-cell">
-              <h3>Delete All Playlists</h3>
-              <button onClick={clearAllPlaylists} style={{backgroundColor: 'red'}}>Delete</button>
+              {
+                confirmDelete === 'playlists'?
+                <h3>Are you sure?</h3>:
+                <h3>Delete All Playlists</h3>
+              }
+              <div className='themes'>
+                {
+                  confirmDelete === 'playlists'?
+                  <>
+                    <button onClick={() => {handleConfirmDelete('');clearAllPlaylists()}} style={{backgroundColor: 'red', color: 'white'}}>Yes</button>
+                    <button onClick={() => {handleConfirmDelete('')}} style={{backgroundColor: 'red', color: 'white'}}>No</button>
+                  </>:
+                  <button onClick={() => {handleConfirmDelete('playlists')}} style={{backgroundColor: 'red', color: 'white'}}>Delete</button>
+                }
+              </div>
             </div>
             <div className="set-cell">
-              <h3>Delete All Data</h3>
-              <button onClick={clearData} style={{backgroundColor: 'red'}}>Delete</button>
+              {
+                confirmDelete === 'allData'?
+                <h3>Are you sure?</h3>:
+                <h3>Delete All Data</h3>
+              }
+              <div className="themes">
+                {
+                  confirmDelete === 'allData'?
+                  <>
+                    <button onClick={() => {handleConfirmDelete('');clearData()}} style={{backgroundColor: 'red', color: 'white'}}>Yes</button>
+                    <button onClick={() => {handleConfirmDelete('')}} style={{backgroundColor: 'red', color: 'white'}}>No</button>
+                  </>:
+                  <button onClick={() => {handleConfirmDelete('allData')}} style={{backgroundColor: 'red', color: 'white'}}>Delete</button>
+                }
+              </div>
             </div>
           </div>
         </section>

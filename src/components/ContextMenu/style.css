@@ -1,11 +1,13 @@
 .dark {
   --context-font-weight: 200;
-  --item-hover-bg: #000;
+  --item-hover-bg: #444;
+  --context-menu-bg: linear-gradient(120deg, #0009, black);
 }
 
 .light {
   --context-font-weight: 400;
   --item-hover-bg: #fff;
+  --context-menu-bg: linear-gradient(120deg, #9999, #eee9);
 }
 
 .context-menu {
@@ -21,7 +23,7 @@
   background-color: transparent;
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
-  background-image: linear-gradient(120deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1333333333));
+  background-image: var(--context-menu-bg);
   background-size: 5px;
 }
 .context-menu a {
@@ -33,7 +35,6 @@
   padding: 2px;
   font-size: 1.15em;
   color: var(--primary-text-color);
-  text-shadow: 0 0 5px white;
   position: relative;
 }
 .context-menu .labels h2:first-child {
@@ -61,9 +62,10 @@
   width: 130px;
   height: -moz-min-content;
   height: min-content;
-  background-color: #999;
+  background-color: #ddd;
   -webkit-backdrop-filter: blur(3px);
           backdrop-filter: blur(3px);
+  background-image: var(--context-menu-bg);
   display: none;
 }
 .context-menu .labels h2 .submenu h2 {

@@ -58,7 +58,7 @@ const getSongTags: (s:string) => Promise<Song> = async (songPath: string) => {
               artist: metadata.common.artist ? metadata.common.artist : 'Unknown Artist',
               album: metadata.common.album ? metadata.common.album : 'Unknown Album',
               year: metadata.common.year ? metadata.common.year : 0,
-              genre: metadata.common.genre ? metadata.common.genre[0] : 'Unknown Genre',
+              genre: metadata.common.genre ? metadata.common.genre[0] : 'Unknown Genre'
             },
           },
           imageSrc,

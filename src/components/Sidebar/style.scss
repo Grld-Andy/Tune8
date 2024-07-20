@@ -1,19 +1,24 @@
 .light{
     --sidebar-bg: #000;
     --sidebar-link-active-bg: #333;
+    --sidebar-input-bg: #333;
+    --sidebar-input-color: #fff;
+    --sidebar-input-shadow: #fff;
 }
 .dark{
     --sidebar-bg: #000;
+    --sidebar-input-bg: #333;
     --sidebar-link-active-bg: #333;
+    --sidebar-input-color: #fff;
+    --sidebar-input-shadow: #fff;
 }
 .sidebar{
     background-color: var(--sidebar-bg);
-    color: white;
+    color: #fff;
     padding: 10px 10px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    contain: layout inline-size;
     .profile{
         display: flex;
         align-items: center;
@@ -27,7 +32,7 @@
             align-items: center;
             justify-content: center;
             svg{
-                color: white;
+                color: #fff;
                 border: none;
                 scale: .7;
                 border-radius: 5px;
@@ -43,7 +48,7 @@
                     background-color: var(--sidebar-link-active-bg);
                 }
                 &:active{
-                    color: white;
+                    color: #fff;
                 }
             }
             h1{
@@ -71,15 +76,15 @@
                     padding: 5px 3px;
                     border: none;
                     outline: none;
-                    color: white;
+                    color: var(--sidebar-input-color);
                     border-radius: 3px;
                     font-size: 1em;
-                    background-color: #333;
-                    box-shadow: inset 0 0 3px white;
+                    background-color: var(--sidebar-input-bg);
+                    box-shadow: inset 0 0 3px var(--sidebar-input-shadow);
                 }
             }
             .search-button{
-                color: white;
+                color: #fff;
                 border: none;
                 padding: 5px;
                 display: none;
@@ -112,7 +117,7 @@
             font-size: 1em;
         }
         .link{
-            color: white;
+            color: #fff;
             text-decoration: none;
             display: flex;
             gap: 10px;

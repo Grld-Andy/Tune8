@@ -4,7 +4,6 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import {FaArrowLeft, FaHouse, FaMusic } from 'react-icons/fa6'
 import {RiPlayListLine, RiSearch2Line} from 'react-icons/ri'
 import {MdLibraryMusic, MdOutlinePlaylistPlay, MdPerson, MdFavorite, MdSettings } from 'react-icons/md'
-// import { profile } from '../../assets'
 import { useLocation } from 'react-router-dom'
 import { SearchContext } from '../../contexts/SearchContext'
 

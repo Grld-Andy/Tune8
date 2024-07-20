@@ -8,6 +8,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { PlaylistContext } from '../../contexts/PlaylistsContext';
 import { PlaylistFormContext } from '../../contexts/PlaylistFormContext';
 import { clearCurrentSongInDatabase, updateCurrentSongInDatabase } from '../../utilities';
+import { SongFormContext } from '../../contexts/SongFormContext';
 
 const ContextMenu: React.FC = () => {
   const { contextMenu, contextMenuDispatch } = useContext(ContextMenuContext);
@@ -72,9 +73,12 @@ const ContextMenu: React.FC = () => {
   }
 
   // Edit
+  const {songFormDispatch} = useContext(SongFormContext)
   const edit = () => {
     if(location.pathname === '/playlists'){
       playlistFormDispatch({type: 'OPEN_FORM', payload: 'edit', name: contextMenu.nameClicked})
+    }else{
+      songFormDispatch({type: 'OPEN_FORM', payload: contextMenu.lastClicked[0]})
     }
   }
 
@@ -131,62 +135,63 @@ const ContextMenu: React.FC = () => {
   return (
     contextMenu.isOpen ? (
     <>
-    <div className="context-overlay" onContextMenu={closeMenu} onClick={closeMenu}></div>
-    <div className='context-menu'
-    style={{ 
-      top: window.innerHeight > contextMenu.position.y + 153 ? contextMenu.position.y: contextMenu.position.y - 118 ,
-      left: window.innerWidth/2 > contextMenu.position.x ? contextMenu.position.x : contextMenu.position.x - 130
-    }}
-    onClick={closeMenu}>
-        <div className="labels">
-          {
-            contextMenu.lastClicked[0] &&
-            <>
-              <h2 onClick={playSong}>Play Now</h2>
-              <h2 onClick={playNextInQueue}>Play Next</h2>
-              <h2 className='to-sub'>
-                  Add to...
+      <div className="context-overlay" onContextMenu={closeMenu} onClick={closeMenu}></div>
+      <div className='context-menu'
+      style={{ 
+        top: window.innerHeight > contextMenu.position.y + 153 ? contextMenu.position.y: contextMenu.position.y - 118 ,
+        left: window.innerWidth/2 > contextMenu.position.x ? contextMenu.position.x : contextMenu.position.x - 130
+      }}
+      onClick={closeMenu}>
+          <div className="labels">
+            {
+              contextMenu.lastClicked[0] &&
+              <>
+                <h2 onClick={playSong}>Play Now</h2>
+                <h2 onClick={playNextInQueue}>Play Next</h2>
+                <h2 className='to-sub'>
+                    Add to...
+                    <div className='submenu'
+                    style={{
+                      right: window.innerWidth > contextMenu.position.x + 150 ? -130 : 128
+                    }}>
+                        <h2 onClick={addToQueue}>Queue</h2>
+                        <h2 onClick={addToPlaylist}>Playlist</h2>
+                        {
+                          location.pathname === '/favorites'||
+                          <h2 onClick={addToFavorites}>Favorites</h2>
+                        }
+                    </div>
+                </h2>
+              </>
+            }
+            <h2 onClick={edit}>Edit</h2>
+              {
+                location.pathname === '/songs' || location.pathname === '/'
+                || location.pathname === '/albums' || location.pathname === '/artists'
+                || location.pathname.includes('/albumView') || location.pathname.includes('/artistView') ||
+                <h2 onClick={remove}>Remove</h2>
+              }
+              {
+                contextMenu.lastClicked[0] && location.pathname !== '/playlists' &&
+                <h2 className='to-sub'>View ...
                   <div className='submenu'
                   style={{
                     right: window.innerWidth > contextMenu.position.x + 150 ? -130 : 128
                   }}>
-                      <h2 onClick={addToQueue}>Queue</h2>
-                      <h2 onClick={addToPlaylist}>Playlist</h2>
-                      {
-                        location.pathname === '/favorites'||
-                        <h2 onClick={addToFavorites}>Favorites</h2>
-                      }
+                    <>
+                      <h2>
+                        <Link to={`/artistView/${contextMenu.lastClicked[0].tag.tags.artist}`}>Artist</Link>
+                      </h2>
+                      <h2>
+                        <Link to={`/albumView/${contextMenu.lastClicked[0].tag.tags.album}`}>Album</Link>
+                      </h2>
+                      <h2>Details</h2>
+                    </>
                   </div>
-              </h2>
-            </>
-          }
-          <h2 onClick={edit}>Edit</h2>
-            {
-              location.pathname === '/songs' || location.pathname === '/'
-              || location.pathname === '/albums' || location.pathname === '/artists'
-              || location.pathname.includes('/albumView') || location.pathname.includes('/artistView') ||
-              <h2 onClick={remove}>Remove</h2>
-            }
-            {
-              contextMenu.lastClicked[0] && location.pathname !== '/playlists' &&
-              <h2 className='to-sub'>View ...
-                <div className='submenu'
-                style={{
-                  right: window.innerWidth > contextMenu.position.x + 150 ? -130 : 128
-                }}>
-                  <>
-                    <h2>
-                      <Link to={`/artistView/${contextMenu.lastClicked[0].tag.tags.artist}`}>Artist</Link>
-                    </h2>
-                    <h2>
-                      <Link to={`/albumView/${contextMenu.lastClicked[0].tag.tags.album}`}>Album</Link>
-                    </h2>
-                  </>
-                </div>
-              </h2>
-            }
-        </div>
-    </div>
+                </h2>
+              }
+          </div>
+      </div>
     </>
     ):null
   )

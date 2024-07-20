@@ -10,6 +10,7 @@ import FavoritesContext from '../../contexts/FavoritesContext'
 import { DurationToString, shuffleArray, updateCurrentSongInDatabase } from '../../utilities'
 import { Link } from 'react-router-dom'
 import './style.css'
+import SongDetails from '../SongDetails/SongDetails'
 
 interface Props{
   displayLyrics: () => void,
@@ -363,41 +364,8 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
         <div className="options-overlay" onClick={() => {handleShowOptions('')}}></div>
       }
       {
-        showOptions === 'details' &&
-        <div className="song-details">
-          <div className="details-container">
-            <h1>Song details</h1>
-            <div className="main-info">
-              <div className="tile">
-                <h3>Title</h3>
-                <h4>{currentSong.song?.tag.tags.title}</h4>
-              </div>
-              <div className="tile">
-                <h3>Album</h3>
-                <h4>{currentSong.song?.tag.tags.album}</h4>
-              </div>
-              <div className="tile">
-                <h3>Artist</h3>
-                <h4>{currentSong.song?.tag.tags.artist}</h4>
-              </div>
-              <div className="tile">
-                <h3>Year Released</h3>
-                <h4>{currentSong.song?.tag.tags.year}</h4>
-              </div>
-              <div className="tile">
-                <h3>Song Duration</h3>
-                <h4>{currentSong.song?.duration}</h4>
-              </div>
-              <div className="tile">
-                <h3>Genre</h3>
-                <h4>{currentSong.song?.tag.tags.genre}</h4>
-              </div>
-            </div>
-            <div className="source">
-              <h2>{currentSong.song?.src}</h2>
-            </div>
-          </div>
-        </div>
+        showOptions === 'details' && currentSong.song &&
+        <SongDetails query={currentSong.song}/>
       }
     </div>
   )

@@ -15,11 +15,12 @@
             margin-top: 10px;
             .set-cell{
                 box-shadow: 0 0 5px black;
-                padding: 10px;
+                padding: 0 10px;
                 display: flex;
                 border-radius: 5px;
                 justify-content: space-between;
                 align-items: center;
+                height: 40px;
                 h3{
                     font-weight: 400;
                     font-size: 1.1em;
@@ -28,13 +29,19 @@
                     border: none;
                     padding: 5px;
                     background-color: var(--sidebar-link-color);
-                    color: black;
                     border-radius: 5px;
                     font-size: .8em;
                     cursor: pointer;
                     transition: .1s ease-out;
                     &:active{
                         color: black
+                    }
+                }
+                .music-grid{
+                    display: flex;
+                    gap: 10px;
+                    button{
+                        font-size: 1em;
                     }
                 }
                 .themes{
@@ -55,7 +62,7 @@
                         border-radius: 50%;
                     }
                     .beige{
-                        background-color: rgb(255, 167, 108);
+                        background-color: #ffa76c;
                         width: $theme-size;
                         height: $theme-size;
                         border-radius: 50%;
@@ -65,9 +72,17 @@
                     }
                 }
             }
+            .top-cell{
+                button{
+                    color: var(--top-cell-btn);
+                }
+            }
             .path-cell{
                 margin: 0;
                 font-size: .85em;
+                button{
+                    color: var(--top-cell-btn);
+                }
                 svg{
                     font-size: 1em;
                 }

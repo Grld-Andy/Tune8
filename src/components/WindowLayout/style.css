@@ -15,10 +15,11 @@
   --songs-nav-open-links: #000;
   --songs-nav-open-links-bg: #ddd;
   --playlist-overlay-bg: #3339;
+  --top-cell-btn: black;
 }
 
 .beige {
-  --right-bg-color: #fff8f0;
+  --right-bg-color: #fff2e4;
   --music-player-bg-color: #ffe6ca;
   --navbar-bg-color: #ffe6c8;
   --navbar-shadow: #0002;
@@ -29,12 +30,12 @@
   --singles-nav-image-shadow: #000;
   --music-player-shadow: #0005;
   --sidebar-link-color: #915b1d;
-  --playlist-buttons-bg: #ccc;
-  --songs-nav-bg: #fff;
-  --songs-nav-open-links: #000;
-  --songs-nav-open-links-bg: #ddd;
-  --playlist-overlay-bg: #3339;
-  --sidebar-bg: #bd9465;
+  --playlist-buttons-bg: #573611;
+  --songs-nav-bg: #fff8f0;
+  --songs-nav-open-links: #462500;
+  --songs-nav-open-links-bg: #ffca8e;
+  --playlist-overlay-bg: #2c19034d;
+  --sidebar-bg: #d8aa76;
   --sidebar-link-active-bg: #ebc497;
   --player-bg: #fff;
   --subtitle-text-color: #d47100;
@@ -45,8 +46,17 @@
   --checkbox-bg: #ffca8e;
   --songlist-bg: #fadebe;
   --songlist-bg-hover: #ffca8e;
-  --songlist-bg-even: #ffca8e;
+  --songlist-bg-even: #462500;
   --current-song-color: #f18100;
+  --sidebar-input-bg: #ffffff;
+  --sidebar-input-color: #462500;
+  --sidebar-input-shadow: #a74300;
+  --add-to-bg: #ffe3c3;
+  --b-left-bg: #fac991;
+  --top-cell-btn: white;
+  --context-font-weight: 400;
+  --item-hover-bg: #ffca8e;
+  --context-menu-bg: linear-gradient(120deg, #a7430050, #f1810050);
 }
 
 .dark {
@@ -66,6 +76,7 @@
   --songs-nav-open-links: #fff;
   --songs-nav-open-links-bg: #333;
   --playlist-overlay-bg: #3339;
+  --top-cell-btn: black;
 }
 
 .context-overlay {

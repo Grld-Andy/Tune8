@@ -1,10 +1,12 @@
 .dark{
     --context-font-weight: 200;
-    --item-hover-bg: #000;
+    --item-hover-bg: #444;
+    --context-menu-bg: linear-gradient(120deg, #0009, black);
 }
 .light{
     --context-font-weight: 400;
     --item-hover-bg: #fff;
+    --context-menu-bg: linear-gradient(120deg, #9999, #eee9);
 }
 .context-menu{
     position: absolute;
@@ -17,7 +19,7 @@
     max-height: 176px;
     background-color: transparent;
     backdrop-filter: blur(10px);
-    background-image: linear-gradient(120deg,#fff3,#0002);
+    background-image: var(--context-menu-bg);
     background-size: 5px;
     a{
         color: var(--primary-text-color)
@@ -37,7 +39,6 @@
             padding: 2px;
             font-size: 1.15em;
             color: var(--primary-text-color);
-            text-shadow: 0 0 5px white;
             position: relative;
             &:hover{
                 background-color: var(--item-hover-bg);
@@ -55,9 +56,9 @@
                 top: 0;
                 width: 130px;
                 height: min-content;
-                background-color: #999;
+                background-color: #ddd;
                 backdrop-filter: blur(3px);
-                // background-image: linear-gradient(120deg,#fff9,#0009);
+                background-image: var(--context-menu-bg);
                 display: none;
                 h2{
                     font-weight: var(--context-font-weight);
