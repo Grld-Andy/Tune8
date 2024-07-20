@@ -38,7 +38,6 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
     if(currentSongIndex === queue.length-1){
       currentSongIndex = -1
     }
-    console.log('next song index: ', currentSong)
     if (currentSong.audioRef){ currentSong.audioRef.currentTime = 0}
     const nextsong = queue[currentSongIndex + 1]
     currentSongDispatch({

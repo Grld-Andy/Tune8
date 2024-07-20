@@ -56,7 +56,6 @@ const SongListItem: React.FC<Props> = ({ song, setQueueSongs, index, page = 'lin
   const { contextMenuDispatch } = useContext(ContextMenuContext)
   const showContextMenu = (e: React.MouseEvent) => {
     e.preventDefault()
-    console.log("song index: ",index)
     contextMenuDispatch({ type: 'OPEN_MENU', payload: { x: e.clientX, y: e.clientY, lastClicked: [song], indexClicked: index } })
   }
 

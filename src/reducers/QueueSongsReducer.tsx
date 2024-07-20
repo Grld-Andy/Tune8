@@ -4,6 +4,11 @@ export const QueueSongsReducer = (queue: Array<Song>, action: {type: string, pay
     switch(action.type){
         case 'SET_QUEUE':
             return action.payload
+        case 'UPDATE_QUEUE':
+            return queue.map(song => {
+                const updatedSong = action.payload.find(s => s.id === song.id)
+                return updatedSong ? updatedSong : song
+            })
         case 'ADD_TO_QUEUE':
             // action.payload.forEach(song => {
             //     window.ipcRenderer.addSongToQueue(song)

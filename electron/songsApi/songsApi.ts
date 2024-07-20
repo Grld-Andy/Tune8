@@ -76,20 +76,16 @@ const getSongTags: (s:string) => Promise<Song> = async (songPath: string) => {
 }
 
 const saveImageToFile = async (picture: mm.IPicture) => {
-  console.log(app.getPath('userData'))
   const imagesDir = path.join(app.getPath('userData'), 'images')
-  console.log('creating images folder')
   if (!fs.existsSync(imagesDir)) {
     try {
       await fs.promises.mkdir(imagesDir, { recursive: true })
-      console.log('folder created')
     } catch (err) {
       console.error(err)
     }
   }else{
-    console.log('folder exists')
+    console.error('folder exists')
   }
-  console.log('images dir: ', imagesDir)
   const imageBuffer = picture.data
   const imageFormat = picture.format
   const imageFileName = `${v1()}.${imageFormat.split('/')[1]}`

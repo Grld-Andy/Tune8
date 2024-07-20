@@ -1,6 +1,10 @@
 import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import { SongFormContext } from '../../contexts/SongFormContext'
 import './style.css'
+import { Song } from '../../data'
+import { AllSongsContext } from '../../contexts/AllSongsContext'
+import { QueueSongsContext } from '../../contexts/QueueSongsContext'
+import FavoritesContext from '../../contexts/FavoritesContext'
 
 const FileEditForm: React.FC = () => {
     const {songForm, songFormDispatch} = useContext(SongFormContext)
@@ -27,8 +31,33 @@ const FileEditForm: React.FC = () => {
     }, [songForm])
 
     // update song onsubmit
-    const updateSong = (e: FormEvent) => {
+    const {songsDispatch} = useContext(AllSongsContext)
+    const {dispatch} = useContext(QueueSongsContext)
+    const {favoritesDispatch} = useContext(FavoritesContext)
+    const updateSong = async (e: FormEvent) => {
         e.preventDefault()
+        if(songForm.song){
+            const songToUpdate:Song = {...songForm.song,
+                tag: {
+                    tags: {
+                        title: songTitle,
+                        album: songAlbum,
+                        artist: songArtist,
+                        genre: songGenre,
+                        year: songYear
+                    }
+                }
+            }
+            window.ipcRenderer.updateSongDatabase(songToUpdate)
+                .then(res => {
+                    if(res === 'Successful'){
+                        songsDispatch({type:"UPDATE_SONG", payload: [songToUpdate]})
+                        dispatch({type:"UPDATE_QUEUE", payload: [songToUpdate], index: 0})
+                        favoritesDispatch({type:"UPDATE_FAVORITES", payload: [songToUpdate]})
+                        closeModal()
+                    }
+                })
+        }
     }
 
   return (

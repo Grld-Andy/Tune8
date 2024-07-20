@@ -78,7 +78,6 @@ const ContextMenu: React.FC = () => {
     if(location.pathname === '/playlists'){
       playlistFormDispatch({type: 'OPEN_FORM', payload: 'edit', name: contextMenu.nameClicked})
     }else{
-      console.log('show form')
       songFormDispatch({type: 'OPEN_FORM', payload: contextMenu.lastClicked[0]})
     }
   }
@@ -126,10 +125,7 @@ const ContextMenu: React.FC = () => {
         if(!pList){
           return
         }
-        console.log(contextMenu.lastClicked)
         contextMenu.lastClicked.forEach( async (song) => {
-          console.log(pList)
-          console.log(song)
           await window.ipcRenderer.removeSongFromPlaylist(song.id, pList.id)
         })
         playlistsDispatch({type: 'REMOVE_FROM_PLAYLIST', payload: {id: pList.id, name: playlist, songs: contextMenu.lastClicked}})
@@ -169,7 +165,13 @@ const ContextMenu: React.FC = () => {
                 </h2>
               </>
             }
-            <h2 onClick={edit}>Edit</h2>
+              {
+                location.pathname === '/albums' || location.pathname === '/artists'
+                || location.pathname === '/queue' || location.pathname === '/favorites'
+                || location.pathname === '/playlists' || location.pathname === '/favorites'
+                || location.pathname.includes('/playlistView') ||
+                <h2 onClick={edit}>Edit</h2>
+              }
               {
                 location.pathname === '/songs' || location.pathname === '/'
                 || location.pathname === '/albums' || location.pathname === '/artists'

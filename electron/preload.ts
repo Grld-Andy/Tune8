@@ -31,7 +31,6 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 
   // OTHER FUNCTIONS
   async GetSongs() {
-    console.log('gettings so')
     return await ipcRenderer.invoke('get-all-songs');
   },
   onPlayNext(callback: (event: Electron.IpcRendererEvent) => void) {
