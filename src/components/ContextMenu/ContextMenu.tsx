@@ -83,6 +83,10 @@ const ContextMenu: React.FC = () => {
     }
   }
 
+  const details = () => {
+    songFormDispatch({type: 'OPEN_DETAILS', payload: contextMenu.lastClicked[0]})
+  }
+
   // remove options
   const remove = async() => {
     switch(location.pathname){
@@ -186,7 +190,7 @@ const ContextMenu: React.FC = () => {
                       <h2>
                         <Link to={`/albumView/${contextMenu.lastClicked[0].tag.tags.album}`}>Album</Link>
                       </h2>
-                      <h2>Details</h2>
+                      <h2 onClick={details}>Details</h2>
                     </>
                   </div>
                 </h2>

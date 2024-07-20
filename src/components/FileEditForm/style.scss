@@ -4,18 +4,17 @@
     height: 100vh;
     left: 0;
     bottom: 0;
-    z-index: 22;
+    z-index: 23;
     display: flex;
     color: var(--primary-text-color);
-    background-color: rgba(0, 0, 0, 0.2);
     align-items: center;
     justify-content: center;
-    pointer-events: none;
     overflow: hidden;
     .details-container{
         background-color: var(--songlist-bg);
         pointer-events: all;
         width: 400px;
+        z-index: 1;
         border: 1px solid black;
         border-radius: 5px;
         overflow: hidden;
@@ -38,6 +37,18 @@
             }
             h4{
                 font-weight: 300;
+                user-select: text;
+                cursor:text;
+            }
+            input{
+                background-color: var(--right-bg-color);
+                color: var(--primary-text-color);
+                width: calc(100% - 20px);
+                padding: 5px;
+                text-decoration: none;
+                border: 1px solid var(--primary-text-color);
+                border-radius: 5px;
+                outline: none;
             }
         }
     }
@@ -50,11 +61,38 @@
         h2{
             font-size: 0.9em;
             font-weight: 400;
-            text-wrap: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            user-select:text;
+            cursor:text;
+        }
+        .form-buttons{
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            justify-content: space-between;
+            button{
+                padding: 5px;
+                border: 1px solid gray;
+                border-radius: 5px;
+                width: 100%;
+                background-color: var(--primary-button-bg-color);
+                color: var(--primary-text-color);
+                cursor: pointer;
+                transition: .1s;
+                font-size: 1em;
+                &:hover{
+                    background-color: var(--primary-button-bg-hover);
+                }
+            }
         }
     }
+}
+.song-form-overlay{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 @media (max-width: 400px) {
     .song-details{

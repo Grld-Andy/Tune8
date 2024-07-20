@@ -1,7 +1,7 @@
 import { SongFormState } from "../contexts/SongFormContext";
 import { Song } from "../data";
 
-export const SongFormReducer = (state: SongFormState, action: {type: string, payload: Song}): SongFormState => {
+export const SongFormReducer = (state: SongFormState, action: {type: string, payload: Song|null}): SongFormState => {
     switch(action.type){
         case 'OPEN_DETAILS':
             return {isOpen: 'details', song: action.payload}

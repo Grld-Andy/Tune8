@@ -12,7 +12,7 @@ export interface SongFormState{
 }
 interface SongFormType{
     songForm: SongFormState,
-    songFormDispatch: Dispatch<{type: string, payload: Song}>
+    songFormDispatch: Dispatch<{type: string, payload: Song|null}>
 }
 export const SongFormContext = createContext<SongFormType>({
     songForm: {isOpen: '', song: null},

@@ -10,7 +10,7 @@ import FavoritesContext from '../../contexts/FavoritesContext'
 import { DurationToString, shuffleArray, updateCurrentSongInDatabase } from '../../utilities'
 import { Link } from 'react-router-dom'
 import './style.css'
-import SongDetails from '../SongDetails/SongDetails'
+import { SongFormContext } from '../../contexts/SongFormContext'
 
 interface Props{
   displayLyrics: () => void,
@@ -247,6 +247,15 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
     }
   }
 
+  // song details
+  const {songFormDispatch} = useContext(SongFormContext)
+  const showDetails = () => {
+    if(currentSong.song){
+      handleShowOptions('')
+      songFormDispatch({type: 'OPEN_DETAILS', payload: currentSong.song})
+    }
+  }
+
   return (
     <div className='musicPlayer'>
       <audio src={currentSong.song?.src} ref={el => { currentSong.audioRef = el }}></audio>
@@ -329,7 +338,7 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
           {
             showOptions === 'options' &&
             <ul className="b-right-menu">
-              <li  onClick={() => {handleShowOptions('details')}}
+              <li  onClick={showDetails}
               className='first'>Details</li>
               <li onClick={() => {handleShowOptions('')}}>
                 <Link to={`albumView/${currentSong.song?.tag.tags.album}`}>
@@ -362,10 +371,6 @@ const MusicPlayer: React.FC<Props> = ({displayLyrics, showLyrics}) => {
       {
         currentSong.song && showOptions &&
         <div className="options-overlay" onClick={() => {handleShowOptions('')}}></div>
-      }
-      {
-        showOptions === 'details' && currentSong.song &&
-        <SongDetails query={currentSong.song}/>
       }
     </div>
   )

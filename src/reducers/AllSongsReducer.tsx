@@ -11,7 +11,6 @@ export const AllSongsReducer = (songs: Array<Song>|[], action: {type: string, pa
             })
         case 'DELETE_SONGS':
                 if(action.path){
-                    console.log(action.path)
                     const path = action.path
                     return songs.filter(song => !song.src.startsWith(path))
                 }
@@ -24,6 +23,7 @@ export const AllSongsReducer = (songs: Array<Song>|[], action: {type: string, pa
 }
 
 // Helper function to merge songs ensuring no duplicate song.src
+// usedwhen adding a new songs to the songs state
 const mergeSongs = (currentSongs: Array<Song>, newSongs: Array<Song>): Array<Song> => {
     const mergedSongs = new Map<string, Song>();
     // Add current songs to Map
