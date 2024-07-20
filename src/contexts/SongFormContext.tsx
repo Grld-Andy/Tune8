@@ -7,7 +7,7 @@ interface Props{
 }
 
 export interface SongFormState{
-    isOpen: boolean,
+    isOpen: string,
     song: Song|null
 }
 interface SongFormType{
@@ -15,12 +15,12 @@ interface SongFormType{
     songFormDispatch: Dispatch<{type: string, payload: Song}>
 }
 export const SongFormContext = createContext<SongFormType>({
-    songForm: {isOpen: false, song: null},
+    songForm: {isOpen: '', song: null},
     songFormDispatch: () => null
 })
 
 const SongFormContextProvider: React.FC<Props> = ({children}) => {
-    const [songForm, songFormDispatch] = useReducer(SongFormReducer, {isOpen: false, song: null})
+    const [songForm, songFormDispatch] = useReducer(SongFormReducer, {isOpen: '', song: null})
   return (
     <SongFormContext.Provider value={{songForm, songFormDispatch}}>
       {children}

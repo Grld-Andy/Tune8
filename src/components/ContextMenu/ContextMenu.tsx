@@ -78,6 +78,7 @@ const ContextMenu: React.FC = () => {
     if(location.pathname === '/playlists'){
       playlistFormDispatch({type: 'OPEN_FORM', payload: 'edit', name: contextMenu.nameClicked})
     }else{
+      console.log('show form')
       songFormDispatch({type: 'OPEN_FORM', payload: contextMenu.lastClicked[0]})
     }
   }
