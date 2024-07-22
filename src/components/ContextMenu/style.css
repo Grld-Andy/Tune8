@@ -1,7 +1,7 @@
 .dark {
   --context-font-weight: 200;
   --item-hover-bg: #444;
-  --context-menu-bg: linear-gradient(120deg, #0009, black);
+  --context-menu-bg: linear-gradient(120deg, black, #0009);
 }
 
 .light {

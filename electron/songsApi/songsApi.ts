@@ -33,9 +33,38 @@ export async function insertNewSongs(path: string){
     try {
       const songData = await getSongTags(songPath)
       insertSongIntoDatabase(songData)
+      await getLyrics(songData)
     } catch (err) {
       console.error('Error fetching song tags:', err)
     }
+  }
+}
+async function getLyrics (song: Song){
+  if (song) {
+      try {
+          const getSavedLyrics = await window.ipcRenderer.getLyricsFromDatabase(song.id)
+          if (getSavedLyrics) {
+              return
+          }
+          
+          const response = await fetch(
+              // `https://api.textyl.co/api/lyrics?q=${song.tag.tags.artist}%20${song.tag.tags.title.split('|')[0].split('ft')[0]}`
+              `https://api.lyrics.ovh/v1/${song.tag.tags.artist}/${song.tag.tags.title.split('|')[0].split('ft')[0]}`
+          )
+          const data = await response.json()
+          
+          if (data.lyrics !== undefined) {
+              let lyricsFileContent: string = data.lyrics.replace(/\n/g, '<div></div>')
+              if (!lyricsFileContent) {
+                lyricsFileContent = "Not found"
+              }
+              window.ipcRenderer.saveLyricsToDatabase({ lyric: lyricsFileContent, song_id: song.id })
+          } else {
+              console.error("Not found")
+          }
+      } catch (error) {
+          console.error("Error fetching lyrics:", error)
+      }
   }
 }
 const getSongTags: (s:string) => Promise<Song> = async (songPath: string) => {

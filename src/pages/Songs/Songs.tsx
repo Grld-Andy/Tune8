@@ -60,7 +60,7 @@ const Songs: React.FC = () => {
     }, [] as Array<Song>)
   }
 
-  // mulit select
+  // multi select
   const [selected, setSelected] = useState<Array<string>>([])
   const addToSelected = (Group: string) => {
     setSelected([...selected, Group])
@@ -85,20 +85,20 @@ const Songs: React.FC = () => {
     <section key={letter} id={letter}>
       <h2 onClick={toggleShowNav}>{letter}</h2>
       <div className="listItem">
-          {
-            Array.from(sortedSongs[letter])
-            .sort((a, b) => a.tag.tags.album.localeCompare(b.tag.tags.album))
-            .map((song) => (
-              <SongListItem
-              key={songIndex}
-              song={song} setQueueSongs={setQueueSongs}
-              index={songIndex++}
-              addToSelected={addToSelected}
-              selected={selected}
-              removeFromSelected={removeFromSelected}
-              />
-            ))
-          }
+        {
+          Array.from(sortedSongs[letter])
+          .sort((a, b) => a.tag.tags.album.localeCompare(b.tag.tags.album))
+          .map((song) => (
+            <SongListItem
+            key={songIndex}
+            song={song} setQueueSongs={setQueueSongs}
+            index={songIndex++}
+            addToSelected={addToSelected}
+            selected={selected}
+            removeFromSelected={removeFromSelected}
+            />
+          ))
+        }
       </div>
     </section>
   ))
@@ -136,7 +136,9 @@ const Songs: React.FC = () => {
             sortOrder={sortOrder}
             object={sortedSongs} closeAndScroll={closeAndScroll}/>
           }
-          {sortedSongSections}
+          {
+            sortedSongSections
+          }
         </div>:
         <div className="empty-window view">
           <div className="cell">
