@@ -28,3 +28,5 @@ release
 out/
 Tune8*
 setup.sh
+database.db
+windows_installer/*

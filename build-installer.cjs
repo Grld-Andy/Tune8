@@ -7,8 +7,8 @@ const OUT_DIR = path.resolve(__dirname, './windows_installer')
 const msiCreator = new MSICreator({
     appDirectory: APP_DIR,
     outputDirectory: OUT_DIR,
-    exe: 'Tune8.exe',
-    name: 'Tune8',
+    exe: 'TuneIt.exe',
+    name: 'TuneIt',
     description: 'A music player',
     version: '1.0.0',
     manufacturer: 'Grld-Andy',
