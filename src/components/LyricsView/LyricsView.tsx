@@ -12,13 +12,15 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
     
     const getLyrics = async() => {
         if(currentSong.song){
+            console.log('start')
             let getSavedLyrics = localStorage.getItem(currentSong.song.tag.tags.title)
             if(getSavedLyrics){
-                getSavedLyrics = getSavedLyrics.replace(/\n/g, '<div></div>')
+                getSavedLyrics = getSavedLyrics.replace(/\n/g, '</br>')
                 setLyrics(getSavedLyrics)
                 return
             }
             try{
+                console.log('continue')
                 const response = await fetch(
                     `https://api.lyrics.ovh/v1/${currentSong.song.tag.tags.artist}/${currentSong.song.tag.tags.title.split('|')[0].split('ft')[0]}`
                 )
@@ -31,7 +33,9 @@ const LyricsView: React.FC<Props> = ({showLyrics}) => {
                     setLyrics(lyricsFileContent)
                     localStorage.setItem(currentSong.song.tag.tags.title, data.lyrics)
                 } else {
-                    setLyrics(currentSong.song.lyrics)
+                    console.log('last')
+                    const songLyrics = currentSong.song.lyrics.replace(/\n/g, '</br>')
+                    setLyrics(songLyrics)
                 }
             }catch{
                 setLyrics(currentSong.song.lyrics)

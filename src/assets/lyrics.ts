@@ -546,16 +546,16 @@ She likes to keep the party going
 These rumors got me feeling lonely
 I want that body baby show me`
 
-export const L_fearless = `We all know that it's not fear\n
-It's not fear\n
-It's so fearless\n
+export const L_fearless = `We all know that it's not fear
+It's not fear
+It's so fearless
 
-We all know that it's not fear\n
-It's not fear\n
-It's so fearless\n
+We all know that it's not fear
+It's not fear
+It's so fearless
 
-We all know that it's not fear\n
-It's not fear\n
-It's so fearless\n
+We all know that it's not fear
+It's not fear
+It's so fearless
 
-It's so fearless\n`
+It's so fearless`
